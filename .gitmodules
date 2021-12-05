@@ -7,3 +7,6 @@
 [submodule "deps/spdlog"]
 	path = deps/spdlog
 	url = https://github.com/VatamanuBogdan/spdlog.git
+[submodule "deps/assimp"]
+	path = deps/assimp
+	url = git@github.com:VatamanuBogdan/assimp.git
