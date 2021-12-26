@@ -1,13 +1,14 @@
 #pragma once
-#include <glad/glad.h>
+#include "OpenGL.hpp"
 
 #include <vector>
 #include <array>
+#include <cstddef>
 
 template <typename IndexType>
 class IndexBuffer {
 public:
-	explicit IndexBuffer(const IndexType *indexes, size_t size)
+	explicit IndexBuffer(const IndexType *indexes, size_t size, OpenGL::Primitive primitiveType = OpenGL::TRIANGLES)
 		: size(size) {
 		static_assert(
 			  std::is_same_v<IndexType, GLubyte> ||
@@ -16,7 +17,7 @@ public:
 			  "[Compile Error]::IndexType template typename of IndexBuffer class must be "
 			  "one of the next types: GLubyte, GLushort GLuint"
 			  );
-
+		this->primitiveType = primitiveType;
 		glGenBuffers(1, &handle);
 		Bind();
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(IndexType) * size, indexes, GL_STATIC_DRAW);
@@ -39,6 +40,7 @@ public:
 	IndexBuffer(IndexBuffer&& ibo) noexcept {
 		handle = ibo.handle;
 		size = ibo.size;
+		primitiveType = ibo.primitiveType;
 		ibo.handle = 0;
 		ibo.size = 0;
 	}
@@ -50,27 +52,17 @@ public:
 		glDeleteBuffers(1, &handle);
 	}
 
-	void Bind() const {
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
-	}
+	void Bind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle); }
+	void Unbind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
 
-	void Unbind() const {
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	}
+	[[nodiscard]] OpenGL::Numeric GetIndexType() const noexcept { return OpenGL::GetNumericFrom<IndexType>(); }
 
-	[[nodiscard]] GLenum GetType() const noexcept {
-		if constexpr(std::is_same_v<IndexType, GLubyte>) {
-			return GL_UNSIGNED_BYTE;
-		} else if constexpr(std::is_same_v<IndexType, GLushort>) {
-			return GL_UNSIGNED_SHORT;
-		} else {
-			return GL_UNSIGNED_INT;
-		}
-	}
+	[[nodiscard]] OpenGL::Primitive GetPrimitiveType() const noexcept { return primitiveType; }
 
 	[[nodiscard]] size_t GetSize() const noexcept { return size; }
 
 private:
-	size_t size;
-	GLuint handle = 0;
+	size_t 		size;
+	unsigned int 	handle = 0;
+	OpenGL::Primitive primitiveType;
 };

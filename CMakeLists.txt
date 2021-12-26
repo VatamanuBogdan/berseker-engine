@@ -18,6 +18,8 @@ set(
         src/Graphics/OpenGL/ShaderProgram.cpp
         src/Graphics/OpenGL/ShaderProgram.h
         src/Graphics/OpenGL/Texture2D.hpp
+        src/Graphics/OpenGL/OpenGL.hpp
+        src/Graphics/Model.cpp
 )
 
 # Set glfw library
