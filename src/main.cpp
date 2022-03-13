@@ -1,5 +1,4 @@
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <spdlog/spdlog.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -7,6 +6,7 @@
 #include <iostream>
 #include <array>
 #include <csignal>
+#include <optional>
 
 #include "Graphics/OpenGL/OpenGL.hpp"
 #include "Graphics/OpenGL/VertexBuffer.hpp"
@@ -18,6 +18,9 @@
 #include "Graphics/GridLine.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/Model.h"
+
+#include "Window/Window.h"
+#include "Window/GLFW//GLFWWindow.h"
 
 void GLAPIENTRY DebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity,
 					 GLsizei length, const GLchar *message, const void *userParam) {
@@ -38,50 +41,53 @@ std::ostream& operator<<(std::ostream& os, const glm::mat4 &mat) {
 	return os;
 }
 
-void CameraControllerTest(Camera &camera, GLFWwindow *window, float deltaTime) {
+void CameraPositionController(InputManager &input, Camera &camera) {
 	constexpr float velocity = 3.0f;
 	constexpr float sensitivity = 0.5f;
+	constexpr float constant = 0.01f;
+
+	static std::optional<MousePosition> previousPosition;
 
 	auto position = camera.GetPosition();
 	auto rotations = camera.GetRotations();
 	auto &direction = camera.GetDirection();
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		position += velocity * direction.Forward * deltaTime;
+	if (input.GetStateForKey(KeyboardKey::W) == KeyState::Pressed) {
+		position += velocity * direction.Forward * constant;
 	}
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		position -= velocity * direction.Forward * deltaTime;
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		position -= velocity * direction.Rightward * deltaTime;
-	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		position += velocity * direction.Rightward * deltaTime;
+	if (input.GetStateForKey(KeyboardKey::S) == KeyState::Pressed) {
+		position -= velocity * direction.Forward * constant;
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-		position -= velocity * direction.Upward * deltaTime;
+	if (input.GetStateForKey(KeyboardKey::A) == KeyState::Pressed) {
+		position -= velocity * direction.Rightward * constant;
 	}
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-		position += velocity * direction.Upward * deltaTime;
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_KP_8) == GLFW_PRESS) {
-		rotations.x -= sensitivity * deltaTime;
-	}
-	if (glfwGetKey(window, GLFW_KEY_KP_2) == GLFW_PRESS) {
-		rotations.x += sensitivity * deltaTime;
+	if (input.GetStateForKey(KeyboardKey::D) == KeyState::Pressed) {
+		position += velocity * direction.Rightward * constant;
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_KP_6) == GLFW_PRESS) {
-		rotations.y -= sensitivity * deltaTime;
+	if (input.GetStateForKey(KeyboardKey::LEFT_SHIFT) == KeyState::Pressed) {
+		position -= velocity * direction.Upward * constant;
 	}
-	if (glfwGetKey(window, GLFW_KEY_KP_4) == GLFW_PRESS) {
-		rotations.y += sensitivity * deltaTime;
+	if (input.GetStateForKey(KeyboardKey::SPACE) == KeyState::Pressed) {
+		position += velocity * direction.Upward * constant;
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS) {
+	if (input.GetStateForKey(KeyboardKey::KP_8) == KeyState::Pressed) {
+		rotations.x -= sensitivity * constant;
+	}
+	if (input.GetStateForKey(KeyboardKey::KP_2) == KeyState::Pressed) {
+		rotations.x += sensitivity * constant;
+	}
+
+	if (input.GetStateForKey(KeyboardKey::KP_6) == KeyState::Pressed) {
+		rotations.y -= sensitivity * constant;
+	}
+	if (input.GetStateForKey(KeyboardKey::KP_4) == KeyState::Pressed) {
+		rotations.y += sensitivity * constant;
+	}
+
+	if (input.GetStateForKey(KeyboardKey::TAB) == KeyState::Pressed) {
 		std::cout << "Camera Properties: " << std::endl;
 		std::cout << "------------------------------------------" << std::endl;
 		std::cout << "[Position]: " << position << std::endl;
@@ -92,32 +98,38 @@ void CameraControllerTest(Camera &camera, GLFWwindow *window, float deltaTime) {
 		std::cout << "[Rightward]: " << direction.Rightward << std::endl;
 	}
 
+	auto mousePosition = input.GetMousePosition();
+	if (previousPosition) {
+		auto mouseOffset = mousePosition;
+		mouseOffset.xPosition -= previousPosition->xPosition;
+		mouseOffset.yPosition -= previousPosition->yPosition;
+		rotations.x -= mouseOffset.yPosition * sensitivity;
+		rotations.y -= mouseOffset.xPosition * sensitivity;
+	}
+	previousPosition = mousePosition;
+
+	if (input.GetStateForKey(KeyboardKey::F1) == KeyState::Pressed) {
+		std::cout << "Mouse position: " << mousePosition.xPosition << " " << mousePosition.yPosition << std::endl;
+	}
+
 	camera.SetPositioning(position, rotations);
 }
 
 int main(int argc, char *argv[]) {
-	GLFWwindow* window;
-
 	/* Initialize the library */
-	if (!glfwInit())
-		return -1;
+	GLFWWindowConcreteProvider::Init();
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	WindowProps windowProps;
+	windowProps.Title = "Window";
+	windowProps.Width = 1280;
+	windowProps.Height = 720;
 
-	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(1280, 800, "Hello World", nullptr, nullptr);
 
-	if (!window) {
-		glfwTerminate();
-		spdlog::error("Failed to init glfw");
-		return -1;
-	}
+	std::shared_ptr<Window> window = GLFWWindowConcreteProvider::ProvideWindow(windowProps);
 
 	/* Make the window's context current */
-	glfwMakeContextCurrent(window);
-	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
+	window->BindAsContext();
+	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(GLFWWindowConcreteProvider::GetOpenGLProcAddress()))) {
 		spdlog::error("Failed to load OpenGL functions");
 		return -1;
 	}
@@ -141,8 +153,9 @@ int main(int argc, char *argv[]) {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		int width, height;
-		glfwGetWindowSize(window, &width, &height);
+		auto width = window->GetWidth();
+		auto height = window->GetHeight();
+
 
 		PerspectiveCamera::Properties properties(
 			  glm::radians(45.0f),
@@ -156,18 +169,17 @@ int main(int argc, char *argv[]) {
 
 		glEnable(GL_DEPTH_TEST);
 
-		double deltaTime = 0;
-		double lastTime = glfwGetTime();
+		// double deltaTime = 0;
+		// double lastTime = glfwGetTime();
 		/* Loop until the user closes the window */
-		while (!glfwWindowShouldClose(window))
+		while (true)
 		{
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 			/* Render here */
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			CameraControllerTest(camera, window, deltaTime);
-
+			CameraPositionController(window->GetInput(), camera);
 
 			glm::mat4 projection = camera.GetProjection();
 			glm::mat4 view = camera.GetView();
@@ -188,19 +200,20 @@ int main(int argc, char *argv[]) {
 			gridLine.Draw(camera.GetView(), camera.GetProjection());
 
 			/* Swap front and back buffers */
-			glfwSwapBuffers(window);
+			window->SwapBuffers();
 
 			/* Poll for and process events */
-			glfwPollEvents();
-
+			window->PoolForEvents();
+			/*
 			double newTime = glfwGetTime();
 			deltaTime = newTime - lastTime;
 			lastTime = newTime;
+			 */
 		}
 
 	} catch (std::runtime_error &e) {
 		std::cerr << e.what();
 	}
-	glfwTerminate();
+	GLFWWindowConcreteProvider::Deinit();
 	return 0;
 }

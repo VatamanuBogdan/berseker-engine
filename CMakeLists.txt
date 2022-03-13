@@ -20,7 +20,11 @@ set(
         src/Graphics/OpenGL/Texture2D.hpp
         src/Graphics/OpenGL/OpenGL.hpp
         src/Graphics/Model.cpp
-)
+        src/Window/Window.h
+        src/Window/GLFW/GLFWWindow.cpp
+        src/Window/GLFW/GLFWWindow.h
+        src/Input/InputKeys.h
+        src/Input/InputManager.h)
 
 # Set glfw library
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
