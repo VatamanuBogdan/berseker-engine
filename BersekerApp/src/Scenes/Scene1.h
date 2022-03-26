@@ -7,7 +7,7 @@
 
 #include <memory>
 
-class MainScene final : public Scene {
+class Scene1 final : public Scene {
 public:
 	void Init() override;
 	void Deinit() override;

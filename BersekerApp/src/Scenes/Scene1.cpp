@@ -1,8 +1,7 @@
-#include "MainScene.h"
+#include "Scene1.h"
 #include "Rendering/Renderer.h"
 #include "Application.h"
 #include "Rendering/Camera.hpp"
-#include "Rendering/GraphicsAPI//ShaderProgram.h"
 
 #include <glm/glm.hpp>
 
@@ -97,7 +96,7 @@ void CameraPositionController(InputManager &input, Camera &camera) {
 	camera.SetPositioning(position, rotations);
 }
 
-void MainScene::Init() {
+void Scene1::Init() {
 	auto &window = Application::GetMainWindow();
 	uint32_t width = window->GetWidth();
 	uint32_t height = window->GetHeight();
@@ -121,23 +120,23 @@ void MainScene::Init() {
 	Renderer::SetCamera(camera);
 }
 
-void MainScene::Deinit() {
+void Scene1::Deinit() {
 	camera.reset();
 }
 
-void MainScene::OnPreUpdate() {
+void Scene1::OnPreUpdate() {
 
 }
 
-void MainScene::OnUpdate() {
+void Scene1::OnUpdate() {
 	CameraPositionController(Application::GetMainWindow()->GetInput(),*camera);
 }
 
-void MainScene::OnPostUpdate() {
+void Scene1::OnPostUpdate() {
 
 }
 
-void MainScene::OnPreRendering() {
+void Scene1::OnPreRendering() {
 	gridLine->Draw(camera->GetView(), camera->GetProjection());
 	for (auto& mesh : model->GetMeshes()) {
 		Renderer::SubmitForRendering(
@@ -149,6 +148,6 @@ void MainScene::OnPreRendering() {
 	}
 }
 
-void MainScene::OnPostRendering() {
+void Scene1::OnPostRendering() {
 	gridLine->Draw(camera->GetView(), camera->GetProjection());
 }

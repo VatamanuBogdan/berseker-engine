@@ -2,7 +2,6 @@
 #include "Rendering/Renderer.h"
 #include "Window/Window.h"
 #include "Window/GLFW/GLFWWindow.h"
-#include "TestScene/MainScene.h"
 
 #include <spdlog/spdlog.h>
 #include <glad/glad.h>
