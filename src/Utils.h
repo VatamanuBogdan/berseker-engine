@@ -12,3 +12,8 @@
 #else
 #define DebugClassMember(type, member) type member;
 #endif
+
+#define SafeNullableCall(object, property) \
+	if (object) {                          \
+		((object)->property);			\
+	}

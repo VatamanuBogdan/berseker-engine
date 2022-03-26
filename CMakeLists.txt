@@ -12,19 +12,28 @@ set(BERSEKER_BINARY_NAME BersekerBin)
 set(
     BERSEKER_SOURCES
     ${BERSEKER_SOURCE_DIR}/main.cpp
-        src/Graphics/OpenGL/VertexBuffer.hpp
-        src/Graphics/OpenGL/VertexArray.hpp
-        src/Graphics/OpenGL/IndexBuffer.hpp
-        src/Graphics/OpenGL/ShaderProgram.cpp
-        src/Graphics/OpenGL/ShaderProgram.h
-        src/Graphics/OpenGL/Texture2D.hpp
-        src/Graphics/OpenGL/OpenGL.hpp
-        src/Graphics/Model.cpp
+        src/Rendering/GraphicsAPI/VertexBuffer.hpp
+        src/Rendering/GraphicsAPI/VertexArray.hpp
+        src/Rendering/GraphicsAPI/IndexBuffer.hpp
+        src/Rendering/GraphicsAPI/ShaderProgram.cpp
+        src/Rendering/GraphicsAPI/ShaderProgram.h
+        src/Rendering/GraphicsAPI/Texture2D.hpp
+        src/Rendering/GraphicsAPI/OpenGL.hpp
+        src/Rendering/Model.cpp
+        src/Rendering/Renderer.cpp
+        src/Rendering/Renderer.h
+        src/Rendering/Mesh.h
         src/Window/Window.h
         src/Window/GLFW/GLFWWindow.cpp
         src/Window/GLFW/GLFWWindow.h
         src/Input/InputKeys.h
-        src/Input/InputManager.h)
+        src/Input/InputManager.h
+        src/Application.cpp
+        src/Application.h
+        src/Scene.h
+        src/TestScene/MainScene.cpp
+        src/TestScene/MainScene.h
+)
 
 # Set glfw library
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)

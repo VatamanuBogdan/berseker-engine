@@ -1,8 +1,8 @@
 #pragma once
-#include "Graphics/OpenGL/ShaderProgram.h"
-#include "Graphics/OpenGL/VertexArray.hpp"
-#include "Graphics/OpenGL/VertexBuffer.hpp"
-#include "Graphics/OpenGL/IndexBuffer.hpp"
+#include "Rendering/GraphicsAPI/ShaderProgram.h"
+#include "Rendering/GraphicsAPI/VertexArray.hpp"
+#include "Rendering/GraphicsAPI/VertexBuffer.hpp"
+#include "Rendering/GraphicsAPI/IndexBuffer.hpp"
 
 class GridLine {
 public:

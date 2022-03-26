@@ -1,5 +1,5 @@
 #include "Model.h"
-#include "Graphics/OpenGL/VertexBuffer.hpp"
+#include "Rendering/GraphicsAPI/VertexBuffer.hpp"
 
 #include "Utils.h"
 
