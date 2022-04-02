@@ -27,11 +27,12 @@ set(
     ${BERSEKER_SOURCE_DIR}/Application.cpp
     ${BERSEKER_SOURCE_DIR}/Application.h
     ${BERSEKER_SOURCE_DIR}/Scene.h
-        src/Rendering/Primitives/Renderer.cpp
-        src/Rendering/Primitives/Renderer.h
-        src/Rendering/Primitives/Primitives.h
-        src/Rendering/Utils.h
-        src/Rendering/Utils.cpp)
+    ${BERSEKER_SOURCE_DIR}/Rendering/Primitives/Renderer.cpp
+    ${BERSEKER_SOURCE_DIR}/Rendering/Primitives/Renderer.h
+    ${BERSEKER_SOURCE_DIR}/Rendering/Primitives/Primitives.h
+    ${BERSEKER_SOURCE_DIR}/Rendering/Utils.h
+    ${BERSEKER_SOURCE_DIR}/Rendering/Utils.cpp
+)
 
 # Set glfw library
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
