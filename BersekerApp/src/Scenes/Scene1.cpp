@@ -1,7 +1,8 @@
 #include "Scene1.h"
-#include "Rendering/Renderer.h"
 #include "Application.h"
+#include "Rendering/Renderer.h"
 #include "Rendering/Camera.hpp"
+#include "Rendering/Primitives/Renderer.h"
 
 #include <glm/glm.hpp>
 
@@ -117,6 +118,15 @@ void Scene1::Init() {
 
 	model = std::make_shared<Model>(ModelLoader().LoadModel("res/models/Model.obj"));
 	gridLine = std::make_shared<GridLine>();
+	cubeProps.Init(
+		  1.0f,
+		  Primitive3DProps(
+			    glm::vec3(0, 0, 0),
+			    glm::vec3(0, 0, 0),
+			    PrimitiveBody(PrimitiveBody::SHAPED, Color(0, 1.0f, 0), 20.0f)
+		  )
+	);
+
 	Renderer::SetCamera(camera);
 }
 
@@ -137,17 +147,17 @@ void Scene1::OnPostUpdate() {
 }
 
 void Scene1::OnPreRendering() {
-	gridLine->Draw(camera->GetView(), camera->GetProjection());
 	for (auto& mesh : model->GetMeshes()) {
 		Renderer::SubmitForRendering(
 			  &mesh.GetVertexArray(),
 			  &mesh.GetIndexBuffer(),
 			  shader.get(),
-			  glm::mat4(1.0f)
+			  glm::scale(glm::mat4(1), glm::vec3(0.5f))
 			  );
 	}
 }
 
 void Scene1::OnPostRendering() {
+	Renderer::RenderCuber(*cubeProps);
 	gridLine->Draw(camera->GetView(), camera->GetProjection());
 }

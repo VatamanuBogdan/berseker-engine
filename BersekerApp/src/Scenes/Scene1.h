@@ -4,6 +4,8 @@
 #include "Rendering/GridLine.hpp"
 #include "Rendering/Model.h"
 #include "Rendering/GraphicsAPI/ShaderProgram.h"
+#include "Rendering/Primitives/Primitives.h"
+#include "Utils.h"
 
 #include <memory>
 
@@ -24,4 +26,5 @@ private:
 	std::shared_ptr<GridLine> 		gridLine;
 	std::shared_ptr<ShaderProgram>	shader;
 	std::shared_ptr<Model>			model;
+	Lateinit<CubeProps>			cubeProps;
 };

@@ -34,7 +34,7 @@ void ModelLoader::LoadNode(const aiNode &node) {
 		meshes.emplace_back(
 			  vertexFormat,
 			  VertexBuffer(vertices),
-			  IndexBuffer<unsigned int>(indices)
+			  IndexBuffer(indices)
 		);
 		OnDebug(meshes.back().SetName(mesh.mName.C_Str()));
 	}

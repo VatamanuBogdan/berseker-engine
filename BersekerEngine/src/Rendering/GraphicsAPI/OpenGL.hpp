@@ -4,12 +4,11 @@
 #include <cstddef>
 #include <type_traits>
 
-template <typename IndexType>
 class IndexBuffer;
 
 namespace OpenGL {
 
-	enum Numeric {
+	enum DataType {
 		BYTE 			= GL_BYTE,
 		UNSIGNED_BYTE 	= GL_UNSIGNED_BYTE,
 		SHORT 		= GL_SHORT,
@@ -19,22 +18,22 @@ namespace OpenGL {
 		FLOAT 		= GL_FLOAT,
 	};
 
-	template <typename NumericType>
-	constexpr Numeric GetNumericFrom() noexcept {
-		if constexpr(std::is_same_v<NumericType, char>) {
-			return Numeric::BYTE;
-		} else if constexpr(std::is_same_v<NumericType, unsigned char>) {
-			return Numeric::UNSIGNED_BYTE;
-		} else if constexpr(std::is_same_v<NumericType, short>) {
-			return Numeric::SHORT;
-		} else if constexpr(std::is_same_v<NumericType, unsigned short>) {
-			return Numeric::UNSIGNED_SHORT;
-		} if constexpr(std::is_same_v<NumericType, int>) {
-			return Numeric::INT;
-		} else if constexpr(std::is_same_v<NumericType, unsigned int>) {
-			return Numeric::UNSIGNED_INT;
-		} else if constexpr(std::is_same_v<NumericType, float>) {
-			return Numeric::FLOAT;
+	template <typename CanonicalDataType>
+	constexpr DataType GetDataTypeFrom() noexcept {
+		if constexpr(std::is_same_v<CanonicalDataType, char>) {
+			return DataType::BYTE;
+		} else if constexpr(std::is_same_v<CanonicalDataType, unsigned char>) {
+			return DataType::UNSIGNED_BYTE;
+		} else if constexpr(std::is_same_v<CanonicalDataType, short>) {
+			return DataType::SHORT;
+		} else if constexpr(std::is_same_v<CanonicalDataType, unsigned short>) {
+			return DataType::UNSIGNED_SHORT;
+		} if constexpr(std::is_same_v<CanonicalDataType, int>) {
+			return DataType::INT;
+		} else if constexpr(std::is_same_v<CanonicalDataType, unsigned int>) {
+			return DataType::UNSIGNED_INT;
+		} else if constexpr(std::is_same_v<CanonicalDataType, float>) {
+			return DataType::FLOAT;
 		} else {
 			static_assert(" Invalid Numeric type");
 		}
@@ -55,17 +54,7 @@ namespace OpenGL {
 		PATCHES				= GL_PATCHES
 	};
 
-	template <typename IndexType>
-	void DrawElementsWith(const IndexBuffer<IndexType> &ibo) {
-		ibo.Bind();
-		glDrawElements(ibo.GetPrimitiveType(), ibo.GetSize(), ibo.GetIndexType(), (void*) 0);
-		ibo.Unbind();
-	}
-
-	template <typename IndexType>
-	void DrawElementsWith(const IndexBuffer<IndexType> &ibo, size_t startIndex, size_t endIndex) {
-		ibo.Bind();
-		glDrawElements(ibo.GetPrimitiveType(), endIndex - startIndex + 1, ibo.GetIndexType(), (void*) startIndex);
-		ibo.Unbind();
+	inline void SetLineWidth(float width) {
+		glLineWidth(width);
 	}
 }

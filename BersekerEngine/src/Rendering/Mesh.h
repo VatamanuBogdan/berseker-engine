@@ -2,7 +2,7 @@
 #include "Rendering/GraphicsAPI/VertexArray.hpp"
 #include "Rendering/GraphicsAPI/VertexBuffer.hpp"
 #include "Rendering/GraphicsAPI/IndexBuffer.hpp"
-#include "Utils.h"
+#include "../Utils.h"
 
 #include <glm/glm.hpp>
 
@@ -11,9 +11,14 @@
 class Mesh {
 public:
 	template <unsigned short AttributesNum>
-	Mesh(const VertexFormat<AttributesNum> &attributes, VertexBuffer &&vbo, IndexBuffer<unsigned int> &&ibo)
+	Mesh(const VertexFormat<AttributesNum> &attributes, VertexBuffer &&vbo, IndexBuffer &&ibo)
 		: vbo(std::move(vbo)), ibo(std::move(ibo)) {
 		vao.template AttachVertexBuffer(this->vbo, attributes);
+	}
+
+	Mesh(Mesh &&mesh) noexcept
+		: vao(std::move(mesh.vao)), vbo(std::move(mesh.vbo)), ibo(std::move(mesh.ibo)) {
+		OnDebug(name = std::move(mesh.name));
 	}
 
 	OnDebug(
@@ -31,12 +36,12 @@ public:
 	[[nodiscard]] const VertexBuffer& GetVertexBuffer() const noexcept { return vbo; };
 	[[nodiscard]] VertexBuffer& GetVertexBuffer() noexcept { return vbo; };
 
-	[[nodiscard]] const IndexBuffer<unsigned int>& GetIndexBuffer() const noexcept { return ibo; };
-	[[nodiscard]] IndexBuffer<unsigned int>& GetIndexBuffer() noexcept { return ibo; };
+	[[nodiscard]] const IndexBuffer& GetIndexBuffer() const noexcept { return ibo; };
+	[[nodiscard]] IndexBuffer& GetIndexBuffer() noexcept { return ibo; };
 
 private:
 	DebugClassMember(std::string, name);
 	VertexArray 			vao;
 	VertexBuffer 			vbo;
-	IndexBuffer<unsigned int> 	ibo;
+	IndexBuffer				ibo;
 };

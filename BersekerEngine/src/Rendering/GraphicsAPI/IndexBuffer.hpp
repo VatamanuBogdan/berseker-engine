@@ -5,11 +5,13 @@
 #include <array>
 #include <cstddef>
 
-template <typename IndexType>
+
 class IndexBuffer {
 public:
-	explicit IndexBuffer(const IndexType *indexes, size_t size, OpenGL::Primitive primitiveType = OpenGL::TRIANGLES)
-		: size(size) {
+	template <typename IndexType>
+	explicit IndexBuffer(const IndexType *indexes, size_t size,
+				   OpenGL::Primitive primitiveType = OpenGL::TRIANGLES)
+		: size(size), indexDataType(OpenGL::GetDataTypeFrom<IndexType>()), primitiveType(primitiveType) {
 		static_assert(
 			  std::is_same_v<IndexType, GLubyte> ||
 			  std::is_same_v<IndexType, GLuint> ||
@@ -17,30 +19,33 @@ public:
 			  "[Compile Error]::IndexType template typename of IndexBuffer class must be "
 			  "one of the next types: GLubyte, GLushort GLuint"
 			  );
-		this->primitiveType = primitiveType;
 		glGenBuffers(1, &handle);
 		Bind();
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(IndexType) * size, indexes, GL_STATIC_DRAW);
 		Unbind();
 	}
 
-	explicit IndexBuffer(const std::vector<IndexType> &indexes)
-		: IndexBuffer(indexes.data(), indexes.size()) {
+	template <typename IndexType>
+	explicit IndexBuffer(const std::vector<IndexType> &indexes,
+				   OpenGL::Primitive primitiveType = OpenGL::TRIANGLES)
+		: IndexBuffer(indexes.data(), indexes.size(), primitiveType) {
 	}
 
-	template <size_t N>
-	explicit IndexBuffer(const std::array<IndexType , N> &indexes)
-		: IndexBuffer(indexes.data(), indexes.size()) {
+	template <typename IndexType, size_t N>
+	explicit IndexBuffer(const std::array<IndexType , N> &indexes,
+				   OpenGL::Primitive primitiveType = OpenGL::TRIANGLES)
+		: IndexBuffer(indexes.data(), indexes.size(), primitiveType) {
 	}
 
-	IndexBuffer(const std::initializer_list<IndexType> &indexes)
-		: IndexBuffer(std::data(indexes), indexes.size()) {
+	template <typename IndexType>
+	IndexBuffer(const std::initializer_list<IndexType> &indexes,
+			OpenGL::Primitive primitiveType = OpenGL::TRIANGLES)
+		: IndexBuffer(std::data(indexes), indexes.size(), primitiveType) {
 	}
 
-	IndexBuffer(IndexBuffer&& ibo) noexcept {
-		handle = ibo.handle;
-		size = ibo.size;
-		primitiveType = ibo.primitiveType;
+	IndexBuffer(IndexBuffer&& ibo) noexcept
+		: handle(ibo.handle), size(ibo.size), indexDataType(ibo.indexDataType),
+		  primitiveType(ibo.primitiveType) {
 		ibo.handle = 0;
 		ibo.size = 0;
 	}
@@ -53,9 +58,9 @@ public:
 	}
 
 	void Bind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle); }
-	void Unbind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
+	static void Unbind() { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
 
-	[[nodiscard]] OpenGL::Numeric GetIndexType() const noexcept { return OpenGL::GetNumericFrom<IndexType>(); }
+	[[nodiscard]] OpenGL::DataType GetIndexType() const noexcept { return indexDataType; }
 
 	[[nodiscard]] OpenGL::Primitive GetPrimitiveType() const noexcept { return primitiveType; }
 
@@ -64,5 +69,20 @@ public:
 private:
 	size_t 		size;
 	unsigned int 	handle = 0;
+	OpenGL::DataType	indexDataType;
 	OpenGL::Primitive primitiveType;
 };
+
+namespace OpenGL {
+	inline void DrawElementsWith(const IndexBuffer &ibo) {
+		ibo.Bind();
+		glDrawElements(ibo.GetPrimitiveType(), ibo.GetSize(), ibo.GetIndexType(), (void*) 0);
+		IndexBuffer::Unbind();
+	}
+
+	inline void DrawElementsWith(const IndexBuffer &ibo, size_t startIndex, size_t endIndex) {
+		ibo.Bind();
+		glDrawElements(ibo.GetPrimitiveType(), endIndex - startIndex + 1, ibo.GetIndexType(), (void*) startIndex);
+		IndexBuffer::Unbind();
+	}
+}

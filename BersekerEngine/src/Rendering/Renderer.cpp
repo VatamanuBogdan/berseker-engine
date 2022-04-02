@@ -1,23 +1,35 @@
 #include "Rendering/Renderer.h"
 
+PrimitivesRenderer				Renderer::primitivesRender;
+std::shared_ptr<Camera> 			Renderer::camera;
+std::vector<Renderer::RenderingEntity>	Renderer::renderingQueue;
+
 void Renderer::Init() {
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	primitivesRender.Init();
 }
 
 void Renderer::Deinit() {
+	primitivesRender.Deinit();
 }
 
 void Renderer::SetCamera(std::shared_ptr<Camera> &camera) {
 	Renderer::camera = camera;
+	primitivesRender.AttachCamera(camera);
 }
 
 void Renderer::SubmitForRendering(const VertexArray 			*vao,
-					    const IndexBuffer<unsigned int> *ibo,
+					    const IndexBuffer			*ibo,
 					    ShaderProgram 			*shader,
 					    const glm::mat4 			&model) {
 	renderingQueue.emplace_back(vao, ibo, shader, model);
+}
+
+void Renderer::RenderCuber(const CubeProps &props) {
+	primitivesRender.RenderCube(props);
 }
 
 void Renderer::RenderClearColor(float red, float green, float blue, float alpha) {
@@ -32,7 +44,7 @@ void Renderer::Render() {
 		auto shader = renderingObject.shaderProgram;
 		shader->Bind();
 		shader->SetUniform("Projection", Renderer::camera->GetProjection());
-		shader->SetUniform("Model", glm::mat4(1.0f));
+		shader->SetUniform("Model", renderingObject.model);
 		shader->SetUniform("View", Renderer::camera->GetView());
 
 		renderingObject.vao->Bind();
@@ -42,7 +54,3 @@ void Renderer::Render() {
 	}
 	renderingQueue.clear();
 }
-
-
-std::shared_ptr<Camera> 			Renderer::camera;
-std::vector<Renderer::RenderingEntity>	Renderer::renderingQueue;
