@@ -33,7 +33,7 @@ public:
 	}
 
 	~Lateinit() {
-		this->operator->().~T();
+		this->operator*().~T();
 	}
 
 	Lateinit<T>& operator=(const Lateinit<T> &copied) {
@@ -58,8 +58,8 @@ public:
 	T& operator*() { return *reinterpret_cast<T*>(memory); }
 	const T& operator*() const { return *reinterpret_cast<T*>(memory); }
 
-	T& operator->() { return *reinterpret_cast<T*>(memory); }
-	const T& operator->() const { return *reinterpret_cast<T*>(memory); }
+	T* operator->() { return reinterpret_cast<T*>(memory); }
+	const T* operator->() const { return reinterpret_cast<T*>(memory); }
 
 private:
 	uint8_t memory[sizeof(T)]{};
