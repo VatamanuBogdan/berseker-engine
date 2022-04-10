@@ -19,6 +19,12 @@ public:
 		ComputeDirection();
 	}
 
+	void SetPosition(const glm::vec3 &position) { this->position = position; }
+	void SetRotation(const glm::vec3 &rotations) {
+		this->rotations = rotations;
+		ComputeDirection();
+	}
+
 	[[nodiscard]] const glm::vec3& GetPosition() const { return position; }
 	[[nodiscard]] const glm::vec3& GetRotations() const { return rotations; }
 	[[nodiscard]] const glm::mat4& GetProjection() const { return projection; }
