@@ -42,3 +42,11 @@ struct CubeProps : public Primitive3DProps {
 		  : Width(width), Primitive3DProps(props) {
 	}
 };
+
+struct SphereProps : public Primitive3DProps {
+	float Radius;
+
+	explicit SphereProps(float radius, const Primitive3DProps &props)
+		  : Radius(radius), Primitive3DProps(props) {
+	}
+};

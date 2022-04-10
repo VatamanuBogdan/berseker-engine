@@ -17,21 +17,22 @@ public:
 						 const IndexBuffer		 	*ibo,
 						 ShaderProgram 				*shader,
 						 const glm::mat4 				&model);
-	static void RenderCuber(const CubeProps &props);
+	static void RenderCube(const CubeProps &props);
+	static void RenderSphere(const SphereProps &props);
 	static void RenderClearColor(float red, float green, float blue, float alpha);
 	static void Render();
 
 private:
 	struct RenderingEntity {
-		const VertexArray				*vao;
-		const IndexBuffer			 	*ibo;
-		ShaderProgram				*shaderProgram;
-		const glm::mat4				 model;
+		const VertexArray		*vao;
+		const IndexBuffer		*ibo;
+		ShaderProgram		*shaderProgram;
+		const glm::mat4		 model;
 
-		RenderingEntity(const VertexArray 			*vao,
-				    const IndexBuffer			*ibo,
-				    ShaderProgram 			*shaderProgram,
-				    const glm::mat4	 		&model)
+		RenderingEntity(const VertexArray 	*vao,
+				    const IndexBuffer	*ibo,
+				    ShaderProgram 	*shaderProgram,
+				    const glm::mat4	&model)
 				    : vao(vao), ibo(ibo), shaderProgram(shaderProgram), model(model) {
 		}
 	};

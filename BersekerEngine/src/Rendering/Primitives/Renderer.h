@@ -19,6 +19,7 @@ private:
 	enum PrimitiveGeometry {
 		SHAPED_CUBE_GEOMETRY = 0,
 		FILLED_CUBE_GEOMETRY,
+		SHAPED_SPHERE_GEOMETRY,
 		GEOMETRIES_COUNT
 	};
 	static constexpr size_t StorageSize = GEOMETRIES_COUNT * sizeof(Mesh);
@@ -53,9 +54,11 @@ public:
 
 	void AttachCamera(std::shared_ptr<Camera> &camera);
 	void RenderCube(const CubeProps &props);
+	void RenderSphere(const SphereProps &props);
 
 private:
 	void InitCubeGeometry();
+	void InitSphereGeometry();
 
 private:
 	PrimitivesStorage		storage;

@@ -18,8 +18,8 @@ struct Color {
 		return {Red, Green, Blue, Alpha};
 	}
 
-	const float Red;
-	const float Green;
-	const float Blue;
-	const float Alpha;
+	float Red;
+	float Green;
+	float Blue;
+	float Alpha;
 };

@@ -158,6 +158,6 @@ void Scene1::OnPreRendering() {
 }
 
 void Scene1::OnPostRendering() {
-	Renderer::RenderCuber(*cubeProps);
+	Renderer::RenderCube(*cubeProps);
 	gridLine->Draw(camera->GetView(), camera->GetProjection());
 }

@@ -28,8 +28,12 @@ void Renderer::SubmitForRendering(const VertexArray 			*vao,
 	renderingQueue.emplace_back(vao, ibo, shader, model);
 }
 
-void Renderer::RenderCuber(const CubeProps &props) {
+void Renderer::RenderCube(const CubeProps &props) {
 	primitivesRender.RenderCube(props);
+}
+
+void Renderer::RenderSphere(const SphereProps &props) {
+	primitivesRender.RenderSphere(props);
 }
 
 void Renderer::RenderClearColor(float red, float green, float blue, float alpha) {
