@@ -57,6 +57,9 @@ add_subdirectory(${BERSEKER_DEPENDENCIES_DIR}/assimp)
 # Set stb library
 add_subdirectory(${BERSEKER_DEPENDENCIES_DIR}/stb)
 
+# Set imgui library
+add_subdirectory(${BERSEKER_DEPENDENCIES_DIR}/imgui)
+
 add_library(
     ${BERSEKER_BINARY_NAME}
     ${BERSEKER_SOURCES}
@@ -70,6 +73,7 @@ target_link_libraries(
     spdlog
     stb
     assimp
+    imgui
 )
 
 target_include_directories(
