@@ -2,6 +2,7 @@
 #include "Window/Window.h"
 #include "Scene.h"
 #include "Utils.h"
+#include "UI/UIRenderer.h"
 
 #include <memory>
 
@@ -16,6 +17,7 @@ public:
 	static void SwitchSceneTo(std::shared_ptr<Scene> &scene);
 
 	static std::shared_ptr<Window>& GetMainWindow();
+	static UIRenderer& GetUIRenderer();
 
 private:
 	static void MainLoop();
@@ -23,5 +25,6 @@ private:
 private:
 	static std::shared_ptr<Scene>		scene;
 	static std::shared_ptr<Window>	window;
+	static std::unique_ptr<UIRenderer>	uiRenderer;
 	static bool 				initialised;
 };

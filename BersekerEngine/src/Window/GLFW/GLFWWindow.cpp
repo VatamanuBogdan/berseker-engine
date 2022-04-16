@@ -62,6 +62,10 @@ InputManager &GLFWWindow::GetInput() {
 	return input;
 }
 
+GLFWwindow *GLFWWindow::GetUnderlyingWindow() {
+	return data->Window;
+}
+
 void GLFWWindowConcreteProvider::Init() {
 	if (!glfwInit()) {
 		throw std::runtime_error("Failed to init Linux Window library");

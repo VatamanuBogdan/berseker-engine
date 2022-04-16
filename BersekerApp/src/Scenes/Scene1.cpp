@@ -128,6 +128,8 @@ void Scene1::Init() {
 	);
 
 	Renderer::SetCamera(camera);
+	uiController = std::make_shared<Scene1_UIController>();
+	Application::GetUIRenderer().BindController(uiController);
 }
 
 void Scene1::Deinit() {
