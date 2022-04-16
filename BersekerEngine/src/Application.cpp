@@ -2,9 +2,9 @@
 #include "Rendering/Renderer.h"
 #include "Window/Window.h"
 #include "Window/GLFW/GLFWWindow.h"
+#include "UI/Implementation/UIRendererImpl_GL_GLFW.h"
 
 #include <spdlog/spdlog.h>
-#include <glad/glad.h>
 #include <iostream>
 
 
@@ -36,8 +36,12 @@ void Application::Init(std::shared_ptr<Scene> &initialScene) {
 	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &textureUnitsNum);
 	std::cout << "Texture slots: " <<  textureUnitsNum << std::endl;
 
-	initialScene->Init();
+	// TODO Fix this workaround
+	auto glfwWindow = std::static_pointer_cast<GLFWWindow>(window)->GetUnderlyingWindow();
+	uiRenderer = std::make_unique<UIRendererImpl_GL_GLFW>(glfwWindow, UIRendererImpl_GL_GLFW::GLSLVersion(4, 6));
+	uiRenderer->Init();
 
+	initialScene->Init();
 	Renderer::Init();
 
 	Application::initialised = true;
@@ -49,6 +53,8 @@ void Application::Deinit() {
 	}
 	GLFWWindowConcreteProvider::Deinit();
 	Application::initialised = false;
+
+	uiRenderer->Deinit();
 }
 
 void Application::StartRunning() {
@@ -63,15 +69,21 @@ std::shared_ptr<Window>& Application::GetMainWindow() {
 	return window;
 }
 
+UIRenderer &Application::GetUIRenderer() {
+	return *uiRenderer;
+}
+
 void Application::MainLoop() {
 	while (true) {
 		SafeNullableCall(scene, OnPreUpdate())
 		SafeNullableCall(scene, OnUpdate())
 		SafeNullableCall(scene, OnPostUpdate())
+		uiRenderer->Update();
 
 		SafeNullableCall(scene, OnPreRendering())
 		Renderer::Render();
 		SafeNullableCall(scene, OnPostRendering())
+		uiRenderer->Render();
 		Application::window->SwapBuffers();
 		Application::window->PoolForEvents();
 	}
@@ -79,4 +91,5 @@ void Application::MainLoop() {
 
 std::shared_ptr<Scene>		Application::scene	 = nullptr;
 std::shared_ptr<Window>		Application::window 	 = nullptr;
+std::unique_ptr<UIRenderer>	Application::uiRenderer;
 bool 					Application::initialised = false;

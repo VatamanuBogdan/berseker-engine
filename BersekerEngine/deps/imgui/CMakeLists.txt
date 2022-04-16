@@ -33,4 +33,6 @@ set(IMGUI_SOURCES ${IMGUI_HEADERS} ${IMGUI_CPPS})
 
 add_library(${IMGUI_LIBRARY_BIN} ${IMGUI_SOURCES})
 
+target_link_libraries(${IMGUI_LIBRARY_BIN} glfw)
+
 target_include_directories(${IMGUI_LIBRARY_BIN} PUBLIC ${IMGUI_INCLUDE_DIR})

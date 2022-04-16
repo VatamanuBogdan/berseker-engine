@@ -2,6 +2,8 @@
 #include "Window/Window.h"
 #include "Input/InputManager.h"
 
+struct GLFWwindow;
+
 class GLFWWindow;
 class GLFWWindowConcreteProvider;
 struct WindowData;
@@ -29,6 +31,8 @@ public:
 
 	[[nodiscard]] uint32_t GetWidth() const override ;
 	[[nodiscard]] uint32_t GetHeight() const override;
+
+	GLFWwindow* GetUnderlyingWindow();
 
 private:
 	explicit GLFWWindow(const WindowProps &props);

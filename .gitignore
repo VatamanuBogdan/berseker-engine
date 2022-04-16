@@ -33,6 +33,9 @@
 # IDE config folders
 .idea/
 
+# ImGui config files
+imgui.ini
+
 # Build folders
 cmake-build-debug/
 build/
