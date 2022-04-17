@@ -9,7 +9,6 @@ set(
     ${BERSEKER_APP_SOURCE_DIR}/main.cpp
     ${BERSEKER_APP_SOURCE_DIR}/Scenes/Scene1.h
     ${BERSEKER_APP_SOURCE_DIR}/Scenes/Scene1.cpp
-    ${BERSEKER_APP_SOURCE_DIR}/Scenes/Scene1_UIController.hpp
 )
 
 add_executable(

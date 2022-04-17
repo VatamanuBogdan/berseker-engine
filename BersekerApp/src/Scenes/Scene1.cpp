@@ -5,6 +5,7 @@
 #include "Rendering/Primitives/Renderer.h"
 
 #include <glm/glm.hpp>
+#include <imgui.h>
 
 #include <iostream>
 #include <optional>
@@ -25,7 +26,7 @@ std::ostream& operator<<(std::ostream& os, const glm::mat4 &mat) {
 
 void CameraPositionController(InputManager &input, Camera &camera) {
 	constexpr float velocity = 3.0f;
-	constexpr float sensitivity = 0.5f;
+	constexpr float sensitivity = 1.25f;
 	constexpr float constant = 0.01f;
 
 	static std::optional<MousePosition> previousPosition;
@@ -81,15 +82,6 @@ void CameraPositionController(InputManager &input, Camera &camera) {
 	}
 
 	auto mousePosition = input.GetMousePosition();
-	if (previousPosition) {
-		auto mouseOffset = mousePosition;
-		mouseOffset.xPosition -= previousPosition->xPosition;
-		mouseOffset.yPosition -= previousPosition->yPosition;
-		rotations.x -= mouseOffset.yPosition * sensitivity;
-		rotations.y -= mouseOffset.xPosition * sensitivity;
-	}
-	previousPosition = mousePosition;
-
 	if (input.GetStateForKey(KeyboardKey::F1) == KeyState::Pressed) {
 		std::cout << "Mouse position: " << mousePosition.xPosition << " " << mousePosition.yPosition << std::endl;
 	}
@@ -123,12 +115,13 @@ void Scene1::Init() {
 		  Primitive3DProps(
 			    glm::vec3(0, 0, 0),
 			    glm::vec3(0, 0, 0),
+			    glm::vec3(1),
 			    PrimitiveBody(PrimitiveBody::SHAPED, Color(0, 1.0f, 0), 20.0f)
 		  )
 	);
 
 	Renderer::SetCamera(camera);
-	uiController = std::make_shared<Scene1_UIController>();
+	uiController = std::make_shared<Scene1Controller>(this);
 	Application::GetUIRenderer().BindController(uiController);
 }
 
@@ -163,3 +156,53 @@ void Scene1::OnPostRendering() {
 	Renderer::RenderCube(*cubeProps);
 	gridLine->Draw(camera->GetView(), camera->GetProjection());
 }
+
+
+Scene1Controller::Scene1Controller(Scene1 *scene1)
+	  : scene1(scene1), adapter(&*(scene1->cubeProps)) {
+	auto &io = ImGui::GetIO();
+	jetbrainsMono = io.Fonts->AddFontFromFileTTF("res/fonts/JetBrainsMono-Regular.ttf", 14);
+}
+
+void Scene1Controller::OnUpdate() {
+}
+
+void Scene1Controller::OnRendering() {
+	ImGui::Begin("Transform");
+	ImGui::PushFont(jetbrainsMono);
+
+	UITransform3D().Draw(adapter);
+
+	ImGui::PopFont();
+	ImGui::End();
+}
+
+CubeTransformAdapter::CubeTransformAdapter(CubeProps *props)
+	: props(props) {
+}
+
+void CubeTransformAdapter::SetPosition(const glm::vec3 &position) {
+	props->Position = position;
+}
+
+void CubeTransformAdapter::SetRotation(const glm::vec3 &rotation) {
+	props->Rotation = rotation;
+}
+
+void CubeTransformAdapter::SetScale(const glm::vec3 &scale) {
+	props->Scale = scale;
+}
+
+const glm::vec3 &CubeTransformAdapter::GetPosition() {
+	return props->Position;
+}
+
+const glm::vec3 &CubeTransformAdapter::GetRotation() {
+	return props->Rotation;
+}
+
+const glm::vec3 &CubeTransformAdapter::GetScale() {
+	return props->Scale;
+}
+
+

@@ -21,7 +21,7 @@ void UIRendererImpl_GL_GLFW::Init() {
 
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init(versionBuf);
-	ImGui::StyleColorsLight();
+	ImGui::StyleColorsClassic();
 }
 
 void UIRendererImpl_GL_GLFW::PreRendering() {
