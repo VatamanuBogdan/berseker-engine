@@ -42,7 +42,7 @@ void PrimitivesRenderer::RenderCube(const CubeProps &props) {
 	model = glm::rotate(model, props.Rotation.z, glm::vec3(0, 0, 1));
 	model = glm::rotate(model, props.Rotation.y, glm::vec3(0, 1, 0));
 	model = glm::rotate(model, props.Rotation.x, glm::vec3(1, 0, 0));
-	model = glm::scale(model, glm::vec3(props.Width));
+	model = glm::scale(model, props.Scale * glm::vec3(props.Width));
 
 	cubeShader->Bind();
 	cubeShader->SetUniform("Projection", camera->GetProjection());
