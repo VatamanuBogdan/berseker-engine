@@ -42,7 +42,7 @@ private:
 
 class CubeTransformAdapter final : public UITransform3D::Adapter {
 public:
-	explicit CubeTransformAdapter(CubeProps *props);
+	explicit CubeTransformAdapter(CubeProps *props, const char *id);
 
 	void SetPosition(const glm::vec3 &position) override;
 	void SetRotation(const glm::vec3 &rotation) override;
@@ -52,7 +52,10 @@ public:
 	const glm::vec3 &GetRotation() override;
 	const glm::vec3 &GetScale() override;
 
+	const char *GetID() override;
+
 private:
+	std::string id;
 	CubeProps *props = nullptr;
 };
 
@@ -65,7 +68,7 @@ public:
 	void OnRendering() final;
 
 private:
-	CubeTransformAdapter 	 adapter;
-	ImFont 			*jetbrainsMono;
-	Scene1 			*scene1;
+	UITransform3D 	 uiTransform3D;
+	ImFont 		*jetbrainsMono;
+	Scene1 		*scene1;
 };

@@ -159,9 +159,15 @@ void Scene1::OnPostRendering() {
 
 
 Scene1Controller::Scene1Controller(Scene1 *scene1)
-	  : scene1(scene1), adapter(&*(scene1->cubeProps)) {
+	  : scene1(scene1) {
 	auto &io = ImGui::GetIO();
 	jetbrainsMono = io.Fonts->AddFontFromFileTTF("res/fonts/JetBrainsMono-Regular.ttf", 14);
+
+	std::array<std::shared_ptr<UITransform3D::Adapter>, 1> adapters = {
+		std::make_shared<CubeTransformAdapter>(&*(scene1->cubeProps), "Cube1")
+	};
+
+	uiTransform3D.SetAdapters(adapters.begin(), adapters.end());
 }
 
 void Scene1Controller::OnUpdate() {
@@ -171,14 +177,14 @@ void Scene1Controller::OnRendering() {
 	ImGui::Begin("Transform");
 	ImGui::PushFont(jetbrainsMono);
 
-	UITransform3D().Draw(adapter);
+	uiTransform3D.Draw();
 
 	ImGui::PopFont();
 	ImGui::End();
 }
 
-CubeTransformAdapter::CubeTransformAdapter(CubeProps *props)
-	: props(props) {
+CubeTransformAdapter::CubeTransformAdapter(CubeProps *props, const char *id)
+	: props(props), id(id) {
 }
 
 void CubeTransformAdapter::SetPosition(const glm::vec3 &position) {
@@ -203,6 +209,10 @@ const glm::vec3 &CubeTransformAdapter::GetRotation() {
 
 const glm::vec3 &CubeTransformAdapter::GetScale() {
 	return props->Scale;
+}
+
+const char *CubeTransformAdapter::GetID() {
+	return id.c_str();
 }
 
 
