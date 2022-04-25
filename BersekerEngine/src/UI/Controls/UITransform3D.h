@@ -9,33 +9,25 @@ class UITransform3D {
 public:
 	class Adapter {
 	public:
-		virtual void SetPosition(const glm::vec3 &position) = 0;
-		virtual void SetRotation(const glm::vec3 &rotation) = 0;
-		virtual void SetScale(const glm::vec3 &scale) = 0;
+		virtual void SetPosition(const glm::vec3 &position, int index) = 0;
+		virtual void SetRotation(const glm::vec3 &rotation, int index) = 0;
+		virtual void SetScale(const glm::vec3 &scale, int index) = 0;
 
-		virtual const glm::vec3& GetPosition() = 0;
-		virtual const glm::vec3& GetRotation() = 0;
-		virtual const glm::vec3& GetScale() = 0;
+		virtual const glm::vec3& GetPosition(int index) = 0;
+		virtual const glm::vec3& GetRotation(int index) = 0;
+		virtual const glm::vec3& GetScale(int index) = 0;
 
-		virtual const char* GetID() = 0;
+		virtual int GetSize() = 0;
+
+		virtual const char* GetID(int index) = 0;
 	};
 
 public:
-	template<typename ForwardIterType>
-	void SetAdapters(ForwardIterType begin, ForwardIterType end) {
-		for (auto iter = begin; iter != end; iter++) {
-			this->adaptersContainer.push_back(*iter);
-		}
-	}
-	void Draw();
+	void Draw(Adapter &adapter);
 
 private:
-	static bool ItemGetterWrapper(void* data, int index, const char** outText);
-	const char* ItemGetter(int index);
+	static bool IDGetterWrapper(void* data, int index, const char** outText);
 
 private:
-	using AdaptersContainerType = std::vector<std::shared_ptr<Adapter>>;
-
-	int 				adapterIndex = -1;
-	AdaptersContainerType 	adaptersContainer;
+	int adapterIndex = -1;
 };

@@ -7,9 +7,10 @@ set(BERSEKER_APP_SOURCE_DIR ${BERSEKER_APP_ROOT_DIR}/src)
 set(
     BERSEKER_APP_SOURCES
     ${BERSEKER_APP_SOURCE_DIR}/main.cpp
-    ${BERSEKER_APP_SOURCE_DIR}/Scenes/Scene1.h
-    ${BERSEKER_APP_SOURCE_DIR}/Scenes/Scene1.cpp
-)
+    ${BERSEKER_APP_SOURCE_DIR}/Scenes/BVolumesTesting/Scene.h
+    ${BERSEKER_APP_SOURCE_DIR}/Scenes/BVolumesTesting/Scene.cpp
+    ${BERSEKER_APP_SOURCE_DIR}/Scenes/BVolumesTesting/SceneUIController.cpp
+    ${BERSEKER_APP_SOURCE_DIR}/Scenes/BVolumesTesting/SceneUIController.h)
 
 add_executable(
     ${BERSEKER_APP_BINARY}

@@ -26,6 +26,7 @@ private:
 
 private:
 	PrimitivesStorage() = default;
+	~PrimitivesStorage();
 
 	void SetGeometry(PrimitiveGeometry geometry, Mesh &&mesh) {
 		auto targetMesh = reinterpret_cast<Mesh*>(storage.data() + geometry * sizeof(Mesh));

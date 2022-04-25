@@ -16,6 +16,8 @@ struct PrimitiveBody {
 };
 
 struct PrimitiveProps {
+	virtual ~PrimitiveProps() = default;
+
 	PrimitiveBody BodyType;
 
 	explicit PrimitiveProps(const PrimitiveBody &body)

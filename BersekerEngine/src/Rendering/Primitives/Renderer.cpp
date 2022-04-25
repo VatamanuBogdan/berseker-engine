@@ -4,6 +4,11 @@
 
 #include <memory>
 
+
+PrimitivesStorage::~PrimitivesStorage() {
+	// TODO Implement this
+}
+
 // TODO Replace temporary workaround
 ShaderProgram		*cubeShader;
 

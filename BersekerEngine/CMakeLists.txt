@@ -32,8 +32,8 @@ set(
     ${BERSEKER_SOURCE_DIR}/Rendering/Primitives/Primitives.h
     ${BERSEKER_SOURCE_DIR}/Rendering/Utils.h
     ${BERSEKER_SOURCE_DIR}/Rendering/Utils.cpp
-    ${BERSEKER_SOURCE_DIR}/Collision/BoundingVolumes.cpp
-    ${BERSEKER_SOURCE_DIR}/Collision/BoundingVolumes.h
+    ${BERSEKER_SOURCE_DIR}/Collision/BVolumes.cpp
+    ${BERSEKER_SOURCE_DIR}/Collision/BVolumes.h
     ${BERSEKER_SOURCE_DIR}/UI/UIRenderer.h
     ${BERSEKER_SOURCE_DIR}/UI/Implementation/UIRendererImpl_GL_GLFW.cpp
     ${BERSEKER_SOURCE_DIR}/UI/Implementation/UIRendererImpl_GL_GLFW.h
