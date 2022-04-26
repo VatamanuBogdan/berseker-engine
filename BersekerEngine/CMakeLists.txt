@@ -39,6 +39,8 @@ set(
     ${BERSEKER_SOURCE_DIR}/UI/Implementation/UIRendererImpl_GL_GLFW.h
     ${BERSEKER_SOURCE_DIR}/UI/Controls/UITransform3D.cpp
     ${BERSEKER_SOURCE_DIR}/UI/Controls/UITransform3D.h
+    ${BERSEKER_SOURCE_DIR}/ECS/ECS.cpp
+    ${BERSEKER_SOURCE_DIR}/ECS/ECS.h
 )
 
 # Set glfw library
