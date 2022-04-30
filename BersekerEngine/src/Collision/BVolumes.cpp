@@ -1,14 +1,11 @@
 #include "BVolumes.h"
 
-#include <stdexcept>
-#include <glm/gtc/constants.hpp>
-
 
 namespace BVolumes {
 
 	glm::vec3 AABB::ComputeClosesPointFor(const glm::vec3 &point) const {
-		glm::vec3 min = Position - HalfWidths;
-		glm::vec3 max = Position + HalfWidths;
+		glm::vec3 min = position - halfWidths;
+		glm::vec3 max = position + halfWidths;
 
 		return {
 			  glm::min(glm::max(min.x, point.x), max.x),
@@ -18,8 +15,8 @@ namespace BVolumes {
 	}
 
 	float AABB::ComputeSquaredDistanceToClosesPointFor(const glm::vec3 &point) const {
-		glm::vec3 min = Position - HalfWidths;
-		glm::vec3 max = Position + HalfWidths;
+		glm::vec3 min = position - halfWidths;
+		glm::vec3 max = position + halfWidths;
 
 		float xDistance = point.x < min.x ? (min.x - point.x) * (min.x - point.x) : 0 + point.x > max.x ?
 														    (point.x - max.x) *
@@ -36,27 +33,63 @@ namespace BVolumes {
 		return xDistance + yDistance + zDistance;
 	}
 
+	glm::vec3 OBB::ComputeClosesPointFor(const glm::vec3 &point) const {
+		const glm::vec3 distVec = point - position;
+
+		glm::vec3 result = position;
+
+		float dist = glm::dot(distVec, Direction.XAxis);
+		if (dist > halfWidths.x) {
+			dist = halfWidths.x;
+		}
+		if (dist < -halfWidths.x) {
+			dist = -halfWidths.x;
+		}
+		result += dist * Direction.XAxis;
+
+		dist = glm::dot(distVec, Direction.YAxis);
+		if (dist > halfWidths.y) {
+			dist = halfWidths.y;
+		}
+		if (dist < -halfWidths.y) {
+			dist = -halfWidths.y;
+		}
+		result += dist * Direction.YAxis;
+
+		dist = glm::dot(distVec, Direction.ZAxis);
+		if (dist > halfWidths.z) {
+			dist = halfWidths.z;
+		}
+		if (dist < -halfWidths.z) {
+			dist = -halfWidths.z;
+		}
+		result += dist * Direction.ZAxis;
+
+		return result;
+	}
+
 	bool CollisionDetector::AreColliding(const AABB &aabb1, const AABB &aabb2) {
-		if (glm::abs(aabb1.Position.x - aabb2.Position.x) > (aabb1.HalfWidths.x + aabb2.HalfWidths.x)
-		    || glm::abs(aabb1.Position.y - aabb2.Position.y) > (aabb1.HalfWidths.y + aabb2.HalfWidths.y)
-		    || glm::abs(aabb1.Position.z - aabb2.Position.z) > (aabb1.HalfWidths.z + aabb2.HalfWidths.z)) {
+		if (glm::abs(aabb1.position.x - aabb2.position.x) > (aabb1.halfWidths.x + aabb2.halfWidths.x)
+		    || glm::abs(aabb1.position.y - aabb2.position.y) > (aabb1.halfWidths.y + aabb2.halfWidths.y)
+		    || glm::abs(aabb1.position.z - aabb2.position.z) > (aabb1.halfWidths.z + aabb2.halfWidths.z)) {
 			return false;
 		}
 		return true;
 	}
 
 	bool CollisionDetector::AreColliding(const AABB &aabb, const Sphere &sphere) {
-		return aabb.ComputeSquaredDistanceToClosesPointFor(sphere.Position) <= sphere.Radius * sphere.Radius;
+		return aabb.ComputeSquaredDistanceToClosesPointFor(sphere.position) <= sphere.radius * sphere.radius;
 	}
 
 	bool CollisionDetector::AreColliding(const BVolumes::AABB &aabb,
 							 const BVolumes::OBB &obb) {
-		throw std::runtime_error("NOT IMPLEMENTED");
+		const BVolumes::OBB tempOBB(aabb.position, glm::vec3(2) * aabb.halfWidths);
+		return AreColliding(tempOBB, obb);
 	}
 
 	bool CollisionDetector::AreColliding(const BVolumes::Sphere &sphere1,
 							 const BVolumes::Sphere &sphere2) {
-		throw std::runtime_error("NOT IMPLEMENTED");
+		return glm::length(sphere1.position - sphere2.position) <= sphere1.radius + sphere2.radius;
 	}
 
 	bool CollisionDetector::AreColliding(const Sphere &sphere,
@@ -66,26 +99,27 @@ namespace BVolumes {
 
 	bool CollisionDetector::AreColliding(const BVolumes::Sphere &sphere,
 							 const BVolumes::OBB &obb) {
-		throw std::runtime_error("NOT IMPLEMENTED");
+		glm::vec3 distVec = obb.ComputeClosesPointFor(sphere.position) - sphere.position;
+		return glm::dot(distVec, distVec) <= sphere.radius * sphere.radius;
 	}
 
 	bool CollisionDetector::AreColliding(const BVolumes::OBB &obb,
 							 const BVolumes::AABB &aabb) {
-		throw std::runtime_error("NOT IMPLEMENTED");
+		return AreColliding(aabb, obb);
 	}
 
 	bool CollisionDetector::AreColliding(const BVolumes::OBB &obb,
 							 const BVolumes::Sphere &sphere) {
-		throw std::runtime_error("NOT IMPLEMENTED");
+		return AreColliding(sphere, obb);
 	}
 
 	bool CollisionDetector::AreColliding(const BVolumes::OBB &obb1,
 							 const BVolumes::OBB &obb2) {
-		auto &dir1 = obb1.Directions;
-		auto &dir2 = obb2.Directions;
+		auto &dir1 = obb1.Direction;
+		auto &dir2 = obb2.Direction;
 
-		auto &hw1 = obb1.HalfWidths;
-		auto &hw2 = obb2.HalfWidths;
+		auto &hw1 = obb1.halfWidths;
+		auto &hw2 = obb2.halfWidths;
 
 		float proj1;
 		float proj2;
@@ -105,13 +139,13 @@ namespace BVolumes {
 			}
 		}
 
-		glm::vec3 trans = obb2.Position - obb1.Position;
+		glm::vec3 trans = obb2.position - obb1.position;
 		trans = glm::vec3{glm::dot(trans, dir1.XAxis), glm::dot(trans, dir1.YAxis), glm::dot(trans, dir1.ZAxis)};
 
 		// OBB1 Axis
 		for (auto i = 0; i < 3; i++) {
-			proj1 = obb1.HalfWidths[i];
-			proj2 = glm::dot(obb2.HalfWidths, glm::vec3(absRotation[i][0], absRotation[i][1], absRotation[i][2]));
+			proj1 = obb1.halfWidths[i];
+			proj2 = glm::dot(obb2.halfWidths, glm::vec3(absRotation[i][0], absRotation[i][1], absRotation[i][2]));
 			if (glm::abs(trans[i]) > proj1 + proj2) {
 				return false;
 			}
@@ -119,8 +153,8 @@ namespace BVolumes {
 
 		// OBB2 Axis
 		for (auto i = 0; i < 3; i++) {
-			proj1 = glm::dot(obb1.HalfWidths, glm::vec3(absRotation[0][i], absRotation[1][i], absRotation[2][i]));
-			proj2 = obb2.HalfWidths[i];
+			proj1 = glm::dot(obb1.halfWidths, glm::vec3(absRotation[0][i], absRotation[1][i], absRotation[2][i]));
+			proj2 = obb2.halfWidths[i];
 			if (glm::abs(glm::dot(trans, glm::vec3(rotation[0][i], rotation[1][i], rotation[2][i]))) >
 			    proj1 + proj2) {
 				return false;
@@ -184,9 +218,8 @@ namespace BVolumes {
 		return true;
 	}
 
-	bool CollisionDetector::AreCollidingDispatch(const BoundingVolume &bvolume1,
-								   const BoundingVolume &bvolume2) {
+	bool CollisionDetector::AreColliding(const BVolume &bvolume1,
+							 const BVolume &bvolume2) {
 		return Dispatcher::CallAreCollidingDispatched(bvolume1, bvolume2);
 	}
-
 }
