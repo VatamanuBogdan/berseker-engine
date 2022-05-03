@@ -9,6 +9,8 @@
 #include <UI/UIRenderer.h>
 #include <UI/Controls/UITransform3D.h>
 #include <Collision/BVolumes.h>
+#include <ECS/ECS.h>
+#include <ECS/Components/Components.h>
 #include <Scene.h>
 #include <Utils.h>
 
@@ -17,26 +19,9 @@
 
 namespace BVolumesTesting {
 
-	struct BoundedPrimitivesStorage {
-		using PrimitivePropsPtr = std::unique_ptr<Primitive3DProps>;
-		using BoundedVolumePtr = std::unique_ptr<BVolumes::BoundingVolume>;
-
-		struct PrimitiveEntity {
-			std::string 	ID;
-			BoundedVolumePtr 	BVolume;
-			PrimitivePropsPtr	Props;
-			bool 			CollisionFlag;
-		};
-
-		std::vector<PrimitiveEntity>	primitives;
-
-		void Add(const char *id, PrimitivePropsPtr &&props, BoundedVolumePtr &&bVolume);
-	};
-
-
 	class BoundedPrimitivesAdapter final : public UITransform3D::Adapter {
 	public:
-		explicit BoundedPrimitivesAdapter(BoundedPrimitivesStorage *storage);
+		Transform& GetTransformFor(int index);
 
 		void SetPosition(const glm::vec3 &position, int index) override;
 		void SetRotation(const glm::vec3 &rotation, int index) override;
@@ -46,12 +31,15 @@ namespace BVolumesTesting {
 		const glm::vec3 &GetRotation(int index) override;
 		const glm::vec3 &GetScale(int index) override;
 
+		void Bind(ECS::Registry *registry, std::vector<ECS::Entity> *entities);
+
 		int GetSize() override;
 
 		const char *GetID(int index) override;
 
 	private:
-		BoundedPrimitivesStorage *storage;
+		ECS::Registry			*registry = nullptr;
+		std::vector<ECS::Entity> 	*entities = nullptr;
 	};
 
 
@@ -68,7 +56,10 @@ namespace BVolumesTesting {
 		void OnPostRendering() override;
 
 	private:
-		void CollisionUpdate();
+		void CreateEntity(const char *identifier, const Transform& transform, BVolumes::BVolume::Type type);
+
+		void InitEntities();
+		void CollisionTest();
 
 	private:
 		std::shared_ptr<Camera> 			camera = nullptr;
@@ -76,8 +67,10 @@ namespace BVolumesTesting {
 		std::shared_ptr<ShaderProgram>		shader;
 		std::shared_ptr<Model>				model;
 		std::shared_ptr<UIController>			uiController;
-		Lateinit<BoundedPrimitivesAdapter>		adapter;
-		BoundedPrimitivesStorage			storage;
+		BoundedPrimitivesAdapter			adapter;
+
+		ECS::Registry					registry;
+		std::vector<ECS::Entity> 			entities;
 
 	private:
 		friend class SceneUIController;

@@ -5,6 +5,7 @@
 #include "Rendering/Mesh.h"
 #include "Rendering/Camera.hpp"
 #include "Rendering/Primitives/Renderer.h"
+#include "Collision/BVolumes.h"
 
 #include <vector>
 
@@ -19,6 +20,7 @@ public:
 						 const glm::mat4 				&model);
 	static void RenderCube(const CubeProps &props);
 	static void RenderSphere(const SphereProps &props);
+	static void RenderBVolume(const BVolumes::BVolume &bVolume, const Color &color);
 	static void RenderClearColor(float red, float green, float blue, float alpha);
 	static void Render();
 

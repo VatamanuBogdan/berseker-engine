@@ -58,3 +58,30 @@ void Renderer::Render() {
 	}
 	renderingQueue.clear();
 }
+
+void Renderer::RenderBVolume(const BVolumes::BVolume &bVolume, const Color &color) {
+	PrimitiveBody body(PrimitiveBody::Type::SHAPED, color);
+
+	switch (bVolume.TypeTag) {
+		case BVolumes::BVolume::AABB: {
+				auto &aabb = reinterpret_cast<const BVolumes::AABB&>(bVolume);
+				Primitive3DProps props(aabb.GetPosition(), glm::vec3(0), aabb.GetWidths(), body);
+				RenderCube(CubeProps(1, props));
+			}
+			break;
+		case BVolumes::BVolume::OBB: {
+				auto &obb = reinterpret_cast<const BVolumes::OBB&>(bVolume);
+				Primitive3DProps props(obb.GetPosition(), obb.GetRotation(), obb.GetWidths(), body);
+				RenderCube(CubeProps(1, props));
+			}
+			break;
+		case BVolumes::BVolume::Sphere: {
+				auto &sphere = reinterpret_cast<const BVolumes::Sphere&>(bVolume);
+				Primitive3DProps props(sphere.GetPosition(), glm::vec3(0), glm::vec3(1), body);
+				RenderSphere(SphereProps(sphere.GetRadius(), props));
+			}
+			break;
+		default:
+			break;
+	}
+}

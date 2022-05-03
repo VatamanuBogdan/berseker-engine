@@ -29,8 +29,12 @@ public:
 	public:
 		[[nodiscard]] EntityIDType GetID() const { return id; }
 
+		Entity(const Entity&) = delete;
+
 		Entity(Entity &&entity) noexcept
 			  : id(entity.id), mask(entity.mask) {
+			entity.id = -1;
+			entity.mask.reset();
 		}
 
 	private:
@@ -66,8 +70,9 @@ private:
 		}
 
 		template <typename ComponentType, typename... Args>
-		void ConstructAt(size_t index, Args ...args) {
+		ComponentType& ConstructAt(size_t index, Args ...args) {
 			new (memory.data() + index * stride)ComponentType(args...);
+			return this->template operator[]<ComponentType>(index);
 		}
 
 		template <typename ComponentType>
@@ -100,7 +105,7 @@ public:
 		}
 
 		template <typename ComponentType, typename... Args>
-		void AddComponentTo(Entity &entity, Args... args) {
+		ComponentType& AddComponentTo(Entity &entity, Args... args) {
 			auto componentId = ComponentID<ComponentType>();
 
 			entity.mask.set(componentId);
@@ -112,7 +117,7 @@ public:
 			if (storage.IsValid()) {
 				storage = std::move(ComponentStorage(sizeof(ComponentType), MaxEntities));
 			}
-			storage.template ConstructAt<ComponentType>(entity.GetID(), args...);
+			return storage.template ConstructAt<ComponentType>(entity.GetID(), args...);
 		}
 
 		template<typename ComponentType>

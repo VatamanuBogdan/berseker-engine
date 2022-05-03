@@ -16,7 +16,7 @@ namespace BVolumesTesting {
 		ImGui::Begin("Transform");
 		ImGui::PushFont(jetbrainsMono);
 
-		uiTransform3D.Draw(*scene->adapter);
+		uiTransform3D.Draw(scene->adapter);
 
 		ImGui::PopFont();
 		ImGui::End();
