@@ -8,9 +8,9 @@ struct CollisionInfo {
 	bool CollisionFlag = false;
 };
 
-class Collider {
+class ColliderComponent {
 public:
-	explicit Collider(const Transform &transform, BVolumes::BVolume::Type type)
+	explicit ColliderComponent(const Transform &transform, BVolumes::BVolume::Type type)
 		: bVolume(InitBVolume(transform, type)) {
 	}
 

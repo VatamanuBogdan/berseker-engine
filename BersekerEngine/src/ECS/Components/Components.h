@@ -1,4 +1,4 @@
 #pragma once
-#include "Collider.h"
+#include "ColliderComponent.h"
 #include "Identifier.h"
 #include "Transform.h"

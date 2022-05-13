@@ -174,7 +174,7 @@ namespace BVolumesTesting {
 
 	void Scene::OnPreUpdate() {
 		for (auto &entity : entities) {
-			auto *collider = registry.GetComponentFrom<Collider>(entity);
+			auto *collider = registry.GetComponentFrom<ColliderComponent>(entity);
 			auto *transform = registry.GetComponentFrom<Transform>(entity);
 			auto *collisionInfo = registry.GetComponentFrom<CollisionInfo>(entity);
 
@@ -210,7 +210,7 @@ namespace BVolumesTesting {
 
 	void Scene::OnPostRendering() {
 		for (auto &entity : entities) {
-			auto *collider = registry.GetComponentFrom<Collider>(entity);
+			auto *collider = registry.GetComponentFrom<ColliderComponent>(entity);
 			auto *info = registry.GetComponentFrom<CollisionInfo>(entity);
 			if (collider) {
 				Color color(1, 1, 0);
@@ -230,7 +230,7 @@ namespace BVolumesTesting {
 
 		registry.AddComponentTo<Identifier>(entity).Identifier = identifier;
 		registry.AddComponentTo<Transform>(entity, transform);
-		registry.AddComponentTo<Collider>(entity, transform, type);
+		registry.AddComponentTo<ColliderComponent>(entity, transform, type);
 		registry.AddComponentTo<CollisionInfo>(entity);
 
 		entities.push_back(std::move(entity));
@@ -247,7 +247,7 @@ namespace BVolumesTesting {
 
 	void Scene::CollisionTest() {
 		for (auto i = 0; i < entities.size(); i++) {
-			auto *bvolume1 = registry.GetComponentFrom<Collider>(entities[i]);
+			auto *bvolume1 = registry.GetComponentFrom<ColliderComponent>(entities[i]);
 			auto *info1 = registry.GetComponentFrom<CollisionInfo>(entities[i]);
 
 			if (!bvolume1 || !info1) {
@@ -255,7 +255,7 @@ namespace BVolumesTesting {
 			}
 
 			for (auto j = i + 1; j < entities.size(); j++) {
-				auto *bvolume2 = registry.GetComponentFrom<Collider>(entities[j]);
+				auto *bvolume2 = registry.GetComponentFrom<ColliderComponent>(entities[j]);
 				auto *info2 = registry.GetComponentFrom<CollisionInfo>(entities[j]);
 
 				if (!bvolume2 || !info2) {
