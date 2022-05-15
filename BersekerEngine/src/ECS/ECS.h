@@ -70,8 +70,8 @@ private:
 		}
 
 		template <typename ComponentType, typename... Args>
-		ComponentType& ConstructAt(size_t index, Args ...args) {
-			new (memory.data() + index * stride)ComponentType(args...);
+		ComponentType& ConstructAt(size_t index, Args&&... args) {
+			new (memory.data() + index * stride)ComponentType(std::forward<Args>(args)...);
 			return this->template operator[]<ComponentType>(index);
 		}
 
@@ -105,7 +105,7 @@ public:
 		}
 
 		template <typename ComponentType, typename... Args>
-		ComponentType& AddComponentTo(Entity &entity, Args... args) {
+		ComponentType& AddComponentTo(Entity &entity, Args&&... args) {
 			auto componentId = ComponentID<ComponentType>();
 
 			entity.mask.set(componentId);
@@ -117,7 +117,7 @@ public:
 			if (storage.IsValid()) {
 				storage = std::move(ComponentStorage(sizeof(ComponentType), MaxEntities));
 			}
-			return storage.template ConstructAt<ComponentType>(entity.GetID(), args...);
+			return storage.template ConstructAt<ComponentType>(entity.GetID(), std::forward<Args>(args)...);
 		}
 
 		template<typename ComponentType>

@@ -51,8 +51,8 @@ public:
 	}
 
 	template <typename ...Args>
-	void Init(Args... args) {
-		new (memory) T(args...);
+	void Init(Args&&... args) {
+		new (memory) T(std::forward<Args>(args)...);
 	}
 
 	T& operator*() { return *reinterpret_cast<T*>(memory); }
