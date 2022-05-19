@@ -139,7 +139,7 @@ namespace BVolumesTesting {
 	}
 
 	void Scene::Init() {
-		auto &window = Application::GetMainWindow();
+		auto &window = application->GetMainWindow();
 		uint32_t width = window->GetWidth();
 		uint32_t height = window->GetHeight();
 
@@ -162,7 +162,7 @@ namespace BVolumesTesting {
 
 		Renderer::SetCamera(camera);
 		uiController = std::make_shared<SceneUIController>(this);
-		Application::GetUIRenderer().BindController(uiController);
+		application->GetUIRenderer().BindController(uiController);
 
 		adapter.Bind(&registry, &entities);
 		InitEntities();
@@ -190,7 +190,7 @@ namespace BVolumesTesting {
 	}
 
 	void Scene::OnUpdate() {
-		CameraPositionController(Application::GetMainWindow()->GetInput(), *camera);
+		CameraPositionController(application->GetMainWindow()->GetInput(), *camera);
 	}
 
 	void Scene::OnPostUpdate() {

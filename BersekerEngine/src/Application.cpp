@@ -9,32 +9,13 @@
 
 
 void Application::Init(std::shared_ptr<Scene> &initialScene) {
-	if (Application::initialised) {
+	if (initialised) {
 		return;
 	}
 
-	GLFWWindowConcreteProvider::Init();
-
-	WindowProps windowProps{};
-	windowProps.Title = "Window";
-	windowProps.Width = 1280;
-	windowProps.Height = 720;
-
-	Application::window = GLFWWindowConcreteProvider::ProvideWindow(windowProps);
-	Application::scene = initialScene;
-
-	window->BindAsContext();
-	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(GLFWWindowConcreteProvider::GetOpenGLProcAddress()))) {
-		spdlog::error("Failed to load OpenGL functions");
-		return;
-	}
-
-	std::cout << "OpenGL version " << glGetString(GL_VERSION) << std::endl;
-	std::cout << "OpenGL shading language " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-
-	int textureUnitsNum;
-	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &textureUnitsNum);
-	std::cout << "Texture slots: " <<  textureUnitsNum << std::endl;
+	scene = initialScene;
+	InitWindow();
+	InitRenderingAPI();
 
 	// TODO Fix this workaround
 	auto glfwWindow = std::static_pointer_cast<GLFWWindow>(window)->GetUnderlyingWindow();
@@ -73,6 +54,32 @@ UIRenderer &Application::GetUIRenderer() {
 	return *uiRenderer;
 }
 
+void Application::InitWindow() {
+	GLFWWindowConcreteProvider::Init();
+
+	WindowProps windowProps{};
+	windowProps.Title = "Window";
+	windowProps.Width = 1280;
+	windowProps.Height = 720;
+
+	window = GLFWWindowConcreteProvider::ProvideWindow(windowProps);
+}
+
+void Application::InitRenderingAPI() {
+	window->BindAsContext();
+	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(GLFWWindowConcreteProvider::GetOpenGLProcAddress()))) {
+		spdlog::error("Failed to load OpenGL functions");
+		return;
+	}
+
+	std::cout << "OpenGL version " << glGetString(GL_VERSION) << std::endl;
+	std::cout << "OpenGL shading language " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+
+	int textureUnitsNum;
+	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &textureUnitsNum);
+	std::cout << "Texture slots: " <<  textureUnitsNum << std::endl;
+}
+
 void Application::MainLoop() {
 	while (true) {
 		SafeNullableCall(scene, OnPreUpdate())
@@ -88,8 +95,3 @@ void Application::MainLoop() {
 		Application::window->PoolForEvents();
 	}
 }
-
-std::shared_ptr<Scene>		Application::scene	 = nullptr;
-std::shared_ptr<Window>		Application::window 	 = nullptr;
-std::unique_ptr<UIRenderer>	Application::uiRenderer;
-bool 					Application::initialised = false;

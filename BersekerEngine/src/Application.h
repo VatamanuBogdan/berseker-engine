@@ -8,23 +8,25 @@
 
 class Application final {
 public:
-	Application() = delete;
+	void Init(std::shared_ptr<Scene> &initialScene);
+	void Deinit();
 
-	static void Init(std::shared_ptr<Scene> &initialScene);
-	static void Deinit();
+	void StartRunning();
+	void SwitchSceneTo(std::shared_ptr<Scene> &scene);
 
-	static void StartRunning();
-	static void SwitchSceneTo(std::shared_ptr<Scene> &scene);
-
-	static std::shared_ptr<Window>& GetMainWindow();
-	static UIRenderer& GetUIRenderer();
+	std::shared_ptr<Window>& GetMainWindow();
+	UIRenderer& GetUIRenderer();
 
 private:
-	static void MainLoop();
+	void InitWindow();
+	void InitRenderingAPI();
 
 private:
-	static std::shared_ptr<Scene>		scene;
-	static std::shared_ptr<Window>	window;
-	static std::unique_ptr<UIRenderer>	uiRenderer;
-	static bool 				initialised;
+	void MainLoop();
+
+private:
+	std::shared_ptr<Scene>		scene;
+	std::shared_ptr<Window>		window;
+	std::unique_ptr<UIRenderer>	uiRenderer;
+	bool 					initialised = false;
 };

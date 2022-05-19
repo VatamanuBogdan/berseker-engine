@@ -45,6 +45,10 @@ namespace BVolumesTesting {
 
 	class Scene final : public ::Scene {
 	public:
+		explicit Scene(Application *application)
+			: ::Scene(application) {
+		}
+
 		void Init() override;
 		void Deinit() override;
 
