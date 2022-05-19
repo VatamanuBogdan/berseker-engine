@@ -7,6 +7,8 @@ set(BERSEKER_EDITOR_SOURCE_DIR ${BERSEKER_EDITOR_ROOT_DIR}/src)
 set(
     BERSEKER_EDITOR_SOURCES
     ${BERSEKER_EDITOR_SOURCE_DIR}/main.cpp
+    ${BERSEKER_EDITOR_SOURCE_DIR}/EditorApplication.cpp
+    ${BERSEKER_EDITOR_SOURCE_DIR}/EditorApplication.h
 )
 
 add_executable(

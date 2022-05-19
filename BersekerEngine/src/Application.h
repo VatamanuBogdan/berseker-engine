@@ -6,27 +6,33 @@
 
 #include <memory>
 
-class Application final {
+class Application {
 public:
-	void Init(std::shared_ptr<Scene> &initialScene);
-	void Deinit();
+	virtual void Init(std::shared_ptr<Scene> &initialScene);
+	virtual void Deinit();
 
 	void StartRunning();
-	void SwitchSceneTo(std::shared_ptr<Scene> &scene);
 
 	std::shared_ptr<Window>& GetMainWindow();
 	UIRenderer& GetUIRenderer();
+
+	void Close();
+
+	virtual void UpdateStage(double deltaTime) = 0;
+	virtual void RenderStage() = 0;
 
 private:
 	void InitWindow();
 	void InitRenderingAPI();
 
-private:
 	void MainLoop();
 
-private:
+protected:
 	std::shared_ptr<Scene>		scene;
+
+private:
 	std::shared_ptr<Window>		window;
 	std::unique_ptr<UIRenderer>	uiRenderer;
-	bool 					initialised = false;
+	bool 					shouldClose	= false;
+	bool 					initialised	= false;
 };

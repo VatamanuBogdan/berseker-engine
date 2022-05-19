@@ -5,7 +5,7 @@
 #include "UI/Implementation/UIRendererImpl_GL_GLFW.h"
 
 #include <spdlog/spdlog.h>
-#include <iostream>
+#include <chrono>
 
 
 void Application::Init(std::shared_ptr<Scene> &initialScene) {
@@ -25,7 +25,7 @@ void Application::Init(std::shared_ptr<Scene> &initialScene) {
 	initialScene->Init();
 	Renderer::Init();
 
-	Application::initialised = true;
+	initialised = true;
 }
 
 void Application::Deinit() {
@@ -33,7 +33,7 @@ void Application::Deinit() {
 		return;
 	}
 	GLFWWindowConcreteProvider::Deinit();
-	Application::initialised = false;
+	initialised = false;
 
 	uiRenderer->Deinit();
 }
@@ -42,16 +42,16 @@ void Application::StartRunning() {
 	MainLoop();
 }
 
-void Application::SwitchSceneTo(std::shared_ptr<Scene> &scene) {
-	throw std::runtime_error("NOT IMPLEMENTED");
-}
-
 std::shared_ptr<Window>& Application::GetMainWindow() {
 	return window;
 }
 
 UIRenderer &Application::GetUIRenderer() {
 	return *uiRenderer;
+}
+
+void Application::Close() {
+	shouldClose = true;
 }
 
 void Application::InitWindow() {
@@ -81,17 +81,18 @@ void Application::InitRenderingAPI() {
 }
 
 void Application::MainLoop() {
-	while (true) {
-		SafeNullableCall(scene, OnPreUpdate())
-		SafeNullableCall(scene, OnUpdate())
-		SafeNullableCall(scene, OnPostUpdate())
-		uiRenderer->Update();
-
-		SafeNullableCall(scene, OnPreRendering())
-		Renderer::Render();
-		SafeNullableCall(scene, OnPostRendering())
-		uiRenderer->Render();
-		Application::window->SwapBuffers();
-		Application::window->PoolForEvents();
+	auto frameStartTime = std::chrono::steady_clock::now();
+	auto frameEndTime = frameStartTime;
+	while (!shouldClose) {
+		auto timeDifference = std::chrono::duration_cast<std::chrono::milliseconds>(frameEndTime - frameStartTime);
+		double deltaTime = static_cast<double>(timeDifference.count()) / 1000;
+		UpdateStage(deltaTime);
+		RenderStage();
+		window->SwapBuffers();
+		window->PoolForEvents();
+		frameStartTime = frameEndTime;
+		frameEndTime = std::chrono::steady_clock::now();
 	}
 }
+
+

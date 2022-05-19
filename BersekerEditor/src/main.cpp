@@ -1,9 +1,9 @@
-#include "Application.h"
-#include "Scenes/BVolumes/Scene.h"
+#include "EditorApplication.h"
+#include <Scenes/BVolumes/Scene.h>
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
 	try {
-		Application application;
+		EditorApplication application;
 
 		std::shared_ptr<Scene> scene = std::make_shared<BVolumesTesting::Scene>(&application);
 		application.Init(scene);
