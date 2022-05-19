@@ -93,3 +93,11 @@ private:
 };
 
 
+namespace OpenGL {
+	inline void DrawArrays(const VertexArray &vao, Primitive primitive, int first, int last) {
+		vao.Bind();
+		glDrawArrays(primitive, first, last - first + 1);
+		VertexArray::Unbind();
+	}
+}
+
