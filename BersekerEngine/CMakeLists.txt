@@ -42,7 +42,7 @@ set(
     ${BERSEKER_SOURCE_DIR}/ECS/ECS.cpp
     ${BERSEKER_SOURCE_DIR}/ECS/ECS.h
     ${BERSEKER_SOURCE_DIR}/ECS/Components/Transform.h
-    ${BERSEKER_SOURCE_DIR}/ECS/Components/Collider.h
+    ${BERSEKER_SOURCE_DIR}/ECS/Components/ColliderComponent.h
     ${BERSEKER_SOURCE_DIR}/ECS/Components/Identifier.h
     ${BERSEKER_SOURCE_DIR}/ECS/Components/Components.h
 )
