@@ -11,5 +11,5 @@
 	path = BersekerEngine/deps/assimp
 	url = git@github.com:VatamanuBogdan/assimp.git
 [submodule "BersekerEngine/deps/imgui/imgui"]
-	path = BersekerEngine/deps/imgui/imgui-module
+	path = BersekerEditor/deps/imgui/imgui-module
 	url = git@github.com:VatamanuBogdan/imgui.git
