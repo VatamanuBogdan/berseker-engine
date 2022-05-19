@@ -9,6 +9,10 @@ set(
     ${BERSEKER_EDITOR_SOURCE_DIR}/main.cpp
     ${BERSEKER_EDITOR_SOURCE_DIR}/EditorApplication.cpp
     ${BERSEKER_EDITOR_SOURCE_DIR}/EditorApplication.h
+    ${BERSEKER_EDITOR_SOURCE_DIR}/UI/UIRenderer.h
+    ${BERSEKER_EDITOR_SOURCE_DIR}/UI/Implementation/UIRendererImpl_GL_GLFW.cpp
+    ${BERSEKER_EDITOR_SOURCE_DIR}/UI/Implementation/UIRendererImpl_GL_GLFW.h
+    ${BERSEKER_EDITOR_SOURCE_DIR}/UI/UIRendererBackend.h
 )
 
 add_executable(
@@ -20,4 +24,9 @@ target_link_libraries(
     ${BERSEKER_EDITOR_BINARY}
     BersekerTesting
     BersekerEngine
+)
+
+target_include_directories(
+    ${BERSEKER_EDITOR_BINARY}
+    PUBLIC ${BERSEKER_EDITOR_SOURCE_DIR}/
 )

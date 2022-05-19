@@ -2,7 +2,6 @@
 #include "Window/Window.h"
 #include "Scene.h"
 #include "Utils.h"
-#include "UI/UIRenderer.h"
 
 #include <memory>
 
@@ -14,7 +13,6 @@ public:
 	void StartRunning();
 
 	std::shared_ptr<Window>& GetMainWindow();
-	UIRenderer& GetUIRenderer();
 
 	void Close();
 
@@ -29,10 +27,9 @@ private:
 
 protected:
 	std::shared_ptr<Scene>		scene;
+	std::shared_ptr<Window>		window;
 
 private:
-	std::shared_ptr<Window>		window;
-	std::unique_ptr<UIRenderer>	uiRenderer;
 	bool 					shouldClose	= false;
 	bool 					initialised	= false;
 };

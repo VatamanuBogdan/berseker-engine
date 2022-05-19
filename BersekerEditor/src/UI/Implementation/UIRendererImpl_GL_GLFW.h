@@ -1,9 +1,9 @@
 #pragma once
-#include "UI/UIRenderer.h"
+#include "UI/UIRendererBackend.h"
 #include "Window/GLFW/GLFWWindow.h"
 
 
-class UIRendererImpl_GL_GLFW final : public UIRenderer {
+class UIRendererImpl_GL_GLFW : public UIRendererBackend {
 public:
 	struct GLSLVersion {
 		const unsigned Major;
@@ -18,12 +18,12 @@ public:
 	UIRendererImpl_GL_GLFW(GLFWwindow *window, GLSLVersion glslVersion);
 
 public:
-	void Init() final;
-	void Deinit() final;
+	void Init() override;
+	void Deinit() override;
 
-private:
-	void PreRendering() final;
-	void PostRendering() final;
+protected:
+	void PreUIRendering() final;
+	void PostUIRendering() final;
 
 private:
 	GLFWwindow 	*window;

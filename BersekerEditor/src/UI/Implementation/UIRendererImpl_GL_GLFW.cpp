@@ -24,13 +24,13 @@ void UIRendererImpl_GL_GLFW::Init() {
 	ImGui::StyleColorsClassic();
 }
 
-void UIRendererImpl_GL_GLFW::PreRendering() {
+void UIRendererImpl_GL_GLFW::PreUIRendering() {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 }
 
-void UIRendererImpl_GL_GLFW::PostRendering() {
+void UIRendererImpl_GL_GLFW::PostUIRendering() {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }

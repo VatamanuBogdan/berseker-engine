@@ -5,8 +5,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
 	try {
 		EditorApplication application;
 
-		std::shared_ptr<Scene> scene = std::make_shared<BVolumesTesting::Scene>(&application);
-		application.Init(scene);
+		application.Init();
 		application.StartRunning();
 		application.Deinit();
 	} catch (std::exception &ex) {

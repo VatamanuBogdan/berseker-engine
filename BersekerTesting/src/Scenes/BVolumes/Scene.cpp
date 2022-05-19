@@ -12,52 +12,6 @@
 
 namespace BVolumesTesting {
 
-	Transform &BoundedPrimitivesAdapter::GetTransformFor(int index) {
-		return *(registry->GetComponentFrom<Transform>(entities->at(index)));
-	}
-
-	void BoundedPrimitivesAdapter::SetPosition(const glm::vec3 &position, int index) {
-		GetTransformFor(index).Position = position;
-	}
-
-	void BoundedPrimitivesAdapter::SetRotation(const glm::vec3 &rotation, int index) {
-		GetTransformFor(index).Rotation = rotation;
-	}
-
-	void BoundedPrimitivesAdapter::SetScale(const glm::vec3 &scale, int index) {
-		GetTransformFor(index).Scale = scale;
-	}
-
-	void BoundedPrimitivesAdapter::Bind(ECS::Registry* registry, std::vector<ECS::Entity> *entities) {
-		this->registry = registry;
-		this->entities = entities;
-	}
-
-	const glm::vec3 &BoundedPrimitivesAdapter::GetPosition(int index) {
-		return GetTransformFor(index).Position;
-	}
-
-	const glm::vec3 &BoundedPrimitivesAdapter::GetRotation(int index) {
-		return GetTransformFor(index).Rotation;
-	}
-
-	const glm::vec3 &BoundedPrimitivesAdapter::GetScale(int index) {
-		return GetTransformFor(index).Scale;
-	}
-
-
-	int BoundedPrimitivesAdapter::GetSize() {
-		if (entities) {
-			return entities->size();
-		}
-		return 0;
-	}
-
-	const char *BoundedPrimitivesAdapter::GetID(int index) {
-		return registry->GetComponentFrom<Identifier>(entities->at(index))->Identifier.c_str();
-	}
-
-
 	std::ostream &operator<<(std::ostream &os, const glm::vec3 &vec) {
 		os << "x: " << vec.x << " y: " << vec.y << " z: " << vec.z;
 		return os;
@@ -161,10 +115,6 @@ namespace BVolumesTesting {
 		gridLine = std::make_shared<GridLine>();
 
 		Renderer::SetCamera(camera);
-		uiController = std::make_shared<SceneUIController>(this);
-		application->GetUIRenderer().BindController(uiController);
-
-		adapter.Bind(&registry, &entities);
 		InitEntities();
 	}
 

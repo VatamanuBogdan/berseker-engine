@@ -8,8 +8,6 @@ set(
     BERSEKER_TESTING_SOURCES
     ${BERSEKER_TESTING_SOURCE_DIR}/Scenes/BVolumes/Scene.h
     ${BERSEKER_TESTING_SOURCE_DIR}/Scenes/BVolumes/Scene.cpp
-    ${BERSEKER_TESTING_SOURCE_DIR}/Scenes/BVolumes/SceneUIController.cpp
-    ${BERSEKER_TESTING_SOURCE_DIR}/Scenes/BVolumes/SceneUIController.h
 )
 
 add_library(

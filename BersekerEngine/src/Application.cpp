@@ -2,7 +2,6 @@
 #include "Rendering/Renderer.h"
 #include "Window/Window.h"
 #include "Window/GLFW/GLFWWindow.h"
-#include "UI/Implementation/UIRendererImpl_GL_GLFW.h"
 
 #include <spdlog/spdlog.h>
 #include <chrono>
@@ -18,9 +17,11 @@ void Application::Init(std::shared_ptr<Scene> &initialScene) {
 	InitRenderingAPI();
 
 	// TODO Fix this workaround
+	/*
 	auto glfwWindow = std::static_pointer_cast<GLFWWindow>(window)->GetUnderlyingWindow();
 	uiRenderer = std::make_unique<UIRendererImpl_GL_GLFW>(glfwWindow, UIRendererImpl_GL_GLFW::GLSLVersion(4, 6));
 	uiRenderer->Init();
+	*/
 
 	initialScene->Init();
 	Renderer::Init();
@@ -34,8 +35,6 @@ void Application::Deinit() {
 	}
 	GLFWWindowConcreteProvider::Deinit();
 	initialised = false;
-
-	uiRenderer->Deinit();
 }
 
 void Application::StartRunning() {
@@ -44,10 +43,6 @@ void Application::StartRunning() {
 
 std::shared_ptr<Window>& Application::GetMainWindow() {
 	return window;
-}
-
-UIRenderer &Application::GetUIRenderer() {
-	return *uiRenderer;
 }
 
 void Application::Close() {
