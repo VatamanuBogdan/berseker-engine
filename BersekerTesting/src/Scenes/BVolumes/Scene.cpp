@@ -157,7 +157,7 @@ namespace BVolumesTesting {
 			  )
 		);
 
-		model = std::make_shared<Model>(ModelLoader().LoadModel("res/models/Model.obj"));
+		model = std::make_shared<Model>(ModelLoader().LoadModel("res/models/Monkey.obj"));
 		gridLine = std::make_shared<GridLine>();
 
 		Renderer::SetCamera(camera);

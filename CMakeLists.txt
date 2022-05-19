@@ -4,4 +4,4 @@ project(Berseker)
 set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(BersekerEngine)
-add_subdirectory(BersekerApp)
+add_subdirectory(BersekerTesting)
