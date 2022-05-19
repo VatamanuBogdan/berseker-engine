@@ -65,7 +65,6 @@ namespace BVolumesTesting {
 		std::shared_ptr<Camera> 			camera = nullptr;
 		std::shared_ptr<GridLine> 			gridLine;
 		std::shared_ptr<ShaderProgram>		shader;
-		std::shared_ptr<Model>				model;
 		std::shared_ptr<UIController>			uiController;
 		BoundedPrimitivesAdapter			adapter;
 

@@ -6,6 +6,7 @@
 #include "Rendering/Camera.hpp"
 #include "Rendering/Primitives/Renderer.h"
 #include "Collision/BVolumes.h"
+#include "Collision/ColliderLoader.h"
 
 #include <vector>
 
@@ -21,6 +22,7 @@ public:
 	static void RenderCube(const CubeProps &props);
 	static void RenderSphere(const SphereProps &props);
 	static void RenderBVolume(const BVolumes::BVolume &bVolume, const Color &color);
+	static void RenderCollider(const RenderableCollider &renderableCollider, const glm::mat4 &model);
 	static void RenderClearColor(float red, float green, float blue, float alpha);
 	static void Render();
 
@@ -45,5 +47,6 @@ private:
 	static PrimitivesRenderer 		primitivesRender;
 	static std::shared_ptr<Camera> 	camera;
 	static std::vector<RenderingEntity>	renderingQueue;
+	static Lateinit<ShaderProgram>	colliderShader;
 };
 

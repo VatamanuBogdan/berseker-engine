@@ -3,6 +3,7 @@
 PrimitivesRenderer				Renderer::primitivesRender;
 std::shared_ptr<Camera> 			Renderer::camera;
 std::vector<Renderer::RenderingEntity>	Renderer::renderingQueue;
+Lateinit<ShaderProgram>				Renderer::colliderShader;
 
 void Renderer::Init() {
 	glEnable(GL_BLEND);
@@ -10,6 +11,10 @@ void Renderer::Init() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	primitivesRender.Init();
+	colliderShader.Init(ShaderProgram::LoadFrom(
+		  "res/shaders/Collider.vert.glsl",
+		  "res/shaders/Collider.frag.glsl"
+	));
 }
 
 void Renderer::Deinit() {
@@ -84,4 +89,15 @@ void Renderer::RenderBVolume(const BVolumes::BVolume &bVolume, const Color &colo
 		default:
 			break;
 	}
+}
+
+void Renderer::RenderCollider(const RenderableCollider &renderableCollider, const glm::mat4 &model) {
+	colliderShader->Bind();
+	colliderShader->SetUniform("Projection", Renderer::camera->GetProjection());
+	colliderShader->SetUniform("Model", model);
+	colliderShader->SetUniform("View", Renderer::camera->GetView());
+
+	glPointSize(4.0f);
+	OpenGL::DrawArrays(renderableCollider.vao, OpenGL::POINTS, 0, renderableCollider.size - 1);
+	glPointSize(1.0f);
 }

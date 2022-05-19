@@ -3,6 +3,7 @@
 #include "Rendering/Renderer.h"
 #include "Rendering/Camera.hpp"
 #include "Rendering/Primitives/Renderer.h"
+#include "Collision/Collider.h"
 
 #include <glm/glm.hpp>
 
@@ -138,6 +139,10 @@ namespace BVolumesTesting {
 		camera.SetPositioning(position, rotations);
 	}
 
+
+	ECS::Entity *cube1 = nullptr;
+	ECS::Entity *cube2 = nullptr;
+
 	void Scene::Init() {
 		auto &window = Application::GetMainWindow();
 		uint32_t width = window->GetWidth();
@@ -157,15 +162,48 @@ namespace BVolumesTesting {
 			  )
 		);
 
-		model = std::make_shared<Model>(ModelLoader().LoadModel("res/models/Model.obj"));
+		entities.reserve(1024);
+
 		gridLine = std::make_shared<GridLine>();
+
+		{
+			auto[collider, renderableCollider] = ColliderLoader().LoadCollider("res/colliders/Monkey.collider");
+			auto entity = ECS::Registry::CreateEntity();
+
+
+
+			registry.AddComponentTo<Identifier>(entity).Identifier = "Monkey1";
+			registry.AddComponentTo<Transform>(entity, glm::vec3(0));
+			registry.AddComponentTo<Model>(entity, ModelLoader().LoadModel("res/models/Monkey.obj"));
+			registry.AddComponentTo<Collider>(entity, std::move(collider));
+			registry.AddComponentTo<RenderableCollider>(entity, std::move(renderableCollider));
+
+			entities.push_back(std::move(entity));
+			cube1 = &entities.back();
+		}
+
+		{
+			auto[collider, renderableCollider] = ColliderLoader().LoadCollider("res/colliders/Monkey.collider");
+			auto entity = ECS::Registry::CreateEntity();
+
+
+
+			registry.AddComponentTo<Identifier>(entity).Identifier = "Monkey2";
+			registry.AddComponentTo<Transform>(entity, glm::vec3(0, 1, 0));
+			registry.AddComponentTo<Model>(entity, ModelLoader().LoadModel("res/models/Monkey.obj"));
+			registry.AddComponentTo<Collider>(entity, std::move(collider));
+			registry.AddComponentTo<RenderableCollider>(entity, std::move(renderableCollider));
+
+			entities.push_back(std::move(entity));
+			cube2 = &entities.back();
+		}
 
 		Renderer::SetCamera(camera);
 		uiController = std::make_shared<SceneUIController>(this);
 		Application::GetUIRenderer().BindController(uiController);
 
 		adapter.Bind(&registry, &entities);
-		InitEntities();
+		// InitEntities();
 	}
 
 	void Scene::Deinit() {
@@ -173,6 +211,24 @@ namespace BVolumesTesting {
 	}
 
 	void Scene::OnPreUpdate() {
+		{
+			auto *collider1 = registry.GetComponentFrom<Collider>(*cube1);
+			auto *transform1 = registry.GetComponentFrom<Transform>(*cube1);
+
+			auto *collider2 = registry.GetComponentFrom<Collider>(*cube2);
+			auto *transform2 = registry.GetComponentFrom<Transform>(*cube2);
+
+			collider1->SetModel(transform1->ComputeTransformMatrix());
+			collider2->SetModel(transform2->ComputeTransformMatrix());
+
+			if (GJKCollisionStrategy().AreColliding(*collider1, *collider2)) {
+				std::cout << "Are colliding" << std::endl;
+			}
+		}
+
+
+
+
 		for (auto &entity : entities) {
 			auto *collider = registry.GetComponentFrom<ColliderComponent>(entity);
 			auto *transform = registry.GetComponentFrom<Transform>(entity);
@@ -198,13 +254,18 @@ namespace BVolumesTesting {
 	}
 
 	void Scene::OnPreRendering() {
-		for (auto &mesh : model->GetMeshes()) {
-			Renderer::SubmitForRendering(
-				  &mesh.GetVertexArray(),
-				  &mesh.GetIndexBuffer(),
-				  shader.get(),
-				  glm::scale(glm::mat4(1), glm::vec3(0.5f))
-			);
+		for (auto &entity : entities) {
+			auto *model = registry.GetComponentFrom<Model>(entity);
+			auto *transform = registry.GetComponentFrom<Transform>(entity);
+			if (!model || !transform) {
+				continue;
+			}
+			auto modelMatrix = transform->ComputeTransformMatrix();
+			for (auto &mesh : model->GetMeshes()) {
+				Renderer::SubmitForRendering(
+					  &mesh.GetVertexArray(), &mesh.GetIndexBuffer(), shader.get(), modelMatrix
+				);
+			}
 		}
 	}
 
@@ -219,6 +280,12 @@ namespace BVolumesTesting {
 				}
 
 				Renderer::RenderBVolume(collider->GetBoundingVolume(), color);
+			}
+
+			auto *renderableCollider = registry.GetComponentFrom<RenderableCollider>(entity);
+			auto *transform = registry.GetComponentFrom<Transform>(entity);
+			if (renderableCollider && transform) {
+				// Renderer::RenderCollider(*renderableCollider, transform->ComputeTransformMatrix());
 			}
 		}
 
