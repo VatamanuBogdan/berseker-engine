@@ -54,8 +54,8 @@ void Application::InitWindow() {
 
 	WindowProps windowProps{};
 	windowProps.Title = "Window";
-	windowProps.Width = 1280;
-	windowProps.Height = 720;
+	windowProps.Width = 1600;
+	windowProps.Height = 900;
 
 	window = GLFWWindowConcreteProvider::ProvideWindow(windowProps);
 }

@@ -40,6 +40,8 @@ set(
     ${BERSEKER_SOURCE_DIR}/ECS/Components/ColliderComponent.h
     ${BERSEKER_SOURCE_DIR}/ECS/Components/Identifier.h
     ${BERSEKER_SOURCE_DIR}/ECS/Components/Components.h
+    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/FrameBuffer.cpp
+    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/FrameBuffer.h
 )
 
 # Set glfw library

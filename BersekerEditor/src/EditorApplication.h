@@ -1,7 +1,9 @@
 #pragma once
-#include <Application.h>
+#include "UI/Implementation/UIRendererImpl_GL_GLFW.h"
 
-#include <UI/Implementation/UIRendererImpl_GL_GLFW.h>
+#include <Rendering/GraphicsAPI/FrameBuffer.h>
+#include <Application.h>
+#include <Utils.h>
 
 #include <memory>
 
@@ -17,6 +19,7 @@ private:
 	void RenderUI();
 
 private:
-	std::unique_ptr<UIRendererBackend> uiRendererBackend;
+	Lateinit<FrameBuffer>			fbo;
+	std::unique_ptr<UIRendererBackend>	uiRendererBackend;
 };
 

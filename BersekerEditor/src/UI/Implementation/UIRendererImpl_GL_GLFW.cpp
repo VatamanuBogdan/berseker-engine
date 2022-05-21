@@ -15,13 +15,15 @@ void UIRendererImpl_GL_GLFW::Init() {
 	ImGui::CreateContext();
 	ImGuiIO &io = ImGui::GetIO();
 
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
 	constexpr unsigned versionBufLength = 256;
 	char versionBuf[versionBufLength];
 	std::snprintf(versionBuf, versionBufLength, "#version %d%d0", glslVersion.Major, glslVersion.Minor);
 
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init(versionBuf);
-	ImGui::StyleColorsClassic();
+	ImGui::StyleColorsLight();
 }
 
 void UIRendererImpl_GL_GLFW::PreUIRendering() {
