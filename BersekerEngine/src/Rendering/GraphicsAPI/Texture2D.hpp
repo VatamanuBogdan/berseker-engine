@@ -18,8 +18,9 @@ public:
 		int width, height, channels;
 		uint8_t *imageBlob = stbi_load(texturePath.c_str(), &width, &height, &channels, 0);
 		if (imageBlob) {
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageBlob);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageBlob);
 		}
+		glBindTexture(GL_TEXTURE_2D, 0);
 		stbi_image_free(imageBlob);
 		stbi_set_flip_vertically_on_load(0);
 	}
@@ -45,6 +46,8 @@ public:
 		glActiveTexture(GL_TEXTURE0 + textureSlot);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
+
+	[[nodiscard]] unsigned int GetId() const { return handle; }
 
 private:
 	GLuint handle = 0;
