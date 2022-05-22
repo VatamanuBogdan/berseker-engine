@@ -1,6 +1,9 @@
 #pragma once
-#include "Rendering//Camera.hpp"
+#include "Rendering/Camera.hpp"
+#include "ECS/ECS.h"
 
+
+#include <vector>
 
 class Application;
 
@@ -20,6 +23,12 @@ public:
 	virtual void OnPreRendering() = 0;
 	virtual void OnPostRendering() = 0;
 
+public:
+	std::vector<ECS::Entity>& GetEntities() { return entities; }
+	ECS::Registry& GetRegistry() { return registry; }
+
 protected:
-	Application *application;
+	Application				*application;
+	ECS::Registry			 registry;
+	std::vector<ECS::Entity>	 entities;
 };

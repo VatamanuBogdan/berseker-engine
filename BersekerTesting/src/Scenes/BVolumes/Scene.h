@@ -43,12 +43,6 @@ namespace BVolumesTesting {
 		std::shared_ptr<GridLine> 			gridLine;
 		std::shared_ptr<ShaderProgram>		shader;
 		std::shared_ptr<Model>				model;
-
-		ECS::Registry					registry;
-		std::vector<ECS::Entity> 			entities;
-
-	private:
-		friend class SceneUIController;
 	};
 
 }
