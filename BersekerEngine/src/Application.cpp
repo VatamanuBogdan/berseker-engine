@@ -15,17 +15,8 @@ void Application::Init(std::shared_ptr<Scene> &initialScene) {
 	scene = initialScene;
 	InitWindow();
 	InitRenderingAPI();
-
-	// TODO Fix this workaround
-	/*
-	auto glfwWindow = std::static_pointer_cast<GLFWWindow>(window)->GetUnderlyingWindow();
-	uiRenderer = std::make_unique<UIRendererImpl_GL_GLFW>(glfwWindow, UIRendererImpl_GL_GLFW::GLSLVersion(4, 6));
-	uiRenderer->Init();
-	*/
-
-	initialScene->Init();
 	Renderer::Init();
-
+	initialScene->Init();
 	initialised = true;
 }
 
