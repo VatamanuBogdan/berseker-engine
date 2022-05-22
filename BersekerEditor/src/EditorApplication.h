@@ -5,6 +5,7 @@
 #include <Application.h>
 #include <Utils.h>
 
+#include <imgui.h>
 #include <memory>
 
 class EditorApplication : public Application {
@@ -16,7 +17,14 @@ public:
 	void RenderStage() override;
 
 private:
-	void RenderUI();
+	void LoadAssets();
+	void RenderSceneHierarchyPanel();
+	void RenderEntityPropertiesPanel();
+	void RenderEditor();
+
+private:
+	ImFont	*defaultEditorFont;
+	ECS::Entity	*selectedEntity = nullptr;
 
 private:
 	Lateinit<FrameBuffer>			fbo;
