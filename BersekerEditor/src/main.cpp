@@ -1,5 +1,4 @@
 #include "EditorApplication.h"
-#include <Scenes/BVolumes/Scene.h>
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
 	try {
