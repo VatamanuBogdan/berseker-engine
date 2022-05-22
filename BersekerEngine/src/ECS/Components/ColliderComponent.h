@@ -11,12 +11,12 @@ struct CollisionInfo {
 class ColliderComponent {
 public:
 	explicit ColliderComponent(const Transform &transform, BVolumes::BVolume::Type type)
-		: bVolume(InitBVolume(transform, type)) {
+		: bVolume(nullptr) {
+		InitBVolume(transform, type);
 	}
 
-	std::variant<BVolumes::AABB, BVolumes::Sphere, BVolumes::OBB> InitBVolume(
-		  const Transform &transform, BVolumes::BVolume::Type type) {
 
+	void InitBVolume(const Transform &transform, BVolumes::BVolume::Type type) {
 		if (type == BVolumes::BVolume::AABB) {
 			bVolumeRef = &bVolume.template emplace<BVolumes::AABB>(transform.Position, transform.Scale);
 		} else if (type == BVolumes::BVolume::Sphere) {
@@ -51,5 +51,5 @@ public:
 
 private:
 	BVolumes::BVolume *bVolumeRef;
-	std::variant<BVolumes::AABB, BVolumes::Sphere, BVolumes::OBB> bVolume;
+	std::variant<BVolumes::AABB, BVolumes::Sphere, BVolumes::OBB, void*> bVolume;
 };
