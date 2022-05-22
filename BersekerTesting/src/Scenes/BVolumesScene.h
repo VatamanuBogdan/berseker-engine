@@ -17,7 +17,7 @@
 class BVolumesScene final : public Scene {
 public:
 	explicit BVolumesScene(Application *application)
-		: ::Scene(application) {
+		: Scene(application) {
 	}
 
 	void Init() override;
@@ -37,7 +37,6 @@ private:
 	void CollisionTest();
 
 private:
-	std::shared_ptr<Camera> 			camera = nullptr;
 	std::shared_ptr<GridLine> 			gridLine;
 	std::shared_ptr<ShaderProgram>		shader;
 	std::shared_ptr<Model>				model;

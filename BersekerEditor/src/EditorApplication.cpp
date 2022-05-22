@@ -1,4 +1,5 @@
 #include "EditorApplication.h"
+#include "EditorCameraController.h"
 
 #include <Rendering/Renderer.h>
 #include <Scenes/BVolumesScene.h>
@@ -7,6 +8,7 @@
 #include <imgui.h>
 
 void EditorApplication::UpdateStage(double deltaTime) {
+	EditorCameraController(GetMainWindow()->GetInput(), scene->GetCamera());
 	SafeNullableCall(scene, OnPreUpdate())
 	SafeNullableCall(scene, OnUpdate())
 	SafeNullableCall(scene, OnPostUpdate())

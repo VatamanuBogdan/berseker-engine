@@ -26,9 +26,11 @@ public:
 public:
 	std::vector<ECS::Entity>& GetEntities() { return entities; }
 	ECS::Registry& GetRegistry() { return registry; }
+	Camera& GetCamera() { return *camera; }
 
 protected:
 	Application				*application;
 	ECS::Registry			 registry;
 	std::vector<ECS::Entity>	 entities;
+	std::shared_ptr<Camera>		 camera;
 };
