@@ -16,7 +16,7 @@ public:
 		this->meshes = std::move(model.meshes);
 	}
 
-	const std::vector<Mesh>& GetMeshes() { return meshes; }
+	[[nodiscard]] const std::vector<Mesh>& GetMeshes() const { return meshes; }
 
 private:
 	std::vector<Mesh> meshes;

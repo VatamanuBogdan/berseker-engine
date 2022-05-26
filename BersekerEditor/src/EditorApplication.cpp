@@ -74,7 +74,7 @@ void EditorApplication::RenderSceneHierarchyPanel() {
 					selectedEntity = &entity;
 				}
 
-				ImGui::TreeNodeEx(identifier->Identifier.c_str(), nodeFlags);
+				ImGui::TreeNodeEx(identifier->Tag.c_str(), nodeFlags);
 				if (ImGui::IsItemClicked()) {
 					selectedEntity = &entity;
 					entityId = i;

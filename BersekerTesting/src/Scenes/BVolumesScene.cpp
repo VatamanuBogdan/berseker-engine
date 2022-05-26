@@ -28,7 +28,6 @@ void BVolumesScene::Init() {
 		  )
 	);
 
-	model = std::make_shared<Model>(ModelLoader().LoadModel("res/models/Monkey.obj"));
 	gridLine = std::make_shared<GridLine>();
 
 	Renderer::SetCamera(camera);
@@ -63,13 +62,14 @@ void BVolumesScene::OnPostUpdate() {
 }
 
 void BVolumesScene::OnPreRendering() {
-	for (auto &mesh : model->GetMeshes()) {
-		Renderer::SubmitForRendering(
-			  &mesh.GetVertexArray(),
-			  &mesh.GetIndexBuffer(),
-			  shader.get(),
-			  glm::scale(glm::mat4(1), glm::vec3(0.5f))
-		);
+	for (auto &entity : entities) {
+		auto *transform = registry.GetComponentFrom<Transform>(entity);
+		auto *model = registry.GetComponentFrom<Model>(entity);
+		auto *material = registry.GetComponentFrom<Material>(entity);
+
+		if (transform && model && material) {
+			Renderer::SubmitModelForRendering(model, *material, transform->ComputeTransformMatrix());
+		}
 	}
 }
 
@@ -93,7 +93,7 @@ void BVolumesScene::OnPostRendering() {
 void BVolumesScene::CreateEntity(const char *identifier, const Transform &transform, BVolumes::BVolume::Type type) {
 	auto entity = ECS::Registry::CreateEntity();
 
-	registry.AddComponentTo<Identifier>(entity).Identifier = identifier;
+	registry.AddComponentTo<Identifier>(entity, identifier);
 	registry.AddComponentTo<Transform>(entity, transform);
 	registry.AddComponentTo<ColliderComponent>(entity, transform, type);
 	registry.AddComponentTo<CollisionInfo>(entity);
@@ -102,12 +102,25 @@ void BVolumesScene::CreateEntity(const char *identifier, const Transform &transf
 }
 
 void BVolumesScene::InitEntities() {
+	// Bounding Volumes Testing Entities
 	CreateEntity("Entity1 AABB", Transform(glm::vec3(0, 0, 0)), BVolumes::BVolume::AABB);
 	CreateEntity("Entity2 AABB", Transform(glm::vec3(1, 2, 0)), BVolumes::BVolume::AABB);
 	CreateEntity("Entity3 Sphere", Transform(glm::vec3(3, -1, 0)), BVolumes::BVolume::Sphere);
 	CreateEntity("Entity4 Sphere", Transform(glm::vec3(-2, 3, 1)), BVolumes::BVolume::Sphere);
 	CreateEntity("Entity5 OBB", Transform(glm::vec3(5, 5, 2)), BVolumes::BVolume::OBB);
 	CreateEntity("Entity6 OBB", Transform(glm::vec3(0, 5, 2)), BVolumes::BVolume::OBB);
+
+	/* Monkey Model */ {
+		auto entity = ECS::Registry::CreateEntity();
+		registry.AddComponentTo<Identifier>(entity, "Monkey");
+		registry.AddComponentTo<Model>(entity, ModelLoader().LoadModel("res/models/Monkey.obj"));
+		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(0, 0, 0)));
+		registry.AddComponentTo<Material>(entity, Material(glm::vec3(0), glm::vec3(0), glm::vec3(0),shader));
+
+		entities.push_back(std::move(entity));
+	}
+
+
 }
 
 void BVolumesScene::CollisionTest() {

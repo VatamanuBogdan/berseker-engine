@@ -6,6 +6,9 @@
 #include "Rendering/Camera.hpp"
 #include "Rendering/Primitives/Renderer.h"
 #include "Collision/BVolumes.h"
+#include "Rendering/Model.h"
+#include "ECS/Components/Material.h"
+
 
 #include <vector>
 
@@ -14,36 +17,31 @@ public:
 	static void Init();
 	static void Deinit();
 	static void SetCamera(std::shared_ptr<Camera> &camera);
-	static void SubmitForRendering(const VertexArray 			*vao,
-						 const IndexBuffer		 	*ibo,
-						 ShaderProgram 				*shader,
-						 const glm::mat4 				&model);
+
 	static void RenderCube(const CubeProps &props);
 	static void RenderSphere(const SphereProps &props);
 	static void RenderBVolume(const BVolumes::BVolume &bVolume, const Color &color);
-	static void RenderClearColor(float red, float green, float blue, float alpha);
+	static void RenderClearColor(const Color &color);
+
+	static void SubmitModelForRendering(const Model *model,const Material &material, const glm::mat4 &modelMatrix);
 	static void Render();
 
 private:
-	struct RenderingEntity {
-		const VertexArray		*vao;
-		const IndexBuffer		*ibo;
-		ShaderProgram		*shaderProgram;
-		const glm::mat4		 model;
+	struct RenderingModel {
+		RenderingModel(const Model *model, const Material &material, const glm::mat4 &modelMatrix)
+			  : model(model), material(material), modelMatrix(modelMatrix) {}
 
-		RenderingEntity(const VertexArray 	*vao,
-				    const IndexBuffer	*ibo,
-				    ShaderProgram 	*shaderProgram,
-				    const glm::mat4	&model)
-				    : vao(vao), ibo(ibo), shaderProgram(shaderProgram), model(model) {
-		}
+		const Model	*model;
+		Material	 material;
+		glm::mat4	 modelMatrix;
 	};
 
 	Renderer() = default;
 
 private:
 	static PrimitivesRenderer 		primitivesRender;
+	static Color				clearColor;
 	static std::shared_ptr<Camera> 	camera;
-	static std::vector<RenderingEntity>	renderingQueue;
+	static std::vector<RenderingModel>	modelRenderingQueue;
 };
 
