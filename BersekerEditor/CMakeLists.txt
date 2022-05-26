@@ -13,7 +13,9 @@ set(
     ${BERSEKER_EDITOR_SOURCE_DIR}/UI/Implementation/UIRendererImpl_GL_GLFW.cpp
     ${BERSEKER_EDITOR_SOURCE_DIR}/UI/Implementation/UIRendererImpl_GL_GLFW.h
     ${BERSEKER_EDITOR_SOURCE_DIR}/UI/UIRendererBackend.h
-    src/UI/EditorCameraController.h src/EditorCameraController.cpp)
+    ${BERSEKER_EDITOR_SOURCE_DIR}/EditorCameraController.h
+    ${BERSEKER_EDITOR_SOURCE_DIR}/EditorCameraController.cpp
+)
 
 # Set imgui library
 add_subdirectory(${BERSEKER_EDITOR_DEPENDENCIES_DIR}/imgui)
