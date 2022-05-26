@@ -1,8 +1,9 @@
 #include "Rendering/Renderer.h"
 
 PrimitivesRenderer				Renderer::primitivesRender;
+Color							Renderer::clearColor(1, 1, 1);
 std::shared_ptr<Camera> 			Renderer::camera;
-std::vector<Renderer::RenderingEntity>	Renderer::renderingQueue;
+std::vector<Renderer::RenderingModel>	Renderer::modelRenderingQueue;
 
 void Renderer::Init() {
 	glEnable(GL_BLEND);
@@ -21,13 +22,6 @@ void Renderer::SetCamera(std::shared_ptr<Camera> &camera) {
 	primitivesRender.AttachCamera(camera);
 }
 
-void Renderer::SubmitForRendering(const VertexArray 			*vao,
-					    const IndexBuffer			*ibo,
-					    ShaderProgram 			*shader,
-					    const glm::mat4 			&model) {
-	renderingQueue.emplace_back(vao, ibo, shader, model);
-}
-
 void Renderer::RenderCube(const CubeProps &props) {
 	primitivesRender.RenderCube(props);
 }
@@ -36,27 +30,28 @@ void Renderer::RenderSphere(const SphereProps &props) {
 	primitivesRender.RenderSphere(props);
 }
 
-void Renderer::RenderClearColor(float red, float green, float blue, float alpha) {
-	glClearColor(red, green, blue, alpha);
+void Renderer::RenderClearColor(const Color &color) {
+	clearColor = color;
 }
 
 void Renderer::Render() {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(clearColor.Red, clearColor.Green, clearColor.Blue, clearColor.Alpha);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	for (auto &renderingObject : renderingQueue) {
-		auto shader = renderingObject.shaderProgram;
+	for (auto &renderingModel : modelRenderingQueue) {
+		auto &shader = renderingModel.material.Shader;
 		shader->Bind();
 		shader->SetUniform("Projection", Renderer::camera->GetProjection());
-		shader->SetUniform("Model", renderingObject.model);
+		shader->SetUniform("Model", renderingModel.modelMatrix);
 		shader->SetUniform("View", Renderer::camera->GetView());
 
-		renderingObject.vao->Bind();
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		OpenGL::DrawElementsWith(*renderingObject.ibo);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		for (auto &mesh : renderingModel.model->GetMeshes()) {
+			mesh.GetVertexArray().Bind();
+			OpenGL::DrawElementsWith(mesh.GetIndexBuffer());
+		}
+
 	}
-	renderingQueue.clear();
+	modelRenderingQueue.clear();
 }
 
 void Renderer::RenderBVolume(const BVolumes::BVolume &bVolume, const Color &color) {
@@ -84,4 +79,8 @@ void Renderer::RenderBVolume(const BVolumes::BVolume &bVolume, const Color &colo
 		default:
 			break;
 	}
+}
+
+void Renderer::SubmitModelForRendering(const Model *model, const Material &material, const glm::mat4 &modelMatrix) {
+	modelRenderingQueue.emplace_back(model, material, modelMatrix);
 }

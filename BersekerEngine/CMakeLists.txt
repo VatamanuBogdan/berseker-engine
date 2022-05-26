@@ -42,6 +42,7 @@ set(
     ${BERSEKER_SOURCE_DIR}/ECS/Components/Components.h
     ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/FrameBuffer.cpp
     ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/FrameBuffer.h
+    ${BERSEKER_SOURCE_DIR}/ECS/Components/Material.h
 )
 
 # Set glfw library
