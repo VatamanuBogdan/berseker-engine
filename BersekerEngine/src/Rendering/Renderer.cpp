@@ -1,7 +1,8 @@
 #include "Rendering/Renderer.h"
 
 PrimitivesRenderer				Renderer::primitivesRender;
-Color							Renderer::clearColor(1, 1, 1);
+Color							Renderer::clearColor(0, 0, 0);
+LightSource						Renderer::lightSource(glm::vec3(0));
 std::shared_ptr<Camera> 			Renderer::camera;
 std::vector<Renderer::RenderingModel>	Renderer::modelRenderingQueue;
 
@@ -39,11 +40,17 @@ void Renderer::Render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	for (auto &renderingModel : modelRenderingQueue) {
-		auto &shader = renderingModel.material.Shader;
+		auto &material = renderingModel.material;
+		auto &shader = material.Shader;
 		shader->Bind();
 		shader->SetUniform("Projection", Renderer::camera->GetProjection());
 		shader->SetUniform("Model", renderingModel.modelMatrix);
 		shader->SetUniform("View", Renderer::camera->GetView());
+
+		if (material.IsLighted()) {
+			shader->SetUniform("u_CameraPosition", camera->GetPosition());
+			shader->SetUniform("u_LightPosition", lightSource.Position);
+		}
 
 		for (auto &mesh : renderingModel.model->GetMeshes()) {
 			mesh.GetVertexArray().Bind();
@@ -83,4 +90,8 @@ void Renderer::RenderBVolume(const BVolumes::BVolume &bVolume, const Color &colo
 
 void Renderer::SubmitModelForRendering(const Model *model, const Material &material, const glm::mat4 &modelMatrix) {
 	modelRenderingQueue.emplace_back(model, material, modelMatrix);
+}
+
+void Renderer::SetLight(const LightSource &lightSource) {
+	Renderer::lightSource = lightSource;
 }

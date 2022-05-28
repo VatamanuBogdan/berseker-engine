@@ -7,7 +7,8 @@
 #include "Rendering/Primitives/Renderer.h"
 #include "Collision/BVolumes.h"
 #include "Rendering/Model.h"
-#include "ECS/Components/Material.h"
+#include "ECS/Components/Material.hpp"
+#include "LightSource.h"
 
 
 #include <vector>
@@ -26,6 +27,8 @@ public:
 	static void SubmitModelForRendering(const Model *model,const Material &material, const glm::mat4 &modelMatrix);
 	static void Render();
 
+	static void SetLight(const LightSource &lightSource);
+
 private:
 	struct RenderingModel {
 		RenderingModel(const Model *model, const Material &material, const glm::mat4 &modelMatrix)
@@ -41,6 +44,7 @@ private:
 private:
 	static PrimitivesRenderer 		primitivesRender;
 	static Color				clearColor;
+	static LightSource			lightSource;
 	static std::shared_ptr<Camera> 	camera;
 	static std::vector<RenderingModel>	modelRenderingQueue;
 };
