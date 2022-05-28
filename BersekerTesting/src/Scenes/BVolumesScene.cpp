@@ -23,8 +23,8 @@ void BVolumesScene::Init() {
 	camera.reset(new PerspectiveCamera(glm::vec3(0), glm::vec3(0), properties));
 	shader = std::make_shared<ShaderProgram>(
 		  ShaderProgram::LoadFrom(
-			    "res/shaders/3DModel.vert.glsl",
-			    "res/shaders/3DModel.frag.glsl"
+			    "res/shaders/LightedModel.vert.glsl",
+			    "res/shaders/LightedModel.frag.glsl"
 		  )
 	);
 
@@ -111,16 +111,17 @@ void BVolumesScene::InitEntities() {
 	CreateEntity("Entity6 OBB", Transform(glm::vec3(0, 5, 2)), BVolumes::BVolume::OBB);
 
 	/* Monkey Model */ {
+		Material material(glm::vec3(0), glm::vec3(0), glm::vec3(0), shader);
+		material.SetLighted(true);
+
 		auto entity = ECS::Registry::CreateEntity();
 		registry.AddComponentTo<Identifier>(entity, "Monkey");
 		registry.AddComponentTo<Model>(entity, ModelLoader().LoadModel("res/models/Monkey.obj"));
 		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(0, 0, 0)));
-		registry.AddComponentTo<Material>(entity, Material(glm::vec3(0), glm::vec3(0), glm::vec3(0),shader));
+		registry.AddComponentTo<Material>(entity, material);
 
 		entities.push_back(std::move(entity));
 	}
-
-
 }
 
 void BVolumesScene::CollisionTest() {

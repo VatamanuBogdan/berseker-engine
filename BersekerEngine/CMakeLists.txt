@@ -43,7 +43,7 @@ set(
     ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/FrameBuffer.cpp
     ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/FrameBuffer.h
     ${BERSEKER_SOURCE_DIR}/ECS/Components/Material.h
-)
+    src/LightSource.h)
 
 # Set glfw library
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
