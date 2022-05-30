@@ -126,6 +126,32 @@ void EditorApplication::RenderEntityPropertiesPanel() {
 				}
 				ImGui::Separator();
 			}
+
+			if (auto *lightSource = scene->GetRegistry().GetComponentFrom<LightSource>(*selectedEntity)) {
+				ImGui::SetNextItemOpen(true);
+				if (ImGui::TreeNode("Light Proprieties")) {
+					ImGuiColorEditFlags flags = ImGuiColorEditFlags_None;
+
+					ImGui::Columns(2, "locations");
+					ImGui::SetColumnWidth(0, 75);
+
+					ImGui::Text("Ambient");
+					ImGui::Text("Diffuse");
+					ImGui::Text("Specular");
+
+					ImGui::NextColumn();
+					ImGui::SetColumnWidth(1, 450);
+
+					ImGui::ColorEdit3("##Ambient", &(lightSource->Ambient.x), flags);
+					ImGui::ColorEdit3("##Diffuse", &lightSource->Diffuse.x, flags);
+					ImGui::ColorEdit3("##Specular", &lightSource->Specular.x, flags);
+
+					ImGui::Columns();
+
+					ImGui::TreePop();
+				}
+				ImGui::Separator();
+			}
 		}
 	}
 	ImGui::End();
