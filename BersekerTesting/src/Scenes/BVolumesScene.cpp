@@ -145,7 +145,7 @@ void BVolumesScene::InitEntities() {
 		registry.AddComponentTo<Model>(entity, ModelLoader().LoadModel("res/models/Sphere.obj"));
 		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(0, 4, 2), glm::vec3(1), glm::vec3(0.5f)));
 		registry.AddComponentTo<Material>(entity, material);
-		registry.AddComponentTo<LightSource>(entity, LightSource(glm::vec3(1), glm::vec3(1), glm::vec3(1)));
+		registry.AddComponentTo<LightSource>(entity, LightSource(glm::vec3(1, 1, 1), glm::vec3(1), glm::vec3(1)));
 
 		entities.push_back(std::move(entity));
 	}
