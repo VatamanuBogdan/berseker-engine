@@ -2,7 +2,8 @@
 
 PrimitivesRenderer				Renderer::primitivesRender;
 Color							Renderer::clearColor(0, 0, 0);
-LightSource						Renderer::lightSource(glm::vec3(0));
+LightSource						Renderer::lightSource(glm::vec3(0), glm::vec3(0), glm::vec3(0));
+glm::vec3						Renderer::lightPosition;
 std::shared_ptr<Camera> 			Renderer::camera;
 std::vector<Renderer::RenderingModel>	Renderer::modelRenderingQueue;
 
@@ -49,7 +50,10 @@ void Renderer::Render() {
 
 		if (material.IsLighted()) {
 			shader->SetUniform("u_CameraPosition", camera->GetPosition());
-			shader->SetUniform("u_LightPosition", lightSource.Position);
+			shader->SetUniform("u_LightSource.Position", lightPosition);
+			shader->SetUniform("u_LightSource.Ambient", lightSource.Ambient);
+			shader->SetUniform("u_LightSource.Diffuse", lightSource.Diffuse);
+			shader->SetUniform("u_LightSource.Specular", lightSource.Specular);
 		}
 
 		for (auto &mesh : renderingModel.model->GetMeshes()) {
@@ -92,6 +96,7 @@ void Renderer::SubmitModelForRendering(const Model *model, const Material &mater
 	modelRenderingQueue.emplace_back(model, material, modelMatrix);
 }
 
-void Renderer::SetLight(const LightSource &lightSource) {
+void Renderer::SetLight(const LightSource &lightSource, const glm::vec3 &lightPosition) {
 	Renderer::lightSource = lightSource;
+	Renderer::lightPosition = lightPosition;
 }
