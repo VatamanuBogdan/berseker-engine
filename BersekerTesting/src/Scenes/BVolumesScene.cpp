@@ -21,12 +21,20 @@ void BVolumesScene::Init() {
 		  100.0f
 	);
 	camera.reset(new PerspectiveCamera(glm::vec3(0), glm::vec3(0), properties));
-	shader = std::make_shared<ShaderProgram>(
+	lightedModelShader = std::make_shared<ShaderProgram>(
 		  ShaderProgram::LoadFrom(
 			    "res/shaders/LightedModel.vert.glsl",
 			    "res/shaders/LightedModel.frag.glsl"
 		  )
 	);
+
+	lightShader = std::make_shared<ShaderProgram>(
+		  ShaderProgram::LoadFrom(
+			    "res/shaders/LightSource.vert.glsl",
+			    "res/shaders/LightSource.frag.glsl"
+		  )
+	);
+
 
 	gridLine = std::make_shared<GridLine>();
 
@@ -66,10 +74,16 @@ void BVolumesScene::OnPreRendering() {
 		auto *transform = registry.GetComponentFrom<Transform>(entity);
 		auto *model = registry.GetComponentFrom<Model>(entity);
 		auto *material = registry.GetComponentFrom<Material>(entity);
+		auto *lightSource = registry.GetComponentFrom<LightSource>(entity);
 
 		if (transform && model && material) {
 			Renderer::SubmitModelForRendering(model, *material, transform->ComputeTransformMatrix());
 		}
+
+		if (transform && lightSource) {
+			Renderer::SetLight(*lightSource, transform->Position);
+		}
+
 	}
 }
 
@@ -111,7 +125,7 @@ void BVolumesScene::InitEntities() {
 	CreateEntity("Entity6 OBB", Transform(glm::vec3(0, 5, 2)), BVolumes::BVolume::OBB);
 
 	/* Monkey Model */ {
-		Material material(glm::vec3(0), glm::vec3(0), glm::vec3(0), shader);
+		Material material(glm::vec3(0), glm::vec3(0), glm::vec3(0), lightedModelShader);
 		material.SetLighted(true);
 
 		auto entity = ECS::Registry::CreateEntity();
@@ -122,6 +136,20 @@ void BVolumesScene::InitEntities() {
 
 		entities.push_back(std::move(entity));
 	}
+
+	/* Light Source */ {
+		Material material(glm::vec3(0), glm::vec3(0), glm::vec3(0), lightShader);
+
+		auto entity = ECS::Registry::CreateEntity();
+		registry.AddComponentTo<Identifier>(entity, "LightSource");
+		registry.AddComponentTo<Model>(entity, ModelLoader().LoadModel("res/models/Sphere.obj"));
+		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(0, 4, 2), glm::vec3(1), glm::vec3(0.5f)));
+		registry.AddComponentTo<Material>(entity, material);
+		registry.AddComponentTo<LightSource>(entity, LightSource(glm::vec3(1), glm::vec3(1), glm::vec3(1)));
+
+		entities.push_back(std::move(entity));
+	}
+
 }
 
 void BVolumesScene::CollisionTest() {

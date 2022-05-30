@@ -2,9 +2,11 @@
 #include <glm/glm.hpp>
 
 struct LightSource {
-	glm::vec3 Position;
+	glm::vec3	Ambient;
+	glm::vec3	Diffuse;
+	glm::vec3	Specular;
 
-	explicit LightSource(const glm::vec3 &position)
-		: Position(position) {
+	LightSource(const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular)
+		: Ambient(ambient), Diffuse(diffuse), Specular(specular) {
 	}
 };

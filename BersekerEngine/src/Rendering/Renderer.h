@@ -27,7 +27,7 @@ public:
 	static void SubmitModelForRendering(const Model *model,const Material &material, const glm::mat4 &modelMatrix);
 	static void Render();
 
-	static void SetLight(const LightSource &lightSource);
+	static void SetLight(const LightSource &lightSource, const glm::vec3 &position);
 
 private:
 	struct RenderingModel {
@@ -44,7 +44,10 @@ private:
 private:
 	static PrimitivesRenderer 		primitivesRender;
 	static Color				clearColor;
+
 	static LightSource			lightSource;
+	static glm::vec3				lightPosition;
+
 	static std::shared_ptr<Camera> 	camera;
 	static std::vector<RenderingModel>	modelRenderingQueue;
 };

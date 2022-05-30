@@ -42,8 +42,9 @@ set(
     ${BERSEKER_SOURCE_DIR}/ECS/Components/Components.h
     ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/FrameBuffer.cpp
     ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/FrameBuffer.h
-    ${BERSEKER_SOURCE_DIR}/ECS/Components/Material.h
-    src/LightSource.h)
+    ${BERSEKER_SOURCE_DIR}/ECS/Components/Material.hpp
+    ${BERSEKER_SOURCE_DIR}/LightSource.h
+)
 
 # Set glfw library
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
@@ -62,7 +63,7 @@ add_subdirectory(${BERSEKER_DEPENDENCIES_DIR}/glm)
 add_subdirectory(${BERSEKER_DEPENDENCIES_DIR}/spdlog)
 
 # Set assimp library
-add_subdirectory(${BERSEKER_DEPENDENCIES_DIR}/assimp)
+# add_subdirectory(${BERSEKER_DEPENDENCIES_DIR}/assimp)
 
 # Set stb library
 add_subdirectory(${BERSEKER_DEPENDENCIES_DIR}/stb)

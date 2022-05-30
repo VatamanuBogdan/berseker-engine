@@ -38,5 +38,6 @@ private:
 
 private:
 	std::shared_ptr<GridLine> 			gridLine;
-	std::shared_ptr<ShaderProgram>		shader;
+	std::shared_ptr<ShaderProgram>		lightedModelShader;
+	std::shared_ptr<ShaderProgram>		lightShader;
 };
