@@ -44,6 +44,10 @@ set(
     ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/FrameBuffer.h
     ${BERSEKER_SOURCE_DIR}/Rendering/Material.hpp
     ${BERSEKER_SOURCE_DIR}/LightSource.h
+    ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderRegistry.cpp
+    ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderRegistry.h
+    ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderResources.cpp
+    ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderResources.h
 )
 
 # Set glfw library
