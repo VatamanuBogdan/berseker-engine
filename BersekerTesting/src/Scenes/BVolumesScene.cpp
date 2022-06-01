@@ -125,7 +125,7 @@ void BVolumesScene::InitEntities() {
 	CreateEntity("Entity6 OBB", Transform(glm::vec3(0, 5, 2)), BVolumes::BVolume::OBB);
 
 	/* Monkey Model */ {
-		Material material(glm::vec3(0), glm::vec3(0), glm::vec3(0), lightedModelShader);
+		Material material(glm::vec3(1), glm::vec3(0, 0.5, 0.5), glm::vec3(0), 32, lightedModelShader);
 		material.SetLighted(true);
 
 		auto entity = ECS::Registry::CreateEntity();
@@ -138,14 +138,14 @@ void BVolumesScene::InitEntities() {
 	}
 
 	/* Light Source */ {
-		Material material(glm::vec3(0), glm::vec3(0), glm::vec3(0), lightShader);
+		Material material(glm::vec3(0), glm::vec3(0), glm::vec3(0), 0, lightShader);
 
 		auto entity = ECS::Registry::CreateEntity();
 		registry.AddComponentTo<Identifier>(entity, "LightSource");
 		registry.AddComponentTo<Model>(entity, ModelLoader().LoadModel("res/models/Sphere.obj"));
 		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(0, 4, 2), glm::vec3(1), glm::vec3(0.5f)));
 		registry.AddComponentTo<Material>(entity, material);
-		registry.AddComponentTo<LightSource>(entity, LightSource(glm::vec3(1, 1, 1), glm::vec3(1), glm::vec3(1)));
+		registry.AddComponentTo<LightSource>(entity, LightSource(glm::vec3(0.1), glm::vec3(1), glm::vec3(0.4)));
 
 		entities.push_back(std::move(entity));
 	}

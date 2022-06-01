@@ -54,6 +54,11 @@ void Renderer::Render() {
 			shader->SetUniform("u_LightSource.Ambient", lightSource.Ambient);
 			shader->SetUniform("u_LightSource.Diffuse", lightSource.Diffuse);
 			shader->SetUniform("u_LightSource.Specular", lightSource.Specular);
+
+			shader->SetUniform("u_Material.Ambient", material.Ambient);
+			shader->SetUniform("u_Material.Diffuse", material.Diffuse);
+			shader->SetUniform("u_Material.Specular", material.Specular);
+			shader->SetUniform("u_Material.Shininess", material.Shininess);
 		}
 
 		for (auto &mesh : renderingModel.model->GetMeshes()) {

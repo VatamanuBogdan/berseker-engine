@@ -49,6 +49,10 @@ void ShaderProgram::Unbind() {
 	glUseProgram(0);
 }
 
+void ShaderProgram::SetUniform(const char *uniformName, float value) {
+	glUniform1f(GetUniformLocation(uniformName), value);
+}
+
 void ShaderProgram::SetUniform(const char *uniformName, const glm::vec1 &vec) {
 	glUniform1f(GetUniformLocation(uniformName), vec.x);
 }

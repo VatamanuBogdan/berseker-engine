@@ -36,16 +36,15 @@ PhongModel ComputePhongModelFor(LightSource lightSource, Material material) {
     vec3 lightDirection = normalize(lightSource.Position - f_Position);
     vec3 reflectionDirection = reflect(-lightDirection, normal);
 
-    vec3 ambientLightComponent = lightSource.Ambient;
-    vec3 diffuseLightComponent = max(dot(normal, lightDirection), 0.0) * lightSource.Diffuse;
-    vec3 specularLightComponent = pow(max(dot(viewDirection, reflectionDirection), 0.0), 32) * lightSource.Specular;
+    vec3 ambientLightComponent = lightSource.Ambient * material.Ambient;
+    vec3 diffuseLightComponent = max(dot(normal, lightDirection), 0.0) * lightSource.Diffuse * material.Diffuse;
+    vec3 specularLightComponent = pow(max(dot(viewDirection, reflectionDirection), 0.0), material.Shininess) * lightSource.Specular * material.Specular;
 
     return PhongModel(ambientLightComponent, diffuseLightComponent, specularLightComponent);
 }
 
 void main() {
-    Material dummyMaterial = Material(vec3(0, 0, 0), vec3(0, 0, 0), vec3(0, 0, 0), 1.0f);
-    PhongModel phongModel = ComputePhongModelFor(u_LightSource, dummyMaterial);
+    PhongModel phongModel = ComputePhongModelFor(u_LightSource, u_Material);
 
-    color = vec4((phongModel.Ambient + phongModel.Diffuse + phongModel.Specular) * vec3(0.8, 0.8, 0.8), 1.0);
+    color = vec4(phongModel.Ambient + phongModel.Diffuse + phongModel.Specular, 1.0);
 }

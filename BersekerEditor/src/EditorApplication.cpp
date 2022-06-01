@@ -132,7 +132,7 @@ void EditorApplication::RenderEntityPropertiesPanel() {
 				if (ImGui::TreeNode("Light Proprieties")) {
 					ImGuiColorEditFlags flags = ImGuiColorEditFlags_None;
 
-					ImGui::Columns(2, "locations");
+					ImGui::Columns(2);
 					ImGui::SetColumnWidth(0, 75);
 
 					ImGui::Text("Ambient");
@@ -142,7 +142,7 @@ void EditorApplication::RenderEntityPropertiesPanel() {
 					ImGui::NextColumn();
 					ImGui::SetColumnWidth(1, 450);
 
-					ImGui::ColorEdit3("##Ambient", &(lightSource->Ambient.x), flags);
+					ImGui::ColorEdit3("##Ambient", &lightSource->Ambient.x, flags);
 					ImGui::ColorEdit3("##Diffuse", &lightSource->Diffuse.x, flags);
 					ImGui::ColorEdit3("##Specular", &lightSource->Specular.x, flags);
 
@@ -152,6 +152,36 @@ void EditorApplication::RenderEntityPropertiesPanel() {
 				}
 				ImGui::Separator();
 			}
+
+			if (auto *material = scene->GetRegistry().GetComponentFrom<Material>(*selectedEntity)) {
+				ImGui::SetNextItemOpen(true);
+				if (ImGui::TreeNode("Material Proprieties")) {
+					ImGuiColorEditFlags flags = ImGuiColorEditFlags_None;
+
+					ImGui::Columns(2);
+					ImGui::SetColumnWidth(0, 75);
+
+					ImGui::Text("Ambient");
+					ImGui::Text("Diffuse");
+					ImGui::Text("Specular");
+					ImGui::Text("Shininess");
+
+					ImGui::NextColumn();
+					ImGui::SetColumnWidth(1, 450);
+
+					ImGui::ColorEdit3("##Ambient", &material->Ambient.x, flags);
+					ImGui::ColorEdit3("##Diffuse", &material->Diffuse.x, flags);
+					ImGui::ColorEdit3("##Specular", &material->Specular.x, flags);
+					ImGui::DragFloat("##Shininess", &material->Shininess, 0.1, 1.0f, 64.0f);
+
+
+					ImGui::Columns();
+
+					ImGui::TreePop();
+				}
+				ImGui::Separator();
+			}
+
 		}
 	}
 	ImGui::End();
