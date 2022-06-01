@@ -7,7 +7,7 @@
 #include "Rendering/Primitives/Renderer.h"
 #include "Collision/BVolumes.h"
 #include "Rendering/Model.h"
-#include "ECS/Components/Material.hpp"
+#include "Rendering/Material.hpp"
 #include "LightSource.h"
 
 
