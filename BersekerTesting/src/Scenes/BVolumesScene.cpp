@@ -3,6 +3,7 @@
 #include "Rendering/Renderer.h"
 #include "Rendering/Camera.hpp"
 #include "Rendering/Primitives/Renderer.h"
+#include "ResourceLoaders/ShaderRegistry.h"
 
 #include <glm/glm.hpp>
 
@@ -21,19 +22,8 @@ void BVolumesScene::Init() {
 		  100.0f
 	);
 	camera.reset(new PerspectiveCamera(glm::vec3(0), glm::vec3(0), properties));
-	lightedModelShader = std::make_shared<ShaderProgram>(
-		  ShaderProgram::LoadFrom(
-			    "res/shaders/LightedModel.vert.glsl",
-			    "res/shaders/LightedModel.frag.glsl"
-		  )
-	);
-
-	lightShader = std::make_shared<ShaderProgram>(
-		  ShaderProgram::LoadFrom(
-			    "res/shaders/LightSource.vert.glsl",
-			    "res/shaders/LightSource.frag.glsl"
-		  )
-	);
+	lightedModelShader = ShaderRegistry::Get().GetShader(ShaderResource::LightedModel);
+	lightShader = ShaderRegistry::Get().GetShader(ShaderResource::LightSource);
 
 
 	gridLine = std::make_shared<GridLine>();
