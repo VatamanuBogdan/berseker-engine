@@ -18,7 +18,7 @@ std::ostream &operator<<(std::ostream &os, const glm::mat4 &mat) {
 }
 
 void EditorCameraController(InputManager &input, Camera &camera) {
-	constexpr float velocity = 3.0f;
+	constexpr float velocity = 6.0f;
 	constexpr float sensitivity = 1.25f;
 	constexpr float constant = 0.01f;
 

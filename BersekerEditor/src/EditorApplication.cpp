@@ -77,6 +77,7 @@ void EditorApplication::RenderSceneHierarchyPanel() {
 				ImGui::TreeNodeEx(identifier->Tag.c_str(), nodeFlags);
 				if (ImGui::IsItemClicked()) {
 					selectedEntity = &entity;
+					materialId = -1;
 					entityId = i;
 				}
 			}
@@ -153,9 +154,39 @@ void EditorApplication::RenderEntityPropertiesPanel() {
 				ImGui::Separator();
 			}
 
-			if (auto *material = scene->GetRegistry().GetComponentFrom<Material>(*selectedEntity)) {
+			if (auto *model = scene->GetRegistry().GetComponentFrom<Model>(*selectedEntity)) {
+				std::vector<Material> &materials = model->GetMaterials();
+
+				const char *previewMaterial;
+				if (materialId < materials.size() && materialId != -1) {
+					previewMaterial = materials[materialId].Name.c_str();
+				} else {
+					previewMaterial = "";
+				}
+
+				if (ImGui::BeginCombo("Materials", previewMaterial)) {
+					for (int i = 0; i < materials.size(); i++) {
+						const bool isSelected = materialId == i;
+						if (ImGui::Selectable(materials[i].Name.c_str(), isSelected)) {
+							materialId = i;
+						}
+
+						if (isSelected) {
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+					ImGui::EndCombo();
+				}
+
+				ImGui::Separator();
+
+				Material *material = nullptr;
+				if (materialId < materials.size() && materialId != -1) {
+					material = &materials[materialId];
+				}
+
 				ImGui::SetNextItemOpen(true);
-				if (ImGui::TreeNode("Material Proprieties")) {
+				if (material && ImGui::TreeNode("Material Proprieties")) {
 					ImGuiColorEditFlags flags = ImGuiColorEditFlags_None;
 
 					ImGui::Columns(2);
@@ -238,7 +269,6 @@ void EditorApplication::RenderEditor() {
 	RenderEntityPropertiesPanel();
 
 	ImGui::End();
-
 
 	ImGui::PopFont();
 }

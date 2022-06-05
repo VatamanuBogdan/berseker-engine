@@ -1,4 +1,5 @@
 #include "Rendering/Renderer.h"
+#include "Rendering/LightSourceBillboard.h"
 
 PrimitivesRenderer				Renderer::primitivesRender;
 Color							Renderer::clearColor(0, 0, 0);
@@ -40,30 +41,38 @@ void Renderer::Render() {
 	glClearColor(clearColor.Red, clearColor.Green, clearColor.Blue, clearColor.Alpha);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	LightSourceBillboard().Draw(
+		  glm::translate(glm::mat4(1), lightPosition),
+		  Renderer::camera->GetView(),
+		  Renderer::camera->GetProjection()
+  	);
+
 	for (auto &renderingModel : modelRenderingQueue) {
-		auto &material = renderingModel.material;
-		auto &shader = material.Shader;
-		shader->Bind();
-		shader->SetUniform("Projection", Renderer::camera->GetProjection());
-		shader->SetUniform("Model", renderingModel.modelMatrix);
-		shader->SetUniform("View", Renderer::camera->GetView());
-
-		if (material.IsLighted()) {
-			shader->SetUniform("u_CameraPosition", camera->GetPosition());
-			shader->SetUniform("u_LightSource.Position", lightPosition);
-			shader->SetUniform("u_LightSource.Ambient", lightSource.Ambient);
-			shader->SetUniform("u_LightSource.Diffuse", lightSource.Diffuse);
-			shader->SetUniform("u_LightSource.Specular", lightSource.Specular);
-
-			shader->SetUniform("u_Material.Ambient", material.Ambient);
-			shader->SetUniform("u_Material.Diffuse", material.Diffuse);
-			shader->SetUniform("u_Material.Specular", material.Specular);
-			shader->SetUniform("u_Material.Shininess", material.Shininess);
-		}
-
+		size_t materialIndex = 0;
 		for (auto &mesh : renderingModel.model->GetMeshes()) {
+			auto &material = renderingModel.model->GetMaterialFor(materialIndex);
+			auto &shader = material.Shader;
+			shader->Bind();
+			shader->SetUniform("Projection", Renderer::camera->GetProjection());
+			shader->SetUniform("Model", renderingModel.modelMatrix);
+			shader->SetUniform("View", Renderer::camera->GetView());
+
+			if (material.IsLighted()) {
+				shader->SetUniform("u_CameraPosition", camera->GetPosition());
+				shader->SetUniform("u_LightSource.Position", lightPosition);
+				shader->SetUniform("u_LightSource.Ambient", lightSource.Ambient);
+				shader->SetUniform("u_LightSource.Diffuse", lightSource.Diffuse);
+				shader->SetUniform("u_LightSource.Specular", lightSource.Specular);
+
+				shader->SetUniform("u_Material.Ambient", material.Ambient);
+				shader->SetUniform("u_Material.Diffuse", material.Diffuse);
+				shader->SetUniform("u_Material.Specular", material.Specular);
+				shader->SetUniform("u_Material.Shininess", material.Shininess);
+			}
+
 			mesh.GetVertexArray().Bind();
 			OpenGL::DrawElementsWith(mesh.GetIndexBuffer());
+			materialIndex++;
 		}
 
 	}
@@ -97,8 +106,8 @@ void Renderer::RenderBVolume(const BVolumes::BVolume &bVolume, const Color &colo
 	}
 }
 
-void Renderer::SubmitModelForRendering(const Model *model, const Material &material, const glm::mat4 &modelMatrix) {
-	modelRenderingQueue.emplace_back(model, material, modelMatrix);
+void Renderer::SubmitModelForRendering(const Model *model, const glm::mat4 &modelMatrix) {
+	modelRenderingQueue.emplace_back(model, modelMatrix);
 }
 
 void Renderer::SetLight(const LightSource &lightSource, const glm::vec3 &lightPosition) {

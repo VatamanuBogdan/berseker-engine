@@ -48,6 +48,8 @@ set(
     ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderRegistry.h
     ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderResources.cpp
     ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderResources.h
+    ${BERSEKER_SOURCE_DIR}/Rendering/LightSourceBillboard.cpp
+    ${BERSEKER_SOURCE_DIR}/Rendering/LightSourceBillboard.h
 )
 
 # Set glfw library
