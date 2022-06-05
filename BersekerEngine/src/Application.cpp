@@ -7,6 +7,10 @@
 #include <chrono>
 
 
+Application::Application(const char *name)
+	  : name(name) {
+}
+
 void Application::Init(std::shared_ptr<Scene> &initialScene) {
 	if (initialised) {
 		return;
@@ -44,7 +48,7 @@ void Application::InitWindow() {
 	GLFWWindowConcreteProvider::Init();
 
 	WindowProps windowProps{};
-	windowProps.Title = "Window";
+	windowProps.Title = name.c_str();
 	windowProps.Width = 1600;
 	windowProps.Height = 900;
 

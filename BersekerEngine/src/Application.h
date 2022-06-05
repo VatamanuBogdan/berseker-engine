@@ -7,6 +7,8 @@
 
 class Application {
 public:
+	Application(const char *name);
+
 	virtual void Init(std::shared_ptr<Scene> &initialScene);
 	virtual void Deinit();
 
@@ -30,6 +32,7 @@ protected:
 	std::shared_ptr<Window>		window;
 
 private:
-	bool 					shouldClose	= false;
-	bool 					initialised	= false;
+	std::string name;
+	bool 		shouldClose	= false;
+	bool 		initialised	= false;
 };

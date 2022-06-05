@@ -7,6 +7,11 @@
 
 #include <imgui.h>
 
+EditorApplication::EditorApplication()
+	: Application("Berseker Editor") {
+}
+
+
 void EditorApplication::UpdateStage(double deltaTime) {
 	EditorCameraController(GetMainWindow()->GetInput(), scene->GetCamera());
 	SafeNullableCall(scene, OnPreUpdate())

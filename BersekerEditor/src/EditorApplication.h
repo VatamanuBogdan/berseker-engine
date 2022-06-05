@@ -10,6 +10,8 @@
 
 class EditorApplication : public Application {
 public:
+	EditorApplication();
+
 	void Init();
 	void Deinit() override;
 
