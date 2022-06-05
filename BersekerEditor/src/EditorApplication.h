@@ -25,6 +25,7 @@ private:
 private:
 	ImFont	*defaultEditorFont;
 	ECS::Entity	*selectedEntity = nullptr;
+	int		 materialId = -1;
 
 private:
 	Lateinit<FrameBuffer>			fbo;

@@ -24,18 +24,17 @@ public:
 	static void RenderBVolume(const BVolumes::BVolume &bVolume, const Color &color);
 	static void RenderClearColor(const Color &color);
 
-	static void SubmitModelForRendering(const Model *model,const Material &material, const glm::mat4 &modelMatrix);
+	static void SubmitModelForRendering(const Model *model, const glm::mat4 &modelMatrix);
 	static void Render();
 
 	static void SetLight(const LightSource &lightSource, const glm::vec3 &position);
 
 private:
 	struct RenderingModel {
-		RenderingModel(const Model *model, const Material &material, const glm::mat4 &modelMatrix)
-			  : model(model), material(material), modelMatrix(modelMatrix) {}
+		RenderingModel(const Model *model, const glm::mat4 &modelMatrix)
+			  : model(model), modelMatrix(modelMatrix) {}
 
 		const Model	*model;
-		Material	 material;
 		glm::mat4	 modelMatrix;
 	};
 

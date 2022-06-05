@@ -63,11 +63,10 @@ void BVolumesScene::OnPreRendering() {
 	for (auto &entity : entities) {
 		auto *transform = registry.GetComponentFrom<Transform>(entity);
 		auto *model = registry.GetComponentFrom<Model>(entity);
-		auto *material = registry.GetComponentFrom<Material>(entity);
 		auto *lightSource = registry.GetComponentFrom<LightSource>(entity);
 
-		if (transform && model && material) {
-			Renderer::SubmitModelForRendering(model, *material, transform->ComputeTransformMatrix());
+		if (transform && model) {
+			Renderer::SubmitModelForRendering(model, transform->ComputeTransformMatrix());
 		}
 
 		if (transform && lightSource) {
@@ -115,26 +114,21 @@ void BVolumesScene::InitEntities() {
 	CreateEntity("Entity6 OBB", Transform(glm::vec3(0, 5, 2)), BVolumes::BVolume::OBB);
 
 	/* Monkey Model */ {
-		Material material(glm::vec3(1), glm::vec3(0, 0.5, 0.5), glm::vec3(0), 32, lightedModelShader);
-		material.SetLighted(true);
-
 		auto entity = ECS::Registry::CreateEntity();
-		registry.AddComponentTo<Identifier>(entity, "Monkey");
-		registry.AddComponentTo<Model>(entity, ModelLoader().LoadModel("res/models/Monkey.obj"));
+		registry.AddComponentTo<Identifier>(entity, "Model");
+		registry.AddComponentTo<Model>(
+			  entity,
+			  ModelLoader().LoadModel("res/models/F1.obj", ShaderRegistry::Get().GetShader(ShaderResource::LightedModel))
+			  );
 		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(0, 0, 0)));
-		registry.AddComponentTo<Material>(entity, material);
 
 		entities.push_back(std::move(entity));
 	}
 
 	/* Light Source */ {
-		Material material(glm::vec3(0), glm::vec3(0), glm::vec3(0), 0, lightShader);
-
 		auto entity = ECS::Registry::CreateEntity();
 		registry.AddComponentTo<Identifier>(entity, "LightSource");
-		registry.AddComponentTo<Model>(entity, ModelLoader().LoadModel("res/models/Sphere.obj"));
 		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(0, 4, 2), glm::vec3(1), glm::vec3(0.5f)));
-		registry.AddComponentTo<Material>(entity, material);
 		registry.AddComponentTo<LightSource>(entity, LightSource(glm::vec3(0.1), glm::vec3(1), glm::vec3(0.4)));
 
 		entities.push_back(std::move(entity));

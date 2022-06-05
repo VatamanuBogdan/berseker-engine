@@ -1,5 +1,6 @@
 #include "Model.h"
 #include "Rendering/GraphicsAPI/VertexBuffer.hpp"
+#include "ResourceLoaders/ShaderRegistry.h"
 
 #include "Utils.h"
 
@@ -36,6 +37,9 @@ void ModelLoader::LoadNode(const aiNode &node) {
 			  VertexBuffer(vertices),
 			  IndexBuffer(indices)
 		);
+
+		materialLink.emplace_back(mesh.mMaterialIndex);
+
 		OnDebug(meshes.back().SetName(mesh.mName.C_Str()));
 	}
 
@@ -44,13 +48,48 @@ void ModelLoader::LoadNode(const aiNode &node) {
 	}
 }
 
-Model ModelLoader::LoadModel(const char *modelPath) {
+void ModelLoader::InitForLoading() {
+	meshes.clear();
+	materials.clear();
+	materialLink.clear();
+}
+
+void ModelLoader::LoadMaterials() {
+	materials.reserve(scene->mNumMaterials);
+	for (auto i = 0; i < scene->mNumMaterials; i++) {
+		aiMaterial *material = scene->mMaterials[i];
+		aiColor3D ambient, diffuse, specular;
+		float shininess;
+		material->Get(AI_MATKEY_COLOR_AMBIENT, ambient);
+		material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse);
+		material->Get(AI_MATKEY_COLOR_SPECULAR, specular);
+		material->Get(AI_MATKEY_SHININESS, shininess);
+
+		materials.emplace_back(
+			  material->GetName().C_Str(),
+			  glm::vec3 { ambient.r, ambient.g, ambient.b },
+			  glm::vec3 { diffuse.r, diffuse.g, diffuse.b },
+			  glm::vec3 { specular.r, specular.g, specular.b },
+			  shininess,
+			  defaultShader
+		);
+
+		materials.back().SetLighted(true);
+	}
+}
+
+Model ModelLoader::LoadModel(const char *modelPath, const std::shared_ptr<ShaderProgram> &defaultShader) {
 	try {
+		this->defaultShader = defaultShader;
+
 		Assimp::Importer importer;
 		scene = importer.ReadFile(modelPath, aiProcess_Triangulate | aiProcess_FlipUVs);
+		InitForLoading();
 		LoadNode(*scene->mRootNode);
-		return Model(std::move(meshes));
+		LoadMaterials();
+		return Model(std::move(meshes), std::move(materials), std::move(materialLink));
 	} catch (std::exception &e) {
 		throw e;
 	}
 }
+
