@@ -1,5 +1,5 @@
 #pragma once
-#include "OpenGL.hpp"
+#include "OpenGL.h"
 
 #include <stb_image.h>
 

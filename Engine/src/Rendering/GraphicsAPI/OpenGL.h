@@ -8,6 +8,8 @@ class IndexBuffer;
 
 namespace OpenGL {
 
+	using OpenGLDebugCallback = void GLAPIENTRY (GLenum, GLenum,GLuint, GLenum, GLsizei, const GLchar*, const void*);
+
 	enum DataType {
 		BYTE 			= GL_BYTE,
 		UNSIGNED_BYTE 	= GL_UNSIGNED_BYTE,
@@ -54,7 +56,6 @@ namespace OpenGL {
 		PATCHES				= GL_PATCHES
 	};
 
-	inline void SetLineWidth(float width) {
-		glLineWidth(width);
-	}
+	bool SetupOpenGL(GLADloadproc gladLoadProc, OpenGLDebugCallback callback);
+	void SetLineWidth(float width);
 }

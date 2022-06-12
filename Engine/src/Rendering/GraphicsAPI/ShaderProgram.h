@@ -21,6 +21,7 @@ public:
 	void Bind() const;
 	static void Unbind();
 
+	void SetUniform(const char *uniformName, int value);
 	void SetUniform(const char *uniformName, float value);
 
 	void SetUniform(const char *uniformName, const glm::vec1 &vec);

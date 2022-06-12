@@ -57,7 +57,12 @@ void Application::InitWindow() {
 
 void Application::InitRenderingAPI() {
 	window->BindAsContext();
-	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(GLFWWindowConcreteProvider::GetOpenGLProcAddress()))) {
+	bool result = OpenGL::SetupOpenGL(
+		  reinterpret_cast<GLADloadproc>(GLFWWindowConcreteProvider::GetOpenGLProcAddress()),
+		  Application::OpenGLDebugCallback
+		  );
+
+	if (!result) {
 		Logger::Log<Logger::ERROR>("Failed to load OpenGL functions");
 		return;
 	}
@@ -82,6 +87,17 @@ void Application::MainLoop() {
 		window->PoolForEvents();
 		frameStartTime = frameEndTime;
 		frameEndTime = std::chrono::steady_clock::now();
+	}
+}
+
+void Application::OpenGLDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity,
+				 GLsizei length, const GLchar *message, const void *userParam) {
+	switch (type) {
+		case GL_DEBUG_TYPE_ERROR:
+			Logger::Log<Logger::ERROR>("OpenGL issue severity {}: {}", severity, message);
+			break;
+		default:
+			Logger::Log<Logger::WARNING>("OpenGL issue severity {}: {}", severity, message);
 	}
 }
 

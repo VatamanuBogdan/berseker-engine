@@ -14,7 +14,8 @@ set(
     ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/ShaderProgram.cpp
     ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/ShaderProgram.h
     ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/Texture2D.hpp
-    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/OpenGL.hpp
+    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/OpenGL.h
+    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/OpenGL.cpp
     ${BERSEKER_SOURCE_DIR}/Rendering/Model.cpp
     ${BERSEKER_SOURCE_DIR}/Rendering/Renderer.cpp
     ${BERSEKER_SOURCE_DIR}/Rendering/Renderer.h

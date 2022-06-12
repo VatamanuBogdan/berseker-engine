@@ -1,5 +1,5 @@
 #include "FrameBuffer.h"
-#include "OpenGL.hpp"
+#include "OpenGL.h"
 
 #include <cassert>
 

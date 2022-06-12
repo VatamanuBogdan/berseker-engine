@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include "Rendering/GraphicsAPI/OpenGL.hpp"
+#include "Rendering/GraphicsAPI/OpenGL.h"
 #include "Rendering/GraphicsAPI/ShaderProgram.h"
 
 #include <memory>
