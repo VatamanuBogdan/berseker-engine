@@ -48,7 +48,7 @@ const ShaderSourceFiles& ShaderResources::Get(ShaderResource identifier) {
 """
 
 SHADERS_RESOURCE_PATH = 'res/shaders/'
-SHADER_RESOURCES_SOURCE_PATH = 'BersekerEngine/src/ResourceLoaders/'
+SHADER_RESOURCES_SOURCE_PATH = 'Engine/src/ResourceLoaders/'
 
 
 logger = None

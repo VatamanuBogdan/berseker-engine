@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(BERSEKER_TESTING_BINARY BersekerTesting)
+set(BERSEKER_TESTING_BINARY Testing)
 set(BERSEKER_TESTING_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(BERSEKER_TESTING_SOURCE_DIR ${BERSEKER_TESTING_ROOT_DIR}/src)
 
@@ -17,7 +17,7 @@ add_library(
 
 target_link_libraries(
     ${BERSEKER_TESTING_BINARY}
-    BersekerEngine
+    Engine
 )
 
 target_include_directories(
