@@ -53,6 +53,8 @@ set(
     ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/CubeMapTexture.hpp
     ${BERSEKER_SOURCE_DIR}/Rendering/Skybox.cpp
     ${BERSEKER_SOURCE_DIR}/Rendering/Skybox.h
+    ${BERSEKER_SOURCE_DIR}/Utils/Logger.cpp
+    ${BERSEKER_SOURCE_DIR}/Utils/Logger.h
 )
 
 # Set glfw library

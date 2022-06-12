@@ -2,8 +2,8 @@
 #include "Rendering/Renderer.h"
 #include "Window/Window.h"
 #include "Window/GLFW/GLFWWindow.h"
+#include "Utils/Logger.h"
 
-#include <spdlog/spdlog.h>
 #include <chrono>
 
 
@@ -58,16 +58,16 @@ void Application::InitWindow() {
 void Application::InitRenderingAPI() {
 	window->BindAsContext();
 	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(GLFWWindowConcreteProvider::GetOpenGLProcAddress()))) {
-		spdlog::error("Failed to load OpenGL functions");
+		Logger::Log<Logger::ERROR>("Failed to load OpenGL functions");
 		return;
 	}
 
-	std::cout << "OpenGL version " << glGetString(GL_VERSION) << std::endl;
-	std::cout << "OpenGL shading language " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-
 	int textureUnitsNum;
 	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &textureUnitsNum);
-	std::cout << "Texture slots: " <<  textureUnitsNum << std::endl;
+
+	Logger::Log<Logger::INFO>("OpenGL version {}", glGetString(GL_VERSION));
+	Logger::Log<Logger::INFO>("OpenGL shading language {}", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	Logger::Log<Logger::INFO>("Texture slots {}", textureUnitsNum);
 }
 
 void Application::MainLoop() {

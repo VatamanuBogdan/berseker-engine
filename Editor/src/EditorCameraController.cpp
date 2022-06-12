@@ -1,4 +1,5 @@
 #include "EditorCameraController.h"
+#include "Utils/Logger.h"
 
 #include <iostream>
 
@@ -62,20 +63,25 @@ void EditorCameraController(InputManager &input, Camera &camera) {
 	}
 
 	if (input.GetStateForKey(KeyboardKey::TAB) == KeyState::Pressed) {
-		std::cout << "Camera Properties: " << std::endl;
-		std::cout << "------------------------------------------" << std::endl;
-		std::cout << "[Position]: " << position << std::endl;
-		std::cout << "[Rotations]: " << rotations << std::endl;
-		std::cout << "------------------------------------------" << std::endl;
-		std::cout << "[Upward]: " << direction.Upward << std::endl;
-		std::cout << "[Forward]: " << direction.Forward << std::endl;
-		std::cout << "[Rightward]: " << direction.Rightward << std::endl;
-	}
+		auto mousePosition = input.GetMousePosition();
 
-	auto mousePosition = input.GetMousePosition();
-	if (input.GetStateForKey(KeyboardKey::F1) == KeyState::Pressed) {
-		std::cout << "Mouse position: " << mousePosition.xPosition << " " << mousePosition.yPosition
-			    << std::endl;
+		Logger::Log<Logger::INFO>(
+			  "Camera Properties: \n"
+			  "------------------------------------------\n"
+			  "[Position]: x: {} y: {} z: {}\n"
+			  "[Rotations]: x: {} y: {} z: {}\n"
+			  "------------------------------------------\n"
+			  "[Upward]: x: {} y: {} z: {}\n"
+			  "[Forward]: x: {} y: {} z: {}\n"
+			  "[Rightward]: x: {} y: {} z: {}\n"
+			  "[Mouse position]: x: {} y: {}",
+			  position.x, position.y, position.z,
+			  rotations.x, rotations.y, rotations.z,
+			  direction.Upward.x, direction.Upward.y, direction.Upward.z,
+			  direction.Forward.x, direction.Forward.y, direction.Forward.z,
+			  direction.Rightward.x, direction.Rightward.y, direction.Rightward.z,
+			  mousePosition.xPosition, mousePosition.yPosition
+	  	);
 	}
 
 	camera.SetPositioning(position, rotations);
