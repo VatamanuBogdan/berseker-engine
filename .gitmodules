@@ -1,15 +1,15 @@
 [submodule "deps/glfw"]
-	path = BersekerEngine/deps/glfw
+	path = Engine/deps/glfw
 	url = https://github.com/VatamanuBogdan/glfw.git
 [submodule "deps/glm"]
-	path = BersekerEngine/deps/glm
+	path = Engine/deps/glm
 	url = https://github.com/VatamanuBogdan/glm
 [submodule "deps/spdlog"]
-	path = BersekerEngine/deps/spdlog
+	path = Engine/deps/spdlog
 	url = https://github.com/VatamanuBogdan/spdlog.git
 [submodule "deps/assimp"]
-	path = BersekerEngine/deps/assimp
+	path = Engine/deps/assimp
 	url = git@github.com:VatamanuBogdan/assimp.git
 [submodule "BersekerEngine/deps/imgui/imgui"]
-	path = BersekerEditor/deps/imgui/imgui-module
+	path = Editor/deps/imgui/imgui-module
 	url = git@github.com:VatamanuBogdan/imgui.git
