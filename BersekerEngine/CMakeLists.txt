@@ -50,6 +50,9 @@ set(
     ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderResources.h
     ${BERSEKER_SOURCE_DIR}/Rendering/LightSourceBillboard.cpp
     ${BERSEKER_SOURCE_DIR}/Rendering/LightSourceBillboard.h
+    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/CubeMapTexture.hpp
+    ${BERSEKER_SOURCE_DIR}/Rendering/Skybox.cpp
+    ${BERSEKER_SOURCE_DIR}/Rendering/Skybox.h
 )
 
 # Set glfw library

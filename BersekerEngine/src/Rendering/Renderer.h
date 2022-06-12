@@ -8,10 +8,12 @@
 #include "Collision/BVolumes.h"
 #include "Rendering/Model.h"
 #include "Rendering/Material.hpp"
+#include "Rendering/Skybox.h"
 #include "LightSource.h"
 
 
 #include <vector>
+#include <optional>
 
 class Renderer {
 public:
@@ -43,6 +45,8 @@ private:
 private:
 	static PrimitivesRenderer 		primitivesRender;
 	static Color				clearColor;
+
+	static std::optional<Skybox>		skybox;
 
 	static LightSource			lightSource;
 	static glm::vec3				lightPosition;

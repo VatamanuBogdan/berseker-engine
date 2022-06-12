@@ -3,8 +3,12 @@
 
 PrimitivesRenderer				Renderer::primitivesRender;
 Color							Renderer::clearColor(0, 0, 0);
+
+std::optional<Skybox>				Renderer::skybox;
+
 LightSource						Renderer::lightSource(glm::vec3(0), glm::vec3(0), glm::vec3(0));
 glm::vec3						Renderer::lightPosition;
+
 std::shared_ptr<Camera> 			Renderer::camera;
 std::vector<Renderer::RenderingModel>	Renderer::modelRenderingQueue;
 
@@ -40,6 +44,13 @@ void Renderer::RenderClearColor(const Color &color) {
 void Renderer::Render() {
 	glClearColor(clearColor.Red, clearColor.Green, clearColor.Blue, clearColor.Alpha);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	if (skybox) {
+		skybox->Draw(
+			  Renderer::camera->GetProjection(),
+			  glm::mat3(Renderer::camera->GetView())
+		);
+	}
 
 	LightSourceBillboard().Draw(
 		  glm::translate(glm::mat4(1), lightPosition),

@@ -14,6 +14,7 @@ enum class ShaderResource {
 	LightedModel,
 	LightSource,
 	GridLine,
+	Skybox,
 
 };
 
