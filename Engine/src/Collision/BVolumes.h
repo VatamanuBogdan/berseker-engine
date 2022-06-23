@@ -1,4 +1,6 @@
 #pragma once
+#include "ECS/Components/Transform.h"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/constants.hpp>
@@ -31,6 +33,8 @@ namespace BVolumes {
 			: BVolume(Type::AABB), position(position), halfWidths(glm::abs(widths) / 2.0f) {
 		}
 
+		void Apply(const Transform &transform);
+
 		[[nodiscard]] glm::vec3 ComputeClosesPointFor(const glm::vec3 &point) const;
 		[[nodiscard]] float ComputeSquaredDistanceToClosesPointFor(const glm::vec3 &point) const;
 
@@ -39,6 +43,10 @@ namespace BVolumes {
 
 		void SetPosition(const glm::vec3 &position) { this->position = position; }
 		void SetWidths(const glm::vec3 &widths) { this->halfWidths = glm::abs(widths) / 2.0f; }
+
+		void Union(const AABB &aabb);
+
+		AABB& operator=(const AABB &aabb);
 
 	private:
 		glm::vec3 position;

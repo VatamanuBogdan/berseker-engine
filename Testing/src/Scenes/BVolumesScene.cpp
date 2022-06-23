@@ -67,6 +67,11 @@ void BVolumesScene::OnPreRendering() {
 
 		if (transform && model) {
 			Renderer::SubmitModelForRendering(model, transform->ComputeTransformMatrix());
+
+			BVolumes::AABB aabb = model->GetAABB();
+			aabb.Apply(*transform);
+			Renderer::RenderBVolume(aabb, Color(0, 1.0f, 1.0f));
+
 		}
 
 		if (transform && lightSource) {
@@ -87,6 +92,17 @@ void BVolumesScene::OnPostRendering() {
 			}
 
 			Renderer::RenderBVolume(collider->GetBoundingVolume(), color);
+		}
+	}
+
+	for (auto &entity : entities) {
+		auto *transform = registry.GetComponentFrom<Transform>(entity);
+		auto *model = registry.GetComponentFrom<Model>(entity);
+
+		if (transform && model) {
+			BVolumes::AABB aabb = model->GetAABB();
+			aabb.Apply(*transform);
+			Renderer::RenderBVolume(aabb, Color(0, 1.0f, 1.0f));
 		}
 	}
 

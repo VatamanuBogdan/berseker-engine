@@ -15,13 +15,13 @@ void ModelLoader::LoadNode(const aiNode &node) {
 		aiMesh &mesh = *scene->mMeshes[node.mMeshes[i]];
 		vertices.clear();
 		for (unsigned int j = 0; j < mesh.mNumVertices; j++) {
-			auto &position = mesh.mVertices[j];
-			auto &normal = mesh.mNormals[j];
+			glm::vec3 position(mesh.mVertices[j].x, mesh.mVertices[j].y, mesh.mVertices[j].z);
+			glm::vec3 normal(mesh.mNormals[j].x, mesh.mNormals[j].y, mesh.mNormals[j].z);
 
-			vertices.emplace_back(
-				  glm::vec3 (position.x, position.y, position.z),
-				  glm::vec3 (normal.x, normal.y, normal.z)
-			);
+			minPoint = glm::min(minPoint, position);
+			maxPoint = glm::max(maxPoint, position);
+
+			vertices.emplace_back(position, normal);
 		}
 
 		indices.clear();
@@ -52,6 +52,9 @@ void ModelLoader::InitForLoading() {
 	meshes.clear();
 	materials.clear();
 	materialLink.clear();
+
+	minPoint = glm::vec3(std::numeric_limits<float>::max());
+	maxPoint = glm::vec3(std::numeric_limits<float>::min());
 }
 
 void ModelLoader::LoadMaterials() {
@@ -87,9 +90,15 @@ Model ModelLoader::LoadModel(const char *modelPath, const std::shared_ptr<Shader
 		InitForLoading();
 		LoadNode(*scene->mRootNode);
 		LoadMaterials();
-		return Model(std::move(meshes), std::move(materials), std::move(materialLink));
+		return Model(
+			  std::move(meshes),
+			  std::move(materials),
+			  std::move(materialLink),
+			  BVolumes::AABB((maxPoint + minPoint) / 2.0f, maxPoint - minPoint)
+	  	);
 	} catch (std::exception &e) {
 		throw e;
 	}
 }
+
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "Rendering/Mesh.h"
 #include "Rendering/GraphicsAPI/ShaderProgram.h"
+#include "Collision/BVolumes.h"
 
 #include <assimp/scene.h>
 
@@ -11,16 +12,21 @@
 
 class Model {
 public:
-	explicit Model(std::vector<Mesh> &&meshes, std::vector<Material> &&materials, std::vector<int> &&meshMaterialLink)
+	explicit Model(std::vector<Mesh> &&meshes,
+			   std::vector<Material> &&materials,
+			   std::vector<int> &&meshMaterialLink,
+			   BVolumes::AABB aabb)
 		: meshes(std::move(meshes)),
 		  materials(std::move(materials)),
-		  meshMaterialLink(std::move(meshMaterialLink)) {
+		  meshMaterialLink(std::move(meshMaterialLink)),
+		  aabb(aabb) {
 	}
 
-	Model(Model &&model) noexcept {
-		this->meshes = std::move(model.meshes);
-		this->materials = std::move(model.materials);
-		this->meshMaterialLink = std::move(model.meshMaterialLink);
+	Model(Model &&model) noexcept
+		: meshes(std::move(model.meshes)),
+		  materials(std::move(model.materials)),
+		  meshMaterialLink(std::move(model.meshMaterialLink)),
+		  aabb(model.aabb) {
 	}
 
 	[[nodiscard]] const std::vector<Mesh>& GetMeshes() const { return meshes; }
@@ -28,10 +34,13 @@ public:
 	[[nodiscard]] std::vector<Material>& GetMaterials() { return materials; }
 	[[nodiscard]] const Material& GetMaterialFor(int index) const { return materials[meshMaterialLink[index]]; }
 
+	const BVolumes::AABB& GetAABB() { return aabb; }
+
 private:
 	std::vector<Mesh>		meshes;
 	std::vector<Material>	materials;
 	std::vector<int>		meshMaterialLink;
+	BVolumes::AABB		aabb;
 	friend class ModelLoader;
 };
 
@@ -64,6 +73,8 @@ private:
 	std::vector<Mesh>			 meshes;
 	std::vector<Material>		 materials;
 	std::vector<int>			 materialLink;
+	glm::vec3 				 minPoint;
+	glm::vec3 				 maxPoint;
 	std::vector<Vertex> 		 vertices;
 	std::vector<unsigned int> 	 indices;
 	std::shared_ptr<ShaderProgram> defaultShader;

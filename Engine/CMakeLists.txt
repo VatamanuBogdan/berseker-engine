@@ -33,6 +33,8 @@ set(
     ${BERSEKER_SOURCE_DIR}/Rendering/Primitives/Primitives.h
     ${BERSEKER_SOURCE_DIR}/Rendering/Utils.h
     ${BERSEKER_SOURCE_DIR}/Rendering/Utils.cpp
+    ${BERSEKER_SOURCE_DIR}/Collision/BVH.cpp
+    ${BERSEKER_SOURCE_DIR}/Collision/BVH.h
     ${BERSEKER_SOURCE_DIR}/Collision/BVolumes.cpp
     ${BERSEKER_SOURCE_DIR}/Collision/BVolumes.h
     ${BERSEKER_SOURCE_DIR}/ECS/ECS.cpp
