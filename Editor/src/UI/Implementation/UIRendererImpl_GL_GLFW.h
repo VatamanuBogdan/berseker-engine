@@ -1,6 +1,6 @@
 #pragma once
 #include "UI/UIRendererBackend.h"
-#include "Window/GLFW/GLFWWindow.h"
+#include "Core/Window/GLFW/GLFWWindow.h"
 
 
 class UIRendererImpl_GL_GLFW : public UIRendererBackend {

@@ -1,6 +1,6 @@
 #pragma once
 #include "Rendering/GraphicsAPI/OpenGL.h"
-#include "Window/Window.h"
+#include "Core/Window/Window.h"
 #include "Scene.h"
 
 #include <memory>

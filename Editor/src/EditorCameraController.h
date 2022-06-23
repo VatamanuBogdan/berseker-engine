@@ -1,5 +1,5 @@
 #pragma once
-#include <Input/InputManager.h>
+#include <Core/Input/InputManager.h>
 #include <Rendering/Camera.hpp>
 
 

@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "Rendering/Renderer.h"
-#include "Window/Window.h"
-#include "Window/GLFW/GLFWWindow.h"
+#include "Core/Window/Window.h"
+#include "Core/Window/GLFW/GLFWWindow.h"
 #include "Core/Logger.h"
 
 #include <chrono>

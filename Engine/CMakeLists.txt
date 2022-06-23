@@ -20,11 +20,11 @@ set(
     ${BERSEKER_SOURCE_DIR}/Rendering/Renderer.cpp
     ${BERSEKER_SOURCE_DIR}/Rendering/Renderer.h
     ${BERSEKER_SOURCE_DIR}/Rendering/Mesh.h
-    ${BERSEKER_SOURCE_DIR}/Window/Window.h
-    ${BERSEKER_SOURCE_DIR}/Window/GLFW/GLFWWindow.cpp
-    ${BERSEKER_SOURCE_DIR}/Window/GLFW/GLFWWindow.h
-    ${BERSEKER_SOURCE_DIR}/Input/InputKeys.h
-    ${BERSEKER_SOURCE_DIR}/Input/InputManager.h
+    ${BERSEKER_SOURCE_DIR}/Core/Window/Window.h
+    ${BERSEKER_SOURCE_DIR}/Core/Window/GLFW/GLFWWindow.cpp
+    ${BERSEKER_SOURCE_DIR}/Core/Window/GLFW/GLFWWindow.h
+    ${BERSEKER_SOURCE_DIR}/Core/Input/InputKeys.h
+    ${BERSEKER_SOURCE_DIR}/Core/Input/InputManager.h
     ${BERSEKER_SOURCE_DIR}/Application.cpp
     ${BERSEKER_SOURCE_DIR}/Application.h
     ${BERSEKER_SOURCE_DIR}/Scene.h

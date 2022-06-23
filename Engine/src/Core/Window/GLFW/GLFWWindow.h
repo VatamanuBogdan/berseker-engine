@@ -1,6 +1,6 @@
 #pragma once
-#include "Window/Window.h"
-#include "Input/InputManager.h"
+#include "Core/Window/Window.h"
+#include "Core/Input/InputManager.h"
 
 struct GLFWwindow;
 

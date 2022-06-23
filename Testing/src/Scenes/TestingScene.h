@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Window/Window.h>
+#include <Core/Window/Window.h>
 #include <Rendering/GraphicsAPI/ShaderProgram.h>
 #include <Rendering/Primitives/Primitives.h>
 #include <Rendering/GridLine.hpp>
