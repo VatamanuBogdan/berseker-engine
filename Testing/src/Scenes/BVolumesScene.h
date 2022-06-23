@@ -30,7 +30,7 @@ public:
 	void OnPostRendering() override;
 
 private:
-	void CreateEntity(const char *identifier, const Transform& transform, BVolumes::BVolume::Type type);
+	void CreateEntity(const char *identifier, const Transform& transform, BVolume::Type type);
 
 	void InitEntities();
 	void CollisionTest();

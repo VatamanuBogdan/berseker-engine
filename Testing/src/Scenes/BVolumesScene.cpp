@@ -68,7 +68,7 @@ void BVolumesScene::OnPreRendering() {
 		if (transform && model) {
 			Renderer::SubmitModelForRendering(model, transform->ComputeTransformMatrix());
 
-			BVolumes::AABB aabb = model->GetAABB();
+			AABB aabb = model->GetAABB();
 			aabb.Apply(*transform);
 			Renderer::RenderBVolume(aabb, Color(0, 1.0f, 1.0f));
 
@@ -100,7 +100,7 @@ void BVolumesScene::OnPostRendering() {
 		auto *model = registry.GetComponentFrom<Model>(entity);
 
 		if (transform && model) {
-			BVolumes::AABB aabb = model->GetAABB();
+			AABB aabb = model->GetAABB();
 			aabb.Apply(*transform);
 			Renderer::RenderBVolume(aabb, Color(0, 1.0f, 1.0f));
 		}
@@ -109,7 +109,7 @@ void BVolumesScene::OnPostRendering() {
 	gridLine->Draw(camera->GetView(), camera->GetProjection());
 }
 
-void BVolumesScene::CreateEntity(const char *identifier, const Transform &transform, BVolumes::BVolume::Type type) {
+void BVolumesScene::CreateEntity(const char *identifier, const Transform &transform, BVolume::Type type) {
 	auto entity = ECS::Registry::CreateEntity();
 
 	registry.AddComponentTo<Identifier>(entity, identifier);
@@ -122,12 +122,12 @@ void BVolumesScene::CreateEntity(const char *identifier, const Transform &transf
 
 void BVolumesScene::InitEntities() {
 	// Bounding Volumes Testing Entities
-	CreateEntity("Entity1 AABB", Transform(glm::vec3(0, 0, 0)), BVolumes::BVolume::AABB);
-	CreateEntity("Entity2 AABB", Transform(glm::vec3(1, 2, 0)), BVolumes::BVolume::AABB);
-	CreateEntity("Entity3 Sphere", Transform(glm::vec3(3, -1, 0)), BVolumes::BVolume::Sphere);
-	CreateEntity("Entity4 Sphere", Transform(glm::vec3(-2, 3, 1)), BVolumes::BVolume::Sphere);
-	CreateEntity("Entity5 OBB", Transform(glm::vec3(5, 5, 2)), BVolumes::BVolume::OBB);
-	CreateEntity("Entity6 OBB", Transform(glm::vec3(0, 5, 2)), BVolumes::BVolume::OBB);
+	CreateEntity("Entity1 AABB", Transform(glm::vec3(0, 0, 0)), BVolume::AABB);
+	CreateEntity("Entity2 AABB", Transform(glm::vec3(1, 2, 0)), BVolume::AABB);
+	CreateEntity("Entity3 Sphere", Transform(glm::vec3(3, -1, 0)), BVolume::Sphere);
+	CreateEntity("Entity4 Sphere", Transform(glm::vec3(-2, 3, 1)), BVolume::Sphere);
+	CreateEntity("Entity5 OBB", Transform(glm::vec3(5, 5, 2)), BVolume::OBB);
+	CreateEntity("Entity6 OBB", Transform(glm::vec3(0, 5, 2)), BVolume::OBB);
 
 	/* Monkey Model */ {
 		auto entity = ECS::Registry::CreateEntity();
@@ -169,7 +169,7 @@ void BVolumesScene::CollisionTest() {
 				continue;
 			}
 
-			if (BVolumes::CollisionDetector::AreColliding(
+			if (CollisionDetector::AreColliding(
 				  bvolume1->GetBoundingVolume(),
 				  bvolume2->GetBoundingVolume())) {
 				info1->CollisionFlag = info2->CollisionFlag = true;

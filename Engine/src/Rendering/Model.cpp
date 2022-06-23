@@ -94,7 +94,7 @@ Model ModelLoader::LoadModel(const char *modelPath, const std::shared_ptr<Shader
 			  std::move(meshes),
 			  std::move(materials),
 			  std::move(materialLink),
-			  BVolumes::AABB((maxPoint + minPoint) / 2.0f, maxPoint - minPoint)
+			  AABB((maxPoint + minPoint) / 2.0f, maxPoint - minPoint)
 	  	);
 	} catch (std::exception &e) {
 		throw e;

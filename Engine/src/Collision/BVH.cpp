@@ -10,13 +10,13 @@ BVH::BVHNode::BVHNode(BVH::Axis splitAxis, BVH::BVHNode *leftChildren, BVH::BVHN
 	Internal.RightChildren = rightChildren;
 }
 
-BVH::BVHNode::BVHNode(BVolumes::AABB &bounds, size_t firstPrimitiveIndex, size_t primitivesNum)
+BVH::BVHNode::BVHNode(AABB &bounds, size_t firstPrimitiveIndex, size_t primitivesNum)
 	: IsLeaf(true), Bounds(bounds) {
 	Leaf.FirstPrimitiveIndex = firstPrimitiveIndex;
 	Leaf.PrimitivesNum = primitivesNum;
 }
 
-void BVH::BuildFrom(const std::vector<BVolumes::AABB> &boundingVolumes) {
+void BVH::BuildFrom(const std::vector<AABB> &boundingVolumes) {
 	boundingVolumesRef = &boundingVolumes;
 	nodes.clear();
 	identifiers.resize(boundingVolumes.size());
@@ -29,15 +29,15 @@ void BVH::BuildFrom(const std::vector<BVolumes::AABB> &boundingVolumes) {
 	root = BuildTree(0, boundingVolumes.size());
 }
 
-BVolumes::AABB BVH::ComputeBoundsFor(size_t start, size_t end) {
-	BVolumes::AABB result = (*boundingVolumesRef)[start];
+AABB BVH::ComputeBoundsFor(size_t start, size_t end) {
+	AABB result = (*boundingVolumesRef)[start];
 	for (size_t i = start + 1; i < end; i++) {
 		result.Union((*boundingVolumesRef)[i]);
 	}
 	return result;
 }
 
-BVH::Axis BVH::ChooseAxisFor(const BVolumes::AABB &bounding) {
+BVH::Axis BVH::ChooseAxisFor(const AABB &bounding) {
 	auto widths = bounding.GetWidths();
 	if (widths.x > widths.y && widths.x > widths.z) {
 		return Axis::OX;
@@ -78,7 +78,7 @@ size_t BVH::PartitionEqually(size_t start, size_t end, Axis splitAxis) {
 }
 
 BVH::BVHNode* BVH::BuildTree(size_t start, size_t end) {
-	BVolumes::AABB bounding = ComputeBoundsFor(start, end);
+	AABB bounding = ComputeBoundsFor(start, end);
 	size_t primitivesNum = end - start;
 
 	float width;

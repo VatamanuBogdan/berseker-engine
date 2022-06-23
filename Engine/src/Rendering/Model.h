@@ -15,7 +15,7 @@ public:
 	explicit Model(std::vector<Mesh> &&meshes,
 			   std::vector<Material> &&materials,
 			   std::vector<int> &&meshMaterialLink,
-			   BVolumes::AABB aabb)
+			   AABB aabb)
 		: meshes(std::move(meshes)),
 		  materials(std::move(materials)),
 		  meshMaterialLink(std::move(meshMaterialLink)),
@@ -34,13 +34,13 @@ public:
 	[[nodiscard]] std::vector<Material>& GetMaterials() { return materials; }
 	[[nodiscard]] const Material& GetMaterialFor(int index) const { return materials[meshMaterialLink[index]]; }
 
-	const BVolumes::AABB& GetAABB() { return aabb; }
+	const AABB& GetAABB() { return aabb; }
 
 private:
 	std::vector<Mesh>		meshes;
 	std::vector<Material>	materials;
 	std::vector<int>		meshMaterialLink;
-	BVolumes::AABB		aabb;
+	AABB		aabb;
 	friend class ModelLoader;
 };
 
