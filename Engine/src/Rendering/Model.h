@@ -1,7 +1,7 @@
 #pragma once
 #include "Rendering/Mesh.h"
 #include "Rendering/GraphicsAPI/ShaderProgram.h"
-#include "Collision/BVolumes.h"
+#include "Physics/Boundings/BVolumes.h"
 
 #include <assimp/scene.h>
 

@@ -5,7 +5,7 @@
 #include <Rendering/Primitives/Primitives.h>
 #include <Rendering/GridLine.hpp>
 #include <Rendering/Model.h>
-#include <Collision/BVolumes.h>
+#include "Physics/Boundings/BVolumes.h"
 #include <ECS/ECS.h>
 #include <Scene/Components/Components.h>
 #include <Scene/Scene.h>

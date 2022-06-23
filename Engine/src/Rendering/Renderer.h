@@ -5,7 +5,7 @@
 #include "Rendering/Mesh.h"
 #include "Scene/Camera.hpp"
 #include "Rendering/Primitives/Renderer.h"
-#include "Collision/BVolumes.h"
+#include "Physics/Boundings/BVolumes.h"
 #include "Rendering/Model.h"
 #include "Rendering/Material.hpp"
 #include "Rendering/Skybox.h"

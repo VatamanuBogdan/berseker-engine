@@ -1,5 +1,5 @@
 #pragma once
-#include "Collision/BVolumes.h"
+#include "Physics/Boundings/BVolumes.h"
 #include "Scene/Components/Transform.h"
 
 #include <variant>
