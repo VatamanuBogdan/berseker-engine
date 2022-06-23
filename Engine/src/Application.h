@@ -1,7 +1,7 @@
 #pragma once
 #include "Rendering/GraphicsAPI/OpenGL.h"
 #include "Core/Window/Window.h"
-#include "Scene.h"
+#include "Scene/Scene.h"
 
 #include <memory>
 

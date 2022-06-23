@@ -1,6 +1,6 @@
 #pragma once
 #include "Collision/BVolumes.h"
-#include "ECS/Components/Transform.h"
+#include "Scene/Components/Transform.h"
 
 #include <variant>
 

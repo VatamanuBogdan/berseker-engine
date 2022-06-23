@@ -1,5 +1,5 @@
 #pragma once
-#include "ECS/Components/Transform.h"
+#include "Scene/Components/Transform.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

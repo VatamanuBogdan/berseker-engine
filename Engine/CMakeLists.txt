@@ -27,7 +27,7 @@ set(
     ${BERSEKER_SOURCE_DIR}/Core/Input/InputManager.h
     ${BERSEKER_SOURCE_DIR}/Application.cpp
     ${BERSEKER_SOURCE_DIR}/Application.h
-    ${BERSEKER_SOURCE_DIR}/Scene.h
+    ${BERSEKER_SOURCE_DIR}/Scene/Scene.h
     ${BERSEKER_SOURCE_DIR}/Rendering/Primitives/Renderer.cpp
     ${BERSEKER_SOURCE_DIR}/Rendering/Primitives/Renderer.h
     ${BERSEKER_SOURCE_DIR}/Rendering/Primitives/Primitives.h
@@ -39,14 +39,14 @@ set(
     ${BERSEKER_SOURCE_DIR}/Collision/BVolumes.h
     ${BERSEKER_SOURCE_DIR}/ECS/ECS.cpp
     ${BERSEKER_SOURCE_DIR}/ECS/ECS.h
-    ${BERSEKER_SOURCE_DIR}/ECS/Components/Transform.h
-    ${BERSEKER_SOURCE_DIR}/ECS/Components/ColliderComponent.h
-    ${BERSEKER_SOURCE_DIR}/ECS/Components/Identifier.h
-    ${BERSEKER_SOURCE_DIR}/ECS/Components/Components.h
+    ${BERSEKER_SOURCE_DIR}/Scene/Components/Transform.h
+    ${BERSEKER_SOURCE_DIR}/Scene/Components/ColliderComponent.h
+    ${BERSEKER_SOURCE_DIR}/Scene/Components/Identifier.h
+    ${BERSEKER_SOURCE_DIR}/Scene/Components/Components.h
     ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/FrameBuffer.cpp
     ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/FrameBuffer.h
     ${BERSEKER_SOURCE_DIR}/Rendering/Material.hpp
-    ${BERSEKER_SOURCE_DIR}/LightSource.h
+    ${BERSEKER_SOURCE_DIR}/Scene/Components/LightSource.h
     ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderRegistry.cpp
     ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderRegistry.h
     ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderResources.cpp

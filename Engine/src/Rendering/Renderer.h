@@ -9,7 +9,7 @@
 #include "Rendering/Model.h"
 #include "Rendering/Material.hpp"
 #include "Rendering/Skybox.h"
-#include "LightSource.h"
+#include "Scene/Components/LightSource.h"
 
 
 #include <vector>

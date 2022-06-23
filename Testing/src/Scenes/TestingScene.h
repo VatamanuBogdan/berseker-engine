@@ -7,8 +7,8 @@
 #include <Rendering/Model.h>
 #include <Collision/BVolumes.h>
 #include <ECS/ECS.h>
-#include <ECS/Components/Components.h>
-#include <Scene.h>
+#include <Scene/Components/Components.h>
+#include <Scene/Scene.h>
 
 #include <vector>
 #include <memory>
