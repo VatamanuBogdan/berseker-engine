@@ -1,5 +1,5 @@
 #pragma once
-#include "Rendering/Camera.hpp"
+#include "Scene/Camera.hpp"
 #include "ECS/ECS.h"
 
 

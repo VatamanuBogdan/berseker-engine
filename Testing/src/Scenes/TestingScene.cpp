@@ -1,7 +1,7 @@
 #include "TestingScene.h"
 #include "Application.h"
 #include "Rendering/Renderer.h"
-#include "Rendering/Camera.hpp"
+#include "Scene/Camera.hpp"
 #include "Rendering/Primitives/Renderer.h"
 #include "ResourceLoaders/ShaderRegistry.h"
 

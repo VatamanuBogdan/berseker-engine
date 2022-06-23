@@ -3,7 +3,7 @@
 #include "Rendering/GraphicsAPI/VertexBuffer.hpp"
 #include "Rendering/GraphicsAPI/IndexBuffer.hpp"
 #include "Rendering/Primitives/Primitives.h"
-#include "Rendering/Camera.hpp"
+#include "Scene/Camera.hpp"
 #include "Rendering/Mesh.h"
 
 #include <glm/glm.hpp>

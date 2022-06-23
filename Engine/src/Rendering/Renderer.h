@@ -3,7 +3,7 @@
 #include "Rendering/GraphicsAPI/IndexBuffer.hpp"
 #include "Rendering/GraphicsAPI/ShaderProgram.h"
 #include "Rendering/Mesh.h"
-#include "Rendering/Camera.hpp"
+#include "Scene/Camera.hpp"
 #include "Rendering/Primitives/Renderer.h"
 #include "Collision/BVolumes.h"
 #include "Rendering/Model.h"
