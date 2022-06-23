@@ -2,7 +2,7 @@
 #include "EditorCameraController.h"
 
 #include <Rendering/Renderer.h>
-#include <Scenes/BVolumesScene.h>
+#include <Scenes/TestingScene.h>
 #include <Rendering/GraphicsAPI/Texture2D.hpp>
 
 #include <imgui.h>
@@ -33,7 +33,7 @@ void EditorApplication::RenderStage() {
 }
 
 void EditorApplication::Init() {
-	std::shared_ptr<Scene> scene = std::make_shared<BVolumesScene>(this);
+	std::shared_ptr<Scene> scene = std::make_shared<TestingScene>(this);
 	Application::Init(scene);
 	auto glfwWindow = std::static_pointer_cast<GLFWWindow>(window)->GetUnderlyingWindow();
 	uiRendererBackend = std::make_unique<UIRendererImpl_GL_GLFW>(glfwWindow, UIRendererImpl_GL_GLFW::GLSLVersion(4, 6));

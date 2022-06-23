@@ -13,9 +13,9 @@
 #include <vector>
 #include <memory>
 
-class BVolumesScene final : public Scene {
+class TestingScene final : public Scene {
 public:
-	explicit BVolumesScene(Application *application)
+	explicit TestingScene(Application *application)
 		: Scene(application) {
 	}
 

@@ -6,8 +6,8 @@ set(BERSEKER_TESTING_SOURCE_DIR ${BERSEKER_TESTING_ROOT_DIR}/src)
 
 set(
     BERSEKER_TESTING_SOURCES
-    ${BERSEKER_TESTING_SOURCE_DIR}/Scenes/BVolumesScene.h
-    ${BERSEKER_TESTING_SOURCE_DIR}/Scenes/BVolumesScene.cpp
+    ${BERSEKER_TESTING_SOURCE_DIR}/Scenes/TestingScene.h
+    ${BERSEKER_TESTING_SOURCE_DIR}/Scenes/TestingScene.cpp
 )
 
 add_library(

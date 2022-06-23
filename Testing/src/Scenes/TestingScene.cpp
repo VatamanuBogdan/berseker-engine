@@ -1,4 +1,4 @@
-#include "BVolumesScene.h"
+#include "TestingScene.h"
 #include "Application.h"
 #include "Rendering/Renderer.h"
 #include "Rendering/Camera.hpp"
@@ -10,7 +10,7 @@
 #include <iostream>
 
 
-void BVolumesScene::Init() {
+void TestingScene::Init() {
 	auto &window = application->GetMainWindow();
 	uint32_t width = window->GetWidth();
 	uint32_t height = window->GetHeight();
@@ -32,11 +32,11 @@ void BVolumesScene::Init() {
 	InitEntities();
 }
 
-void BVolumesScene::Deinit() {
+void TestingScene::Deinit() {
 	camera.reset();
 }
 
-void BVolumesScene::OnPreUpdate() {
+void TestingScene::OnPreUpdate() {
 	for (auto &entity : entities) {
 		auto *collider = registry.GetComponentFrom<ColliderComponent>(entity);
 		auto *transform = registry.GetComponentFrom<Transform>(entity);
@@ -53,13 +53,13 @@ void BVolumesScene::OnPreUpdate() {
 	CollisionTest();
 }
 
-void BVolumesScene::OnUpdate() {
+void TestingScene::OnUpdate() {
 }
 
-void BVolumesScene::OnPostUpdate() {
+void TestingScene::OnPostUpdate() {
 }
 
-void BVolumesScene::OnPreRendering() {
+void TestingScene::OnPreRendering() {
 	for (auto &entity : entities) {
 		auto *transform = registry.GetComponentFrom<Transform>(entity);
 		auto *model = registry.GetComponentFrom<Model>(entity);
@@ -81,7 +81,7 @@ void BVolumesScene::OnPreRendering() {
 	}
 }
 
-void BVolumesScene::OnPostRendering() {
+void TestingScene::OnPostRendering() {
 	for (auto &entity : entities) {
 		auto *collider = registry.GetComponentFrom<ColliderComponent>(entity);
 		auto *info = registry.GetComponentFrom<CollisionInfo>(entity);
@@ -109,7 +109,7 @@ void BVolumesScene::OnPostRendering() {
 	gridLine->Draw(camera->GetView(), camera->GetProjection());
 }
 
-void BVolumesScene::CreateEntity(const char *identifier, const Transform &transform, BVolume::Type type) {
+void TestingScene::CreateEntity(const char *identifier, const Transform &transform, BVolume::Type type) {
 	auto entity = ECS::Registry::CreateEntity();
 
 	registry.AddComponentTo<Identifier>(entity, identifier);
@@ -120,7 +120,7 @@ void BVolumesScene::CreateEntity(const char *identifier, const Transform &transf
 	entities.push_back(std::move(entity));
 }
 
-void BVolumesScene::InitEntities() {
+void TestingScene::InitEntities() {
 	// Bounding Volumes Testing Entities
 	CreateEntity("Entity1 AABB", Transform(glm::vec3(0, 0, 0)), BVolume::AABB);
 	CreateEntity("Entity2 AABB", Transform(glm::vec3(1, 2, 0)), BVolume::AABB);
@@ -152,7 +152,7 @@ void BVolumesScene::InitEntities() {
 
 }
 
-void BVolumesScene::CollisionTest() {
+void TestingScene::CollisionTest() {
 	for (auto i = 0; i < entities.size(); i++) {
 		auto *bvolume1 = registry.GetComponentFrom<ColliderComponent>(entities[i]);
 		auto *info1 = registry.GetComponentFrom<CollisionInfo>(entities[i]);
