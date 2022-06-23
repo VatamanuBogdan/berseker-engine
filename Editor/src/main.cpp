@@ -1,5 +1,5 @@
 #include "EditorApplication.h"
-#include "Utils/Logger.h"
+#include "Core/Logger.h"
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
 	try {

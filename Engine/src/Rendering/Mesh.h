@@ -2,7 +2,7 @@
 #include "Rendering/GraphicsAPI/VertexArray.hpp"
 #include "Rendering/GraphicsAPI/VertexBuffer.hpp"
 #include "Rendering/GraphicsAPI/IndexBuffer.hpp"
-#include "../Utils.h"
+#include "Core/Debug.h"
 
 #include <glm/glm.hpp>
 

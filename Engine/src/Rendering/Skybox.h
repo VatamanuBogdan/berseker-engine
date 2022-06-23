@@ -4,7 +4,7 @@
 #include "Rendering/GraphicsAPI/IndexBuffer.hpp"
 #include "Rendering/GraphicsAPI/ShaderProgram.h"
 
-#include "../Utils.h"
+#include "Core/Memory.h"
 
 #include <glm/glm.hpp>
 

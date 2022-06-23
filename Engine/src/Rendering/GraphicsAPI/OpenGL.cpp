@@ -1,6 +1,6 @@
 #include "OpenGL.h"
 
-#include "Utils/Logger.h"
+#include "Core/Logger.h"
 
 namespace OpenGL {
 	bool SetupOpenGL(GLADloadproc gladLoadProc, OpenGLDebugCallback callback) {

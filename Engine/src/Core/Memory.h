@@ -1,23 +1,13 @@
 #pragma once
-#include <functional>
 #include <cstdint>
+#include <memory>
 
-#ifdef NDEBUG
-#define OnDebug(expression)
-#else
-#define OnDebug(expression) expression
-#endif
-
-#ifdef NDEBUG
-#define DebugClassMember(type, member)
-#else
-#define DebugClassMember(type, member) type member;
-#endif
 
 #define SafeNullableCall(object, property) \
 	if (object) {                          \
 		((object)->property);			\
 	}
+
 
 template <typename T>
 class Lateinit final {

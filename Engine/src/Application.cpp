@@ -2,7 +2,7 @@
 #include "Rendering/Renderer.h"
 #include "Window/Window.h"
 #include "Window/GLFW/GLFWWindow.h"
-#include "Utils/Logger.h"
+#include "Core/Logger.h"
 
 #include <chrono>
 

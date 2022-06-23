@@ -2,7 +2,6 @@
 #include "Rendering/GraphicsAPI/OpenGL.h"
 #include "Window/Window.h"
 #include "Scene.h"
-#include "Utils.h"
 
 #include <memory>
 
