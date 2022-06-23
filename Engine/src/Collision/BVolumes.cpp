@@ -3,6 +3,33 @@
 
 namespace BVolumes {
 
+	void AABB::Apply(const Transform &transform) {
+		glm::mat4 transformMatrix = transform.ComputeTransformMatrix();
+		glm::vec3 minPoint = position - halfWidths;
+		glm::vec3 maxPoint = position + halfWidths;
+
+		glm::vec4 points[] = {
+			  {maxPoint, 1},
+			  {maxPoint.x, maxPoint.y, minPoint.z, 1},
+			  {minPoint.x, maxPoint.y, maxPoint.z, 1},
+			  {minPoint.x, maxPoint.y, minPoint.z, 1},
+			  {minPoint, 1},
+			  {maxPoint.x, minPoint.y, minPoint.z, 1},
+			  {minPoint.x, minPoint.y, maxPoint.z, 1},
+			  {maxPoint.x, minPoint.y, maxPoint.z, 1},
+		};
+
+		minPoint = maxPoint = transformMatrix * points[0];
+		for (auto &point : points) {
+			glm::vec3 transformedPoint = transformMatrix * point;
+			minPoint = glm::min(minPoint, transformedPoint);
+			maxPoint = glm::max(maxPoint, transformedPoint);
+		}
+
+		position = (minPoint + maxPoint) / 2.0f;
+		halfWidths = (maxPoint - minPoint) / 2.0f;
+	}
+
 	glm::vec3 AABB::ComputeClosesPointFor(const glm::vec3 &point) const {
 		glm::vec3 min = position - halfWidths;
 		glm::vec3 max = position + halfWidths;
@@ -31,6 +58,20 @@ namespace BVolumes {
 														    (point.z - max.z) : 0;
 
 		return xDistance + yDistance + zDistance;
+	}
+
+	void AABB::Union(const AABB &aabb) {
+		glm::vec3 minPoint = glm::min(position - halfWidths, aabb.position - aabb.halfWidths);
+		glm::vec3 maxPoint = glm::min(position + halfWidths, aabb.position + aabb.halfWidths);
+
+		position = (minPoint + maxPoint) / 2.0f;
+		halfWidths = (maxPoint - minPoint) / 2.0f;
+	}
+
+	AABB& AABB::operator=(const AABB &aabb) {
+		position = aabb.position;
+		halfWidths = aabb.halfWidths;
+		return *this;
 	}
 
 	glm::vec3 OBB::ComputeClosesPointFor(const glm::vec3 &point) const {
