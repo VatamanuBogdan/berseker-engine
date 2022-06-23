@@ -3,11 +3,59 @@
 #include <memory>
 
 
-#define SafeNullableCall(object, property) \
-	if (object) {                          \
+#define SafeNullableCall(object, property) 	\
+	if (object) {					\
 		((object)->property);			\
 	}
 
+template <typename T>
+class ObsRef {
+public:
+	explicit ObsRef(T *reference = nullptr) {
+		this->reference = reference;
+	}
+
+	ObsRef(const ObsRef<T> &obsRef) {
+		this->reference = obsRef->reference;
+	}
+
+	void Set(T *reference) {
+		this->reference = reference;
+	}
+
+	void Invalidate() {
+		this->reference = nullptr;
+	}
+
+	explicit operator bool () {
+		return reference != nullptr;
+	}
+
+	bool operator==(T *reference) {
+		return this->reference == reference;
+	}
+
+	bool operator==(const ObsRef<T> &obsRef) {
+		return this->reference == obsRef.reference;
+	}
+
+	ObsRef& operator=(T *reference) {
+		this->reference = reference;
+	}
+
+	ObsRef& operator=(const ObsRef<T> &obsRef) {
+		this->reference = obsRef.reference;
+	}
+
+	T& operator*() { return *reference; }
+	const T& operator*() const { return *reference; }
+
+	T* operator->() { return reference; }
+	const T* operator->() const { return reference; }
+
+private:
+	T *reference = nullptr;
+};
 
 template <typename T>
 class Lateinit final {
