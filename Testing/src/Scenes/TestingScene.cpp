@@ -7,8 +7,6 @@
 
 #include <glm/glm.hpp>
 
-#include <iostream>
-
 
 void TestingScene::Init() {
 	auto &window = application->GetMainWindow();
@@ -110,7 +108,7 @@ void TestingScene::OnPostRendering() {
 }
 
 void TestingScene::CreateEntity(const char *identifier, const Transform &transform, BVolume::Type type) {
-	auto entity = ECS::Registry::CreateEntity();
+	auto entity = registry.CreateEntity();
 
 	registry.AddComponentTo<Identifier>(entity, identifier);
 	registry.AddComponentTo<Transform>(entity, transform);
@@ -130,7 +128,7 @@ void TestingScene::InitEntities() {
 	CreateEntity("Entity6 OBB", Transform(glm::vec3(0, 5, 2)), BVolume::OBB);
 
 	/* Monkey Model */ {
-		auto entity = ECS::Registry::CreateEntity();
+		auto entity = registry.CreateEntity();
 		registry.AddComponentTo<Identifier>(entity, "Model");
 		registry.AddComponentTo<Model>(
 			  entity,
@@ -142,7 +140,7 @@ void TestingScene::InitEntities() {
 	}
 
 	/* Light Source */ {
-		auto entity = ECS::Registry::CreateEntity();
+		auto entity = registry.CreateEntity();
 		registry.AddComponentTo<Identifier>(entity, "LightSource");
 		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(0, 4, 2), glm::vec3(1), glm::vec3(0.5f)));
 		registry.AddComponentTo<LightSource>(entity, LightSource(glm::vec3(0.1), glm::vec3(1), glm::vec3(0.4)));

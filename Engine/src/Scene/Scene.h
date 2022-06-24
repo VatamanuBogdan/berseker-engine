@@ -1,6 +1,6 @@
 #pragma once
 #include "Scene/Camera.hpp"
-#include "ECS/ECS.h"
+#include "Ecs/Registry.h"
 
 
 #include <vector>
@@ -24,13 +24,13 @@ public:
 	virtual void OnPostRendering() = 0;
 
 public:
-	std::vector<ECS::Entity>& GetEntities() { return entities; }
-	ECS::Registry& GetRegistry() { return registry; }
+	std::vector<Ecs::Entity>& GetEntities() { return entities; }
+	Ecs::Registry& GetRegistry() { return registry; }
 	Camera& GetCamera() { return *camera; }
 
 protected:
 	Application				*application;
-	ECS::Registry			 registry;
-	std::vector<ECS::Entity>	 entities;
+	Ecs::Registry			 registry;
+	std::vector<Ecs::Entity>	 entities;
 	std::shared_ptr<Camera>		 camera;
 };

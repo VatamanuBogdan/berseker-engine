@@ -26,7 +26,7 @@ private:
 
 private:
 	ImFont	*defaultEditorFont;
-	ECS::Entity	*selectedEntity = nullptr;
+	Ecs::Entity	*selectedEntity = nullptr;
 	int		 materialId = -1;
 
 private:

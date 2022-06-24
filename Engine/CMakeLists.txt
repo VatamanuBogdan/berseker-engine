@@ -37,8 +37,6 @@ set(
     ${BERSEKER_SOURCE_DIR}/Physics/Partitioning/BVH.h
     ${BERSEKER_SOURCE_DIR}/Physics/Boundings/BVolumes.cpp
     ${BERSEKER_SOURCE_DIR}/Physics/Boundings/BVolumes.h
-    ${BERSEKER_SOURCE_DIR}/ECS/ECS.cpp
-    ${BERSEKER_SOURCE_DIR}/ECS/ECS.h
     ${BERSEKER_SOURCE_DIR}/Scene/Components/Transform.h
     ${BERSEKER_SOURCE_DIR}/Scene/Components/ColliderComponent.h
     ${BERSEKER_SOURCE_DIR}/Scene/Components/Identifier.h
@@ -61,6 +59,12 @@ set(
     ${BERSEKER_SOURCE_DIR}/Core/Memory.cpp
     ${BERSEKER_SOURCE_DIR}/Core/Memory.h
     ${BERSEKER_SOURCE_DIR}/Core/Debug.h
+    ${BERSEKER_SOURCE_DIR}/Ecs/Components.h
+    ${BERSEKER_SOURCE_DIR}/Ecs/Components.cpp
+    ${BERSEKER_SOURCE_DIR}/Ecs/Entity.cpp
+    ${BERSEKER_SOURCE_DIR}/Ecs/Entity.h
+    ${BERSEKER_SOURCE_DIR}/Ecs/Registry.cpp
+    ${BERSEKER_SOURCE_DIR}/Ecs/Registry.h
 )
 
 # Set glfw library
