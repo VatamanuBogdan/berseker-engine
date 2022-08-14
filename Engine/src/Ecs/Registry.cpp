@@ -1,10 +1,16 @@
 #include "Registry.h"
 
+#include <utility>
+
 namespace Ecs {
 
-	Entity Registry::CreateEntity() {
-		Entity entity(entitiesIdCounter++);
-		return std::move(entity);
-	}
+Registry::~Registry() {
+	// TODO
+}
+
+Entity Registry::CreateEntity() {
+	Entity entity(entitiesIdCounter++);
+	return std::move(entity);
+}
 
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <memory>
+#include <cstring>
 
 
 #define SafeNullableCall(object, property) 	\
@@ -102,3 +103,13 @@ public:
 private:
 	uint8_t memory[sizeof(T)]{};
 };
+
+template <typename SwapType>
+void MemorySwap(SwapType &var1, SwapType &var2) {
+	constexpr size_t size = sizeof(SwapType);
+	uint8_t temp[size];
+
+	memcpy(static_cast<void*>(temp), static_cast<void*>(&var1), size);
+	memcpy(static_cast<void*>(&var1), static_cast<void*>(&var2), size);
+	memcpy(static_cast<void*>(&var2), temp, size);
+}

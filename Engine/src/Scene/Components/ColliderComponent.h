@@ -2,7 +2,7 @@
 #include "Physics/Boundings/BVolumes.h"
 #include "Scene/Components/Transform.h"
 
-#include <variant>
+#include <memory>
 
 struct CollisionInfo {
 	bool CollisionFlag = false;
@@ -10,35 +10,33 @@ struct CollisionInfo {
 
 class ColliderComponent {
 public:
-	explicit ColliderComponent(const Transform &transform, BVolume::Type type)
-		: bVolume(nullptr) {
+	explicit ColliderComponent(const Transform &transform, BVolume::Type type) {
 		InitBVolume(transform, type);
 	}
 
-
 	void InitBVolume(const Transform &transform, BVolume::Type type) {
 		if (type == BVolume::AABB) {
-			bVolumeRef = &bVolume.template emplace<AABB>(transform.Position, transform.Scale);
+			bVolume = std::make_shared<AABB>(transform.Position, transform.Scale);
 		} else if (type == BVolume::Sphere) {
-			bVolumeRef = &bVolume.template emplace<Sphere>(transform.Position, transform.Scale.x);
+			bVolume = std::make_shared<Sphere>(transform.Position, transform.Scale.x);
 		} else if (type == BVolume::OBB) {
-			auto &obb = bVolume.template emplace<OBB>(transform.Position, transform.Scale);
-			obb.SetRotation(transform.Rotation);
-			bVolumeRef = &obb;
+			bVolume = std::make_shared<OBB>(transform.Position, transform.Scale);
+			((OBB*) bVolume.get())->SetRotation(transform.Rotation);
 		}
 	}
 
 	void SetTransform(const Transform &transform) {
-		if (std::holds_alternative<AABB>(bVolume)) {
-			auto &aabb = std::get<AABB>(bVolume);
+		BVolume::Type tag = bVolume->TypeTag;
+		if (tag == BVolume::AABB) {
+			auto &aabb = *((AABB*) (bVolume.get()));
 			aabb.SetPosition(transform.Position);
 			aabb.SetWidths(transform.Scale);
-		} else if (std::holds_alternative<Sphere>(bVolume)) {
-			auto &sphere = std::get<Sphere>(bVolume);
+		} else if (tag == BVolume::Sphere) {
+			auto &sphere = *((Sphere*) (bVolume.get()));
 			sphere.SetPosition(transform.Position);
 			sphere.SetRadius(transform.Scale.x);
-		} else if (std::holds_alternative<OBB>(bVolume)) {
-			auto &obb = std::get<OBB>(bVolume);
+		} else if (tag == BVolume::OBB) {
+			auto &obb = *((OBB*) (bVolume.get()));
 			obb.SetPosition(transform.Position);
 			obb.SetRotation(transform.Rotation);
 			obb.SetWidths(transform.Scale);
@@ -46,10 +44,9 @@ public:
 	}
 
 	const BVolume& GetBoundingVolume() {
-		return *bVolumeRef;
+		return *bVolume;
 	}
 
 private:
-	BVolume *bVolumeRef;
-	std::variant<AABB, Sphere, OBB, void*> bVolume;
+	std::shared_ptr<BVolume> bVolume;
 };

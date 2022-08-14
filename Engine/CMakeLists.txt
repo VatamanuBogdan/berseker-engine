@@ -59,12 +59,15 @@ set(
     ${BERSEKER_SOURCE_DIR}/Core/Memory.cpp
     ${BERSEKER_SOURCE_DIR}/Core/Memory.h
     ${BERSEKER_SOURCE_DIR}/Core/Debug.h
-    ${BERSEKER_SOURCE_DIR}/Ecs/Components.h
-    ${BERSEKER_SOURCE_DIR}/Ecs/Components.cpp
+    ${BERSEKER_SOURCE_DIR}/Ecs/Component.h
+    ${BERSEKER_SOURCE_DIR}/Ecs/Component.cpp
+    ${BERSEKER_SOURCE_DIR}/Ecs/ComponentSet.h
     ${BERSEKER_SOURCE_DIR}/Ecs/Entity.cpp
     ${BERSEKER_SOURCE_DIR}/Ecs/Entity.h
     ${BERSEKER_SOURCE_DIR}/Ecs/Registry.cpp
     ${BERSEKER_SOURCE_DIR}/Ecs/Registry.h
+    ${BERSEKER_SOURCE_DIR}/Core/DataStructures/SparseSet.cpp
+    ${BERSEKER_SOURCE_DIR}/Core/DataStructures/SparseSet.h
 )
 
 # Set glfw library

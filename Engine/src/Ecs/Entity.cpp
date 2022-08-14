@@ -4,9 +4,12 @@
 namespace Ecs {
 
 Entity::Entity(Entity &&entity) noexcept
-	: id(entity.id), mask(entity.mask) {
+	: id(entity.id) {
 	entity.id = -1;
-	entity.mask.reset();
+}
+
+Entity::Entity(IdType id)
+	: id(id) {
 }
 
 }
