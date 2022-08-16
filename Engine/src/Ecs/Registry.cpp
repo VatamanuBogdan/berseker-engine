@@ -5,7 +5,12 @@
 namespace Ecs {
 
 Registry::~Registry() {
-	// TODO
+	for (size_t i = 0; i < componentSetDeleters.size(); i++) {
+		auto deleter = componentSetDeleters[i];
+		if (deleter) {
+			deleter(componentSets[i]);
+		}
+	}
 }
 
 Entity Registry::CreateEntity() {

@@ -62,9 +62,11 @@ private:
 		size_t componentId = Component::Id<ComponentType>();
 		if (componentSets.size() <= componentId) {
 			componentSets.resize(componentId + 1, nullptr);
+			componentSetDeleters.resize(componentId + 1, nullptr);
 		}
 		if (!componentSets[componentId]) {
 			componentSets[componentId] = new ComponentSet<ComponentType>(1);
+			componentSetDeleters[componentId] = ComponentSetDeleter<ComponentType>;
 		}
 	}
 
@@ -74,9 +76,15 @@ private:
 		return *reinterpret_cast<ComponentSet<ComponentType>*>(componentSets[componentId]);
 	}
 
+	template<typename ComponentType>
+	static void ComponentSetDeleter(void *componentSet) {
+		delete reinterpret_cast<ComponentSet<ComponentType>*>(componentSet);
+	}
+
 private:
-	std::vector<void*>	componentSets;
-	Entity::IdType		entitiesIdCounter = 0;
+	std::vector<void*>		componentSets;
+	std::vector<void (*)(void*)>	componentSetDeleters;
+	Entity::IdType			entitiesIdCounter = 0;
 };
 
 }
