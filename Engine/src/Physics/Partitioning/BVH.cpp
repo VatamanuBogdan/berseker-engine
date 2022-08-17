@@ -17,6 +17,11 @@ BVH::BVHNode::BVHNode(AABB &bounds, size_t firstIdentifier, size_t lastIdentifie
 }
 
 void BVH::BuildFrom(std::vector<BoundedEntity> &&entities) {
+	if (entities.empty()) {
+		bvhRoot = nullptr;
+		return;
+	}
+
 	nodesPool.clear();
 	nodesPool.reserve(3 * entities.size());
 	boundedEntities = std::move(entities);
@@ -26,14 +31,15 @@ void BVH::BuildFrom(std::vector<BoundedEntity> &&entities) {
 		ids[i] = i;
 	}
 
-	bvhRoot = BuildTree(0, this->boundedEntities.size());
+	bvhDepth = 0;
+	bvhRoot = BuildTree(0, this->boundedEntities.size(), bvhDepth);
 }
 
 BVH::BVHNode *BVH::GetRoot() {
 	return bvhRoot;
 }
 
-BVH::BVHNode* BVH::BuildTree(size_t startId, size_t endId) {
+BVH::BVHNode* BVH::BuildTree(size_t startId, size_t endId, size_t &depth) {
 	AABB groupBounding = ComputeBoundingForRange(startId, endId);
 	size_t entitiesNum = endId - startId;
 
@@ -52,17 +58,20 @@ BVH::BVHNode* BVH::BuildTree(size_t startId, size_t endId) {
 	}
 
 	if (entitiesNum == 1 || width == 0) {
-		nodesPool.emplace_back(groupBounding, nodesPool.size(), nodesPool.size() + entitiesNum);
+		depth++;
+		nodesPool.emplace_back(groupBounding, startId, endId - 1);
 		return &nodesPool.back();
 	}
 
 	size_t partitionId = PartitionEqually(startId, endId, splitAxis);
-	nodesPool.emplace_back(splitAxis, BuildTree(startId, partitionId), BuildTree(partitionId, endId));
+	size_t leftDepth = depth + 1, rightDepth = depth + 1;
+	nodesPool.emplace_back(splitAxis, BuildTree(startId, partitionId, leftDepth), BuildTree(partitionId, endId, rightDepth));
+	depth = std::max(leftDepth, rightDepth);
 	return &nodesPool.back();
 }
 
 AABB& BVH::GetBoundingUsingId(size_t id) {
-	return boundedEntities[id].second;
+	return boundedEntities[ids[id]].second;
 }
 
 AABB BVH::ComputeBoundingForRange(size_t startId, size_t endId) {
@@ -84,30 +93,30 @@ BVH::Axis BVH::FindBestAxisFor(const AABB &bounding) {
 	return BVH::Axis::OZ;
 }
 
-size_t BVH::PartitionEqually(size_t start, size_t end, Axis splitAxis) {
-	size_t mid = (start + end) / 2;
+size_t BVH::PartitionEqually(size_t startId, size_t endId, Axis splitAxis) {
+	size_t mid = (startId + endId) / 2;
 	auto xAxisComparator = [this](const size_t id1, const size_t id2) {
 		return GetBoundingUsingId(id1).GetPosition().x
 			 < GetBoundingUsingId(id2).GetPosition().x;
 	};
-	auto yAxisComparator = [=](const size_t id1, const size_t id2) {
+	auto yAxisComparator = [this](const size_t id1, const size_t id2) {
 		return GetBoundingUsingId(id1).GetPosition().y
 			 < GetBoundingUsingId(id2).GetPosition().y;
 	};
-	auto zAxisComparator = [=](const size_t id1, const size_t id2) {
+	auto zAxisComparator = [this](const size_t id1, const size_t id2) {
 		return GetBoundingUsingId(id1).GetPosition().z
 			 < GetBoundingUsingId(id2).GetPosition().z;
 	};
 
 	switch (splitAxis) {
 	case OX:
-		std::nth_element(&ids[start], &ids[mid], &ids[end], xAxisComparator);
+		std::nth_element(&ids[startId], &ids[mid], &ids[endId - 1], xAxisComparator);
 		break;
 	case OY:
-		std::nth_element(&ids[start], &ids[mid], &ids[end], yAxisComparator);
+		std::nth_element(&ids[startId], &ids[mid], &ids[endId - 1], yAxisComparator);
 		break;
 	case OZ:
-		std::nth_element(&ids[start], &ids[mid], &ids[end], zAxisComparator);
+		std::nth_element(&ids[startId], &ids[mid], &ids[endId - 1], zAxisComparator);
 		break;
 	}
 	return mid;
