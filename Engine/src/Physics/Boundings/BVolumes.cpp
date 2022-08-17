@@ -60,7 +60,7 @@ float AABB::ComputeSquaredDistanceToClosesPointFor(const glm::vec3 &point) const
 
 void AABB::Union(const AABB &aabb) {
 	glm::vec3 minPoint = glm::min(position - halfWidths, aabb.position - aabb.halfWidths);
-	glm::vec3 maxPoint = glm::min(position + halfWidths, aabb.position + aabb.halfWidths);
+	glm::vec3 maxPoint = glm::max(position + halfWidths, aabb.position + aabb.halfWidths);
 
 	position = (minPoint + maxPoint) / 2.0f;
 	halfWidths = (maxPoint - minPoint) / 2.0f;
