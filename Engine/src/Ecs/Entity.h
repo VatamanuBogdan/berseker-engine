@@ -7,6 +7,7 @@ class Registry;
 
 class Entity {
 public:
+	Entity(const Entity& entity) = default;
 	Entity(Entity &&entity) noexcept;
 
 private:
