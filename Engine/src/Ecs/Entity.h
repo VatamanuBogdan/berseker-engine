@@ -7,7 +7,6 @@ class Registry;
 
 class Entity {
 public:
-	Entity(const Entity&) = delete;
 	Entity(Entity &&entity) noexcept;
 
 private:
