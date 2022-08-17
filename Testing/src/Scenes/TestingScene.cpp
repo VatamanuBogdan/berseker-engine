@@ -20,10 +20,6 @@ void TestingScene::Init() {
 		  100.0f
 	);
 	camera.reset(new PerspectiveCamera(glm::vec3(0), glm::vec3(0), properties));
-	lightedModelShader = ShaderRegistry::Get().GetShader(ShaderResource::LightedModel);
-	lightShader = ShaderRegistry::Get().GetShader(ShaderResource::LightSource);
-
-
 	gridLine = std::make_shared<GridLine>();
 
 	Renderer::SetCamera(camera);

@@ -36,7 +36,5 @@ private:
 	void CollisionTest();
 
 private:
-	std::shared_ptr<GridLine> 			gridLine;
-	std::shared_ptr<ShaderProgram>		lightedModelShader;
-	std::shared_ptr<ShaderProgram>		lightShader;
+	std::shared_ptr<GridLine> gridLine;
 };
