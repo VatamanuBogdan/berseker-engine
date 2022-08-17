@@ -14,6 +14,10 @@ public:
 		InitBVolume(transform, type);
 	}
 
+	explicit ColliderComponent(const AABB &aabb)
+		: bVolume(std::make_shared<AABB>(aabb)) {
+	}
+
 	void InitBVolume(const Transform &transform, BVolume::Type type) {
 		if (type == BVolume::AABB) {
 			bVolume = std::make_shared<AABB>(transform.Position, transform.Scale);

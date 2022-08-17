@@ -68,6 +68,7 @@ set(
     ${BERSEKER_SOURCE_DIR}/Ecs/Registry.h
     ${BERSEKER_SOURCE_DIR}/Core/DataStructures/SparseSet.cpp
     ${BERSEKER_SOURCE_DIR}/Core/DataStructures/SparseSet.h
+    ${BERSEKER_SOURCE_DIR}/Scene/Components/ModelComponent.h
 )
 
 # Set glfw library
