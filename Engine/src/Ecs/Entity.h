@@ -10,6 +10,10 @@ public:
 	Entity(const Entity& entity) = default;
 	Entity(Entity &&entity) noexcept;
 
+	bool operator==(const Entity &entity) const {
+		return id == entity.id;
+	}
+
 private:
 	using IdType = uint32_t;
 

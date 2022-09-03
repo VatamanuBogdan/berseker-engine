@@ -43,11 +43,17 @@ Collider::Collider(std::vector<ConvexGeometry> &&convexGeometries, const Transfo
 	  : convexGeometries(std::move(convexGeometries)), transform(transform) {
 }
 
+Collider::Collider(Collider &&collider)
+	: convexGeometries(std::move(collider.convexGeometries)), transform(collider.transform) {
+}
+
 const Transform &Collider::GetTransform() const { return transform; }
 
 void Collider::SetTransform(const Transform &transform) { this->transform = transform; }
 
 const std::vector<ConvexGeometry> &Collider::GetGeometry() const { return convexGeometries; }
+
+
 
 
 void GJKCollisionStrategy::Init() {
@@ -163,11 +169,12 @@ bool GJKCollisionStrategy::EvolveTetrahedronSimplex(GJKCollisionStrategy::Simple
 
 	return true;
 }
-
+/*
 std::ostream &operator<<(std::ostream &os, const glm::vec3 &vec) {
 	os << "x: " << vec.x << " y: " << vec.y << " z: " << vec.z;
 	return os;
 }
+ */
 
 bool GJKCollisionStrategy::AreConvexGeometriesColliding() {
 	glm::vec3 direction(1, 1, 1);

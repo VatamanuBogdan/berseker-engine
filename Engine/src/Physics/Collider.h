@@ -26,6 +26,7 @@ private:
 class Collider {
 public:
 	explicit Collider(std::vector<ConvexGeometry> &&convexGeometries, const Transform &transform);
+	Collider(Collider &&collider);
 
 	[[nodiscard]] const Transform& GetTransform() const;
 	[[nodiscard]] const std::vector<ConvexGeometry>& GetGeometry() const;

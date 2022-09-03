@@ -14,7 +14,7 @@ set(
     src/Scenes/Timer.h
     src/Scenes/CollisionScene.cpp
     src/Scenes/CollisionScene.h
-)
+    src/Scenes/GJKScene.cpp src/Scenes/GJKScene.h)
 
 add_library(
     ${BERSEKER_TESTING_BINARY}

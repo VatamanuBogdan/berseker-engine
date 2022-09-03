@@ -5,6 +5,11 @@
 
 using namespace std::string_literals;
 
+RenderableCollider::RenderableCollider(RenderableCollider &&renderableCollider) noexcept
+	: vao(std::move(renderableCollider.vao)), size(renderableCollider.size) {
+}
+
+
 std::pair<Collider, RenderableCollider> ColliderLoader::LoadCollider(const char *colliderPath) {
 	std::ifstream inStream(colliderPath);
 	if (!inStream.is_open()) {
@@ -60,3 +65,4 @@ std::pair<Collider, RenderableCollider> ColliderLoader::LoadCollider(const char 
 
 	return { Collider(std::move(colliderConvexComponents), Transform()), std::move(renderableComponent) };
 }
+

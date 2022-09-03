@@ -73,7 +73,7 @@ set(
     ${BERSEKER_SOURCE_DIR}/Physics/ColliderLoader.h
     ${BERSEKER_SOURCE_DIR}/Physics/Collider.cpp
     ${BERSEKER_SOURCE_DIR}/Physics/Collider.h
-)
+    src/Scene/Components/ColliderComponent.h)
 
 # Set glfw library
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)

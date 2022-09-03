@@ -7,6 +7,9 @@
 struct RenderableCollider {
 	VertexArray vao;
 	size_t	size;
+
+	RenderableCollider() = default;
+	RenderableCollider(RenderableCollider &&renderableCollider) noexcept;
 };
 
 
