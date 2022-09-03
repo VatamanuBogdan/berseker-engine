@@ -4,6 +4,7 @@
 #include <Rendering/Renderer.h>
 #include <Scenes/TestingScene.h>
 #include <Scenes/BVHScene.h>
+#include <Scenes/GJKScene.h>
 #include <Rendering/GraphicsAPI/Texture2D.hpp>
 
 #include "Scenes/Timer.h"
@@ -18,7 +19,7 @@ EditorApplication::EditorApplication()
 void EditorApplication::UpdateStage(double deltaTime) {
 	this->deltaTime = deltaTime;
 
-	EditorCameraController(GetMainWindow()->GetInput(), scene->GetCamera());
+	EditorCameraController(GetMainWindow()->GetInput(), scene->GetCamera(), deltaTime);
 	SafeNullableCall(scene, OnPreUpdate())
 	SafeNullableCall(scene, OnUpdate())
 	SafeNullableCall(scene, OnPostUpdate())
@@ -31,7 +32,6 @@ void EditorApplication::RenderStage() {
 	Timer timer;
 	timer.Start();
 	Renderer::Render();
-	std::cout << "Rendering Stage:" << timer.Stop() << std::endl;
 	SafeNullableCall(scene, OnPostRendering())
 	fbo->Unbind();
 
@@ -41,7 +41,7 @@ void EditorApplication::RenderStage() {
 }
 
 void EditorApplication::Init() {
-	std::shared_ptr<Scene> scene = std::make_shared<BVHScene>(this);
+	std::shared_ptr<Scene> scene = std::make_shared<GJKScene>(this);
 	Application::Init(scene);
 	auto glfwWindow = std::static_pointer_cast<GLFWWindow>(window)->GetUnderlyingWindow();
 	uiRendererBackend = std::make_unique<UIRendererImpl_GL_GLFW>(glfwWindow, UIRendererImpl_GL_GLFW::GLSLVersion(4, 6));
@@ -294,7 +294,6 @@ void EditorApplication::RenderEditor() {
 	ImGui::Text(fmt, "2022-08-20 11:53:20.277", "info", "OpenGL shading language 4.60");
 	ImGui::Text(fmt, "2022-08-20 11:53:20.277", "info", "Texture slots 32");
 	ImGui::Text("FPS: %lf", (1 / deltaTime));
-	std::cout << "FPS:" << 1 / deltaTime << std::endl;
 	ImGui::End();
 
 	ImGui::End();

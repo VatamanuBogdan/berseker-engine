@@ -18,10 +18,10 @@ std::ostream &operator<<(std::ostream &os, const glm::mat4 &mat) {
 	return os;
 }
 
-void EditorCameraController(InputManager &input, Camera &camera) {
-	constexpr float velocity = 6.0f;
-	constexpr float sensitivity = 1.25f;
-	constexpr float constant = 0.01f;
+void EditorCameraController(InputManager &input, Camera &camera, float deltaTime) {
+	constexpr float constant = 1.5f;
+	const float velocity = 6.0f * deltaTime;
+	const float sensitivity = 1.25f * deltaTime;
 
 	auto position = camera.GetPosition();
 	auto rotations = camera.GetRotations();
