@@ -116,21 +116,46 @@ void TestingScene::CreateEntity(const char *identifier, const Transform &transfo
 
 void TestingScene::InitEntities() {
 	// Bounding Volumes Testing Entities
+	/*
 	CreateEntity("Entity1 AABB", Transform(glm::vec3(0, 0, 0)), BVolume::AABB);
 	CreateEntity("Entity2 AABB", Transform(glm::vec3(1, 2, 0)), BVolume::AABB);
 	CreateEntity("Entity3 Sphere", Transform(glm::vec3(3, -1, 0)), BVolume::Sphere);
 	CreateEntity("Entity4 Sphere", Transform(glm::vec3(-2, 3, 1)), BVolume::Sphere);
 	CreateEntity("Entity5 OBB", Transform(glm::vec3(5, 5, 2)), BVolume::OBB);
 	CreateEntity("Entity6 OBB", Transform(glm::vec3(0, 5, 2)), BVolume::OBB);
-
+	*/
 	/* Monkey Model */ {
 		auto entity = registry.CreateEntity();
-		registry.AddComponentTo<Identifier>(entity, "Model");
+		registry.AddComponentTo<Identifier>(entity, "F1 Car");
 		registry.AddComponentTo<Model>(
 			  entity,
 			  ModelLoader().LoadModel("res/models/F1.obj", ShaderRegistry::Get().GetShader(ShaderResource::LightedModel))
 			  );
-		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(0, 0, 0)));
+		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(0, 0, 0), glm::vec3(0), glm::vec3(0.5f)));
+
+		entities.push_back(std::move(entity));
+	}
+
+	/* Monkey Model */ {
+		auto entity = registry.CreateEntity();
+		registry.AddComponentTo<Identifier>(entity, "Monkey");
+		registry.AddComponentTo<Model>(
+			  entity,
+			  ModelLoader().LoadModel("res/models/Monkey.obj", ShaderRegistry::Get().GetShader(ShaderResource::LightedModel))
+		);
+		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(3, 3, 0)));
+
+		entities.push_back(std::move(entity));
+	}
+
+	/* Dragon Model */ {
+		auto entity = registry.CreateEntity();
+		registry.AddComponentTo<Identifier>(entity, "Dragon");
+		registry.AddComponentTo<Model>(
+			  entity,
+			  ModelLoader().LoadModel("res/models/StanfordDragon.obj", ShaderRegistry::Get().GetShader(ShaderResource::LightedModel))
+		);
+		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(-3, 3, 0)));
 
 		entities.push_back(std::move(entity));
 	}

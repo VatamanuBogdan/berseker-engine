@@ -74,6 +74,10 @@ AABB& BVH::GetBoundingUsingId(size_t id) {
 	return boundedEntities[ids[id]].second;
 }
 
+Ecs::Entity BVH::GetEntityUsingId(size_t id) {
+	return boundedEntities[ids[id]].first;
+}
+
 AABB BVH::ComputeBoundingForRange(size_t startId, size_t endId) {
 	AABB result = GetBoundingUsingId(startId);
 	for (size_t i = startId + 1; i < endId; i++) {

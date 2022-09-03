@@ -32,5 +32,6 @@ private:
 private:
 	Lateinit<FrameBuffer>			fbo;
 	std::unique_ptr<UIRendererBackend>	uiRendererBackend;
+	double deltaTime;
 };
 

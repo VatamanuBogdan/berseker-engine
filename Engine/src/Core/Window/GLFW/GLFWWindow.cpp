@@ -36,6 +36,8 @@ GLFWWindow::~GLFWWindow() {
 
 void GLFWWindow::BindAsContext() {
 	glfwMakeContextCurrent(data->Window);
+	// TODO Remove
+	glfwSwapInterval(0);
 }
 
 void GLFWWindow::SwapBuffers() {

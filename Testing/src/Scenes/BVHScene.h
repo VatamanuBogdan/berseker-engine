@@ -3,11 +3,17 @@
 #include "Application.h"
 #include "Rendering/GridLine.hpp"
 #include "Physics/Partitioning/BVH.h"
+#include "CollisionScene.h"
 
-class BVHScene: public Scene{
+enum class CullingResult {
+	Inside, Outside, Intersecting
+};
+
+
+class BVHScene: public CollisionScene {
 public:
 	explicit BVHScene(Application *application)
-	: Scene(application) {
+	: CollisionScene(application) {
 	}
 
 	void Init() override;
@@ -21,10 +27,19 @@ public:
 	void OnPostRendering() override;
 
 private:
-	void InitEntities();
-	void RenderBVH(BVH::BVHNode *root, int depth = 0);
+	void NormalRendering();
+	void CullingRendering();
+	void BVHCullingRendering();
+	void BVHCullingRenderingHelper1(BVH::BVHNode *node);
+	void BVHCullingRenderingHelper2(BVH::BVHNode *node);
+	static CullingResult AABBvsFrustum(const glm::mat4& mvp, const AABB& aabb);
 
 private:
+	void InitEntities();
+	void RenderBVH(BVH::BVHNode *root, int &depth);
+
+private:
+	glm::mat4 frustumVP;
 	BVH bvh;
 	std::shared_ptr<GridLine> gridLine;
 	int bvhDepthToDisplay = 0;

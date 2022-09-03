@@ -6,6 +6,8 @@
 #include <Scenes/BVHScene.h>
 #include <Rendering/GraphicsAPI/Texture2D.hpp>
 
+#include "Scenes/Timer.h"
+
 #include <imgui.h>
 
 EditorApplication::EditorApplication()
@@ -14,6 +16,8 @@ EditorApplication::EditorApplication()
 
 
 void EditorApplication::UpdateStage(double deltaTime) {
+	this->deltaTime = deltaTime;
+
 	EditorCameraController(GetMainWindow()->GetInput(), scene->GetCamera());
 	SafeNullableCall(scene, OnPreUpdate())
 	SafeNullableCall(scene, OnUpdate())
@@ -24,7 +28,10 @@ void EditorApplication::RenderStage() {
 
 	fbo->Bind();
 	SafeNullableCall(scene, OnPreRendering())
+	Timer timer;
+	timer.Start();
 	Renderer::Render();
+	std::cout << "Rendering Stage:" << timer.Stop() << std::endl;
 	SafeNullableCall(scene, OnPostRendering())
 	fbo->Unbind();
 
@@ -143,7 +150,9 @@ void EditorApplication::RenderEntityPropertiesPanel() {
 					ImGui::SetColumnWidth(0, 75);
 
 					ImGui::Text("Ambient");
+					ImGui::Dummy(ImVec2(0.0f, 1.0f));
 					ImGui::Text("Diffuse");
+					ImGui::Dummy(ImVec2(0.0f, 1.0f));
 					ImGui::Text("Specular");
 
 					ImGui::NextColumn();
@@ -199,8 +208,11 @@ void EditorApplication::RenderEntityPropertiesPanel() {
 					ImGui::SetColumnWidth(0, 75);
 
 					ImGui::Text("Ambient");
+					ImGui::Dummy(ImVec2(0.0f, 1.0f));
 					ImGui::Text("Diffuse");
+					ImGui::Dummy(ImVec2(0.0f, 1.0f));
 					ImGui::Text("Specular");
+					ImGui::Dummy(ImVec2(0.0f, 1.0f));
 					ImGui::Text("Shininess");
 
 					ImGui::NextColumn();
@@ -273,6 +285,17 @@ void EditorApplication::RenderEditor() {
 
 	RenderSceneHierarchyPanel();
 	RenderEntityPropertiesPanel();
+
+
+	const char *fmt = "[%s] [%s] %s";
+
+	ImGui::Begin("Logger");
+	ImGui::Text(fmt, "2022-08-20 11:53:20.277", "info", "OpenGL version 4.6 (Core Profile) Mesa 22.1.2");
+	ImGui::Text(fmt, "2022-08-20 11:53:20.277", "info", "OpenGL shading language 4.60");
+	ImGui::Text(fmt, "2022-08-20 11:53:20.277", "info", "Texture slots 32");
+	ImGui::Text("FPS: %lf", (1 / deltaTime));
+	std::cout << "FPS:" << 1 / deltaTime << std::endl;
+	ImGui::End();
 
 	ImGui::End();
 

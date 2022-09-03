@@ -36,6 +36,7 @@ public:
 
 	BVHNode* GetRoot();
 	AABB& GetBoundingUsingId(size_t id);
+	Ecs::Entity GetEntityUsingId(size_t id);
 	size_t GetDepth() const { return bvhDepth; }
 
 private:

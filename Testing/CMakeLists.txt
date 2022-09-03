@@ -10,6 +10,10 @@ set(
     ${BERSEKER_TESTING_SOURCE_DIR}/Scenes/TestingScene.cpp
     ${BERSEKER_TESTING_SOURCE_DIR}/Scenes/BVHScene.cpp
     ${BERSEKER_TESTING_SOURCE_DIR}/Scenes/BVHScene.h
+    src/Scenes/Random.h
+    src/Scenes/Timer.h
+    src/Scenes/CollisionScene.cpp
+    src/Scenes/CollisionScene.h
 )
 
 add_library(
