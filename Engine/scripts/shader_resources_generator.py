@@ -130,7 +130,7 @@ def generate_source_files(resources: [(str, ShaderSourceFiles)]):
 
 
 if __name__ == '__main__':
-	os.chdir('../../')
+	logging.info(f'Launch script directory {os.getcwd()}')
 
 	setup_logger()
 	indexed_shaders = index_shaders()
