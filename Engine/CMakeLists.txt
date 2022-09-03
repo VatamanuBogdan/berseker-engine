@@ -69,6 +69,10 @@ set(
     ${BERSEKER_SOURCE_DIR}/Core/DataStructures/SparseSet.cpp
     ${BERSEKER_SOURCE_DIR}/Core/DataStructures/SparseSet.h
     ${BERSEKER_SOURCE_DIR}/Scene/Components/ModelComponent.h
+    ${BERSEKER_SOURCE_DIR}/Physics/ColliderLoader.cpp
+    ${BERSEKER_SOURCE_DIR}/Physics/ColliderLoader.h
+    ${BERSEKER_SOURCE_DIR}/Physics/Collider.cpp
+    ${BERSEKER_SOURCE_DIR}/Physics/Collider.h
 )
 
 # Set glfw library

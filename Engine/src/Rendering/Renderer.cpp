@@ -1,5 +1,6 @@
 #include "Rendering/Renderer.h"
 #include "Rendering/LightSourceBillboard.h"
+#include "Physics/ColliderLoader.h"
 
 PrimitivesRenderer				Renderer::primitivesRender;
 Color							Renderer::clearColor(0, 0, 0);
@@ -88,6 +89,22 @@ void Renderer::Render() {
 
 	}
 	modelRenderingQueue.clear();
+}
+
+void Renderer::RenderCollider(const RenderableCollider &renderableCollider, const glm::mat4 &model) {
+	static std::shared_ptr<ShaderProgram> colliderShader = nullptr;
+	if (!colliderShader) {
+		colliderShader = ShaderRegistry::Get().GetShader(ShaderResource::Collider);
+	}
+
+	colliderShader->Bind();
+	colliderShader->SetUniform("Projection", Renderer::camera->GetProjection());
+	colliderShader->SetUniform("Model", model);
+	colliderShader->SetUniform("View", Renderer::camera->GetView());
+
+	glPointSize(4.0f);
+	OpenGL::DrawArrays(renderableCollider.vao, OpenGL::POINTS, 0, renderableCollider.size - 1);
+	glPointSize(1.0f);
 }
 
 void Renderer::RenderBVolume(const BVolume &bVolume, const Color &color) {

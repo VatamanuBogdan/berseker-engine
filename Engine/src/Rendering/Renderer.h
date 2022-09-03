@@ -10,6 +10,7 @@
 #include "Rendering/Material.hpp"
 #include "Rendering/Skybox.h"
 #include "Scene/Components/LightSource.h"
+#include "Physics/ColliderLoader.h"
 
 
 #include <vector>
@@ -25,6 +26,8 @@ public:
 	static void RenderSphere(const SphereProps &props);
 	static void RenderBVolume(const BVolume &bVolume, const Color &color);
 	static void RenderClearColor(const Color &color);
+
+	static void RenderCollider(const RenderableCollider &renderableCollider, const glm::mat4 &model);
 
 	static void SubmitModelForRendering(const Model *model, const glm::mat4 &modelMatrix);
 	static void Render();

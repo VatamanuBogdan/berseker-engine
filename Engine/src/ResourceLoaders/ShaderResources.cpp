@@ -9,6 +9,7 @@ ShaderSourceFiles ShaderResources::shaderSourceFiles[] = {
 	ShaderSourceFiles("res/shaders/LightSource.vert.glsl", "res/shaders/LightSource.frag.glsl"),
 	ShaderSourceFiles("res/shaders/GridLine.vert.glsl", "res/shaders/GridLine.frag.glsl"),
 	ShaderSourceFiles("res/shaders/Skybox.vert.glsl", "res/shaders/Skybox.frag.glsl"),
+	ShaderSourceFiles("res/shaders/Collider.vert.glsl", "res/shaders/Collider.frag.glsl"),
 
 };
 

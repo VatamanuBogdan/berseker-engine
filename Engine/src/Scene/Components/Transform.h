@@ -8,7 +8,7 @@ public:
 	glm::vec3 Rotation;
 	glm::vec3 Scale;
 
-	explicit Transform(const glm::vec3 &position,
+	explicit Transform(const glm::vec3 &position = glm::vec3(0),
 		    const glm::vec3 &rotation = glm::vec3(0),
 		    const glm::vec3 &scale = glm::vec3(1))
 		    : Position(position), Rotation(rotation), Scale(scale) {
