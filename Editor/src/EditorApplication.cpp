@@ -9,6 +9,8 @@
 
 #include "Scenes/Timer.h"
 
+#include "UI/LoggerView.hpp"
+
 #include <imgui.h>
 
 EditorApplication::EditorApplication()
@@ -51,6 +53,13 @@ void EditorApplication::Init() {
 	fbo.Init(1280, 720);
 
 	LoadAssets();
+
+	{
+		auto *linearLayout = new LinearLayout("Logger");
+		linearLayout->AddChildren(new LoggerView());
+		layouts.emplace_back(reinterpret_cast<Layout*>(linearLayout));
+	}
+
 }
 
 void EditorApplication::Deinit() {
@@ -286,15 +295,9 @@ void EditorApplication::RenderEditor() {
 	RenderSceneHierarchyPanel();
 	RenderEntityPropertiesPanel();
 
-
-	const char *fmt = "[%s] [%s] %s";
-
-	ImGui::Begin("Logger");
-	ImGui::Text(fmt, "2022-08-20 11:53:20.277", "info", "OpenGL version 4.6 (Core Profile) Mesa 22.1.2");
-	ImGui::Text(fmt, "2022-08-20 11:53:20.277", "info", "OpenGL shading language 4.60");
-	ImGui::Text(fmt, "2022-08-20 11:53:20.277", "info", "Texture slots 32");
-	ImGui::Text("FPS: %lf", (1 / deltaTime));
-	ImGui::End();
+	for (auto &layout : layouts) {
+		layout->Draw();
+	}
 
 	ImGui::End();
 

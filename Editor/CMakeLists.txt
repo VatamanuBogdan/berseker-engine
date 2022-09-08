@@ -15,7 +15,7 @@ set(
     ${BERSEKER_EDITOR_SOURCE_DIR}/UI/UIRendererBackend.h
     ${BERSEKER_EDITOR_SOURCE_DIR}/EditorCameraController.h
     ${BERSEKER_EDITOR_SOURCE_DIR}/EditorCameraController.cpp
-)
+    src/UI/Views.h src/UI/Views.cpp src/UI/LoggerView.hpp)
 
 # Set imgui library
 add_subdirectory(${BERSEKER_EDITOR_DEPENDENCIES_DIR}/imgui)

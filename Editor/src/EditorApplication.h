@@ -5,6 +5,8 @@
 #include <Application.h>
 #include <Core/Memory.h>
 
+#include "UI/Views.h"
+
 #include <imgui.h>
 #include <memory>
 
@@ -32,6 +34,8 @@ private:
 private:
 	Lateinit<FrameBuffer>			fbo;
 	std::unique_ptr<UIRendererBackend>	uiRendererBackend;
+	// TODO Will be replaced by a hierarchical structure
+	std::vector<std::unique_ptr<Layout>> layouts;
 	double deltaTime;
 };
 
