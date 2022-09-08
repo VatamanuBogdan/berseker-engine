@@ -10,6 +10,8 @@ struct RenderableCollider {
 
 	RenderableCollider() = default;
 	RenderableCollider(RenderableCollider &&renderableCollider) noexcept;
+
+	std::vector<std::pair<size_t, size_t>> componentRanges;
 };
 
 

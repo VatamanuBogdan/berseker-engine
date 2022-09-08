@@ -1,9 +1,10 @@
 #include "Rendering/Renderer.h"
 #include "Rendering/LightSourceBillboard.h"
 #include "Physics/ColliderLoader.h"
+#include "Rendering/Utils.h"
 
 PrimitivesRenderer				Renderer::primitivesRender;
-Color							Renderer::clearColor(0, 0, 0);
+Color							Renderer::clearColor(0.0f, 0.0f, 0.0f);
 
 std::optional<Skybox>				Renderer::skybox;
 
@@ -91,7 +92,20 @@ void Renderer::Render() {
 	modelRenderingQueue.clear();
 }
 
-void Renderer::RenderCollider(const RenderableCollider &renderableCollider, const glm::mat4 &model) {
+
+static Color colors[] = {
+	  Color::FromShortRange(66, 135, 245),
+	  Color::FromShortRange(66, 245, 90),
+	  Color::FromShortRange(187, 59, 237),
+	  Color::FromShortRange(255, 207, 33),
+	  Color::FromShortRange(33, 255, 200),
+	  Color::FromShortRange(32, 227, 48),
+	  Color::FromShortRange(227, 32, 172),
+	  Color::FromShortRange(227, 100, 32),
+	  Color::FromShortRange(255, 255, 255),
+};
+
+void Renderer::RenderCollider(const RenderableCollider &renderableCollider, const Transform &transform, const std::set<size_t> &collidedComponents) {
 	static std::shared_ptr<ShaderProgram> colliderShader = nullptr;
 	if (!colliderShader) {
 		colliderShader = ShaderRegistry::Get().GetShader(ShaderResource::Collider);
@@ -99,11 +113,21 @@ void Renderer::RenderCollider(const RenderableCollider &renderableCollider, cons
 
 	colliderShader->Bind();
 	colliderShader->SetUniform("Projection", Renderer::camera->GetProjection());
-	colliderShader->SetUniform("Model", model);
+	colliderShader->SetUniform("Model", transform.ComputeTransformMatrix());
 	colliderShader->SetUniform("View", Renderer::camera->GetView());
 
-	glPointSize(4.0f);
-	OpenGL::DrawArrays(renderableCollider.vao, OpenGL::POINTS, 0, renderableCollider.size - 1);
+	glPointSize(20 / glm::length(Renderer::camera->GetPosition() - transform.Position));
+	for (size_t i = 0; i < renderableCollider.componentRanges.size(); i++) {
+		auto range = renderableCollider.componentRanges[i];
+		auto color = colors[i % (sizeof(colors) / sizeof(colors[0]))];
+
+		if (collidedComponents.find(i) != collidedComponents.end()) {
+			color = Color(1, 0, 0);
+		}
+		colliderShader->SetUniform("u_Color", (glm::vec3) color);
+		OpenGL::DrawArrays(renderableCollider.vao, OpenGL::POINTS, range.first, range.second - 1);
+	}
+
 	glPointSize(1.0f);
 }
 

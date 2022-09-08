@@ -39,12 +39,18 @@ private:
 };
 
 
+struct CollisionData {
+	bool valid;
+	size_t component1Index;
+	size_t component2Index;
+};
+
 class CollisionDetectionStrategy {
 public:
 	virtual void Init() = 0;
 	virtual void Deinit() = 0;
 
-	virtual bool AreColliding(const Collider &collider1, const Collider &collider2) = 0;
+	virtual CollisionData AreColliding(const Collider &collider1, const Collider &collider2) = 0;
 };
 
 
@@ -53,7 +59,7 @@ public:
 	void Init() override;
 	void Deinit() override;
 
-	bool AreColliding(const Collider &collider1, const Collider &collider2) override;
+	CollisionData AreColliding(const Collider &collider1, const Collider &collider2) override;
 
 private:
 	struct Simplex {

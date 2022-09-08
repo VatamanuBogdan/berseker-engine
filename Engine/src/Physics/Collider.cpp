@@ -62,7 +62,7 @@ void GJKCollisionStrategy::Init() {
 void GJKCollisionStrategy::Deinit() {
 }
 
-bool GJKCollisionStrategy::AreColliding(const Collider &collider1, const Collider &collider2) {
+CollisionData GJKCollisionStrategy::AreColliding(const Collider &collider1, const Collider &collider2) {
 	auto &geometry1 = collider1.GetGeometry();
 	auto &geometry2 = collider2.GetGeometry();
 
@@ -74,12 +74,12 @@ bool GJKCollisionStrategy::AreColliding(const Collider &collider1, const Collide
 		for (auto j = 0; j < geometry2.size(); j++) {
 			convexGeometry2 = &geometry2[j];
 			if (AreConvexGeometriesColliding()) {
-				return true;
+				return { true, (size_t) i, (size_t) j };
 			}
 		}
 	}
 
-	return false;
+	return  { false, 0, 0 };
 }
 
 glm::vec3 GJKCollisionStrategy::SupportVertexForDirection(const glm::vec3 &direction) {

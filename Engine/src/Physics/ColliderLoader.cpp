@@ -6,7 +6,7 @@
 using namespace std::string_literals;
 
 RenderableCollider::RenderableCollider(RenderableCollider &&renderableCollider) noexcept
-	: vao(std::move(renderableCollider.vao)), size(renderableCollider.size) {
+	: vao(std::move(renderableCollider.vao)), size(renderableCollider.size), componentRanges(std::move(renderableCollider.componentRanges)) {
 }
 
 
@@ -34,9 +34,14 @@ std::pair<Collider, RenderableCollider> ColliderLoader::LoadCollider(const char 
 	};
 	std::vector<RenderableColliderPoint> renderableColliderPoints;
 
+	RenderableCollider renderableComponent;
+
 	char type;
 	float x, y, z;
 	for (size_t i = 0; i <  convexComponentsNum; i++) {
+		size_t rangeStart, rangeEnd;
+		rangeStart = renderableColliderPoints.size();
+
 		inStream >> type >> verticesNum;
 		if (type != 'o') {
 			inStream.close();
@@ -49,6 +54,8 @@ std::pair<Collider, RenderableCollider> ColliderLoader::LoadCollider(const char 
 			convexGeometry.PushBack(glm::vec3(x, y, z));
 			renderableColliderPoints.emplace_back(glm::vec3(x, y, z), i);
 		}
+		rangeEnd = renderableColliderPoints.size();
+		renderableComponent.componentRanges.emplace_back(rangeStart, rangeEnd);
 
 		colliderConvexComponents.push_back(std::move(convexGeometry));
 	}
@@ -59,7 +66,6 @@ std::pair<Collider, RenderableCollider> ColliderLoader::LoadCollider(const char 
 	vertexFormat.Push<float>(3, offsetof(RenderableColliderPoint, Coords));
 	vertexFormat.Push<int>(1, offsetof(RenderableColliderPoint, ComponentIndex));
 
-	RenderableCollider renderableComponent;
 	renderableComponent.vao.AttachVertexBuffer(VertexBuffer(renderableColliderPoints), vertexFormat);
 	renderableComponent.size = renderableColliderPoints.size();
 

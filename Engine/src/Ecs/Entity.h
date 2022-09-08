@@ -7,6 +7,8 @@ class Registry;
 
 class Entity {
 public:
+	using IdType = uint32_t;
+
 	Entity(const Entity& entity) = default;
 	Entity(Entity &&entity) noexcept;
 
@@ -14,11 +16,10 @@ public:
 		return id == entity.id;
 	}
 
-private:
-	using IdType = uint32_t;
-
-	explicit Entity(IdType id);
 	[[nodiscard]] IdType GetId() const { return id; }
+
+private:
+	explicit Entity(IdType id);
 
 private:
 	IdType id;

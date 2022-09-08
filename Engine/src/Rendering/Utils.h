@@ -14,6 +14,19 @@ struct Color {
 		}
 	}
 
+	static Color FromShortRange(short red, short green, short blue, short alpha = 255) {
+		return {
+			  static_cast<float>(red) / 255.0f,
+			  static_cast<float>(green) / 255.0f,
+			  static_cast<float>(blue) / 255.0f,
+			  static_cast<float>(alpha) / 255.0f
+		};
+	}
+
+	explicit operator glm::vec3 () const {
+		return {Red, Green, Blue};
+	}
+
 	explicit operator glm::vec4 () const {
 		return {Red, Green, Blue, Alpha};
 	}
