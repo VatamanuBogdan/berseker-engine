@@ -78,7 +78,7 @@ void Application::InitRenderingAPI() {
 void Application::MainLoop() {
 	auto frameStartTime = std::chrono::steady_clock::now();
 	auto frameEndTime = frameStartTime;
-	while (!shouldClose) {
+	while (!shouldClose && !window->ShouldClose()) {
 		auto timeDifference = std::chrono::duration_cast<std::chrono::milliseconds>(frameEndTime - frameStartTime);
 		double deltaTime = static_cast<double>(timeDifference.count()) / 1000;
 		UpdateStage(deltaTime);

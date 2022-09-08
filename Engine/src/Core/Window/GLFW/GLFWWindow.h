@@ -34,6 +34,8 @@ public:
 
 	GLFWwindow* GetUnderlyingWindow();
 
+	bool ShouldClose() override;
+
 private:
 	explicit GLFWWindow(const WindowProps &props);
 	void SetupWindowData(const WindowProps &props);

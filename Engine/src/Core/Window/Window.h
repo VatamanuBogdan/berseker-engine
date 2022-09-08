@@ -19,6 +19,7 @@ public:
 	virtual void SwapBuffers() = 0;
 	virtual InputManager& GetInput() = 0;
 	virtual void PoolForEvents() = 0;
+  	virtual bool ShouldClose() = 0;
 
 	[[nodiscard]] virtual uint32_t GetWidth() const = 0;
 	[[nodiscard]] virtual uint32_t GetHeight() const = 0;

@@ -68,6 +68,10 @@ GLFWwindow *GLFWWindow::GetUnderlyingWindow() {
 	return data->Window;
 }
 
+bool GLFWWindow::ShouldClose() {
+	return glfwWindowShouldClose(data->Window);
+}
+
 void GLFWWindowConcreteProvider::Init() {
 	if (!glfwInit()) {
 		throw std::runtime_error("Failed to init Linux Window library");
