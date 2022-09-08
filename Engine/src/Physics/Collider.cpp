@@ -169,14 +169,10 @@ bool GJKCollisionStrategy::EvolveTetrahedronSimplex(GJKCollisionStrategy::Simple
 
 	return true;
 }
-/*
-std::ostream &operator<<(std::ostream &os, const glm::vec3 &vec) {
-	os << "x: " << vec.x << " y: " << vec.y << " z: " << vec.z;
-	return os;
-}
- */
 
 bool GJKCollisionStrategy::AreConvexGeometriesColliding() {
+	size_t fallbackCounter = 0;
+	size_t maxIterations = std::max(convexGeometry1->GetSize(), convexGeometry2->GetSize());
 	glm::vec3 direction(1, 1, 1);
 	Simplex simplex;
 
@@ -189,22 +185,6 @@ bool GJKCollisionStrategy::AreConvexGeometriesColliding() {
 		if (glm::dot(support, direction) <= 0) {
 			return false;
 		}
-/*
-		std::cout << "Simplex" << std::endl;
-		if (simplex.VerticesNum >= 1) {
-			std::cout << "A:" << simplex.A << std::endl;
-		}
-		if (simplex.VerticesNum >= 2) {
-			std::cout << "B:" << simplex.B << std::endl;
-		}
-		if (simplex.VerticesNum >= 3) {
-			std::cout << "C:" << simplex.C << std::endl;
-		}
-		if (simplex.VerticesNum >= 4) {
-			std::cout << "D:" << simplex.D << std::endl;
-		}
-		std::cout << std::endl << std::endl;
-*/
 
 		simplex.Insert(support);
 		if (simplex.VerticesNum == 2) {
@@ -217,6 +197,10 @@ bool GJKCollisionStrategy::AreConvexGeometriesColliding() {
 			}
 		} else {
 			throw std::logic_error("GJK: Logic Error");
+		}
+
+		if (fallbackCounter > maxIterations) {
+			break;
 		}
 	}
 }
