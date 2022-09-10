@@ -8,8 +8,7 @@ Color							Renderer::clearColor(0.0f, 0.0f, 0.0f);
 
 std::optional<Skybox>				Renderer::skybox;
 
-LightSource						Renderer::lightSource(glm::vec3(0), glm::vec3(0), glm::vec3(0));
-glm::vec3						Renderer::lightPosition;
+std::vector<std::pair<LightSource, glm::vec3>>	Renderer::lightSources;
 
 std::shared_ptr<Camera> 			Renderer::camera;
 std::vector<Renderer::RenderingModel>	Renderer::modelRenderingQueue;
@@ -54,11 +53,13 @@ void Renderer::Render() {
 		);
 	}
 
-	LightSourceBillboard().Draw(
-		  glm::translate(glm::mat4(1), lightPosition),
-		  Renderer::camera->GetView(),
-		  Renderer::camera->GetProjection()
-  	);
+	for (auto &lightSource : lightSources) {
+		LightSourceBillboard().Draw(
+			  glm::translate(glm::mat4(1), lightSource.second),
+			  Renderer::camera->GetView(),
+			  Renderer::camera->GetProjection()
+		);
+	}
 
 	for (auto &renderingModel : modelRenderingQueue) {
 		size_t materialIndex = 0;
@@ -72,15 +73,22 @@ void Renderer::Render() {
 
 			if (material.IsLighted()) {
 				shader->SetUniform("u_CameraPosition", camera->GetPosition());
-				shader->SetUniform("u_LightSource.Position", lightPosition);
-				shader->SetUniform("u_LightSource.Ambient", lightSource.Ambient);
-				shader->SetUniform("u_LightSource.Diffuse", lightSource.Diffuse);
-				shader->SetUniform("u_LightSource.Specular", lightSource.Specular);
 
 				shader->SetUniform("u_Material.Ambient", material.Ambient);
 				shader->SetUniform("u_Material.Diffuse", material.Diffuse);
 				shader->SetUniform("u_Material.Specular", material.Specular);
 				shader->SetUniform("u_Material.Shininess", material.Shininess);
+
+				shader->SetUniform("u_LightsNum", (int) lightSources.size());
+
+				for (size_t i = 0; i < lightSources.size(); i++) {
+					shader->SetUniform(("u_LightSources[" + std::to_string(i) + "].Position").c_str(), lightSources[i].second);
+					shader->SetUniform(("u_LightSources[" + std::to_string(i) + "].Ambient").c_str(), lightSources[i].first.Ambient);
+					shader->SetUniform(("u_LightSources[" + std::to_string(i) + "].Diffuse").c_str(), lightSources[i].first.Diffuse);
+					shader->SetUniform(("u_LightSources[" + std::to_string(i) + "].Specular").c_str(), lightSources[i].first.Specular);
+				}
+
+
 			}
 
 			mesh.GetVertexArray().Bind();
@@ -162,7 +170,10 @@ void Renderer::SubmitModelForRendering(const Model *model, const glm::mat4 &mode
 	modelRenderingQueue.emplace_back(model, modelMatrix);
 }
 
-void Renderer::SetLight(const LightSource &lightSource, const glm::vec3 &lightPosition) {
-	Renderer::lightSource = lightSource;
-	Renderer::lightPosition = lightPosition;
+void Renderer::ClearLights() {
+	lightSources.clear();
+}
+
+void Renderer::AddLight(const LightSource &lightSource, const glm::vec3 &position) {
+	lightSources.emplace_back(lightSource, position);
 }

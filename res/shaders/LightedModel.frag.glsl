@@ -14,8 +14,12 @@ struct Material {
     float   Shininess;
 };
 
-uniform LightSource u_LightSource;
 uniform Material    u_Material;
+
+#define MAX_LIGHT_SOURCE 16
+
+uniform LightSource u_LightSources[MAX_LIGHT_SOURCE];
+uniform int u_LightsNum;
 
 in vec3 f_Position;
 in vec3 f_Normal;
@@ -44,7 +48,11 @@ PhongModel ComputePhongModelFor(LightSource lightSource, Material material) {
 }
 
 void main() {
-    PhongModel phongModel = ComputePhongModelFor(u_LightSource, u_Material);
+    vec3 temp_color = vec3(0, 0, 0);
+    for (int i = 0; i < 2; i++) {
+        PhongModel phongModel = ComputePhongModelFor(u_LightSources[i], u_Material);
+        temp_color = temp_color + vec3(phongModel.Ambient + phongModel.Diffuse + phongModel.Specular);
+    }
 
-    color = vec4(phongModel.Ambient + phongModel.Diffuse + phongModel.Specular, 1.0);
+    color = vec4(temp_color, 1.0f);
 }

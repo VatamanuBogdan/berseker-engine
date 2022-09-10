@@ -33,7 +33,8 @@ public:
 	static void SubmitModelForRendering(const Model *model, const glm::mat4 &modelMatrix);
 	static void Render();
 
-	static void SetLight(const LightSource &lightSource, const glm::vec3 &position);
+	static void ClearLights();
+	static void AddLight(const LightSource &lightSource, const glm::vec3 &position);
 
 private:
 	struct RenderingModel {
@@ -52,8 +53,7 @@ private:
 
 	static std::optional<Skybox>		skybox;
 
-	static LightSource			lightSource;
-	static glm::vec3				lightPosition;
+	static std::vector<std::pair<LightSource, glm::vec3>>	lightSources;
 
 	static std::shared_ptr<Camera> 	camera;
 	static std::vector<RenderingModel>	modelRenderingQueue;

@@ -54,6 +54,8 @@ void TestingScene::OnPostUpdate() {
 }
 
 void TestingScene::OnPreRendering() {
+	Renderer::ClearLights();
+
 	for (auto &entity : entities) {
 		auto *transform = registry.GetComponentFrom<Transform>(entity);
 		auto *model = registry.GetComponentFrom<Model>(entity);
@@ -69,7 +71,7 @@ void TestingScene::OnPreRendering() {
 		}
 
 		if (transform && lightSource) {
-			Renderer::SetLight(*lightSource, transform->Position);
+			Renderer::AddLight(*lightSource, transform->Position);
 		}
 
 	}

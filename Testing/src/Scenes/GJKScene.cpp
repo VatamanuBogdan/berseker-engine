@@ -66,15 +66,11 @@ void GJKScene::OnPreUpdate() {
 
 			(*collider2)->SetTransform(*transform2);
 
-			Timer timer;
-			timer.Start();
 			auto collisionData = collisionStrategy.AreColliding(**collider1, **collider2);
-			std::cout << timer.Stop() << std::endl;
 
 			if (collisionData.valid) {
 				collidedComponents[entity1.GetId()].emplace(collisionData.component1Index);
 				collidedComponents[entity2.GetId()].emplace(collisionData.component2Index);
-				std::cout << "Collision" << std::endl;
 			}
 		}
 	}
@@ -89,6 +85,8 @@ void GJKScene::OnPostUpdate() {
 }
 
 void GJKScene::OnPreRendering() {
+	Renderer::ClearLights();
+
 	for (auto &entity : entities) {
 		auto *transform = registry.GetComponentFrom<Transform>(entity);
 		auto *model = registry.GetComponentFrom<ModelComponent>(entity);
@@ -101,7 +99,7 @@ void GJKScene::OnPreRendering() {
 		}
 
 		if (transform && lightSource) {
-			Renderer::SetLight(*lightSource, transform->Position);
+			Renderer::AddLight(*lightSource, transform->Position);
 		}
 	}
 }
@@ -162,14 +160,25 @@ void GJKScene::InitEntities() {
 		entities.push_back(std::move(entity));
 	}
 
-	/* Light Source */ {
+	/* Light Source2 */ {
 		auto entity = registry.CreateEntity();
-		registry.AddComponentTo<Identifier>(entity, "LightSource");
+		registry.AddComponentTo<Identifier>(entity, "LightSource2");
+		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(4, 4, 0), glm::vec3(1), glm::vec3(0.5f)));
+		registry.AddComponentTo<LightSource>(entity, LightSource(glm::vec3(0.1), glm::vec3(0, 1, 0), glm::vec3(0.4)));
+
+		entities.push_back(std::move(entity));
+	}
+
+	/* Light Source1 */ {
+		auto entity = registry.CreateEntity();
+		registry.AddComponentTo<Identifier>(entity, "LightSource1");
 		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(0, 4, 2), glm::vec3(1), glm::vec3(0.5f)));
 		registry.AddComponentTo<LightSource>(entity, LightSource(glm::vec3(0.1), glm::vec3(1), glm::vec3(0.4)));
 
 		entities.push_back(std::move(entity));
 	}
+
+
 }
 
 
