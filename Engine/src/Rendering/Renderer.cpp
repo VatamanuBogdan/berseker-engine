@@ -113,7 +113,7 @@ static Color colors[] = {
 	  Color::FromShortRange(255, 255, 255),
 };
 
-void Renderer::RenderCollider(const RenderableCollider &renderableCollider, const Transform &transform, const std::set<size_t> &collidedComponents) {
+void Renderer::RenderCollider(const RenderableCollider &renderableCollider, const Transform &transform, const std::set<size_t> &collidedComponents, bool flag) {
 	static std::shared_ptr<ShaderProgram> colliderShader = nullptr;
 	if (!colliderShader) {
 		colliderShader = ShaderRegistry::Get().GetShader(ShaderResource::Collider);
@@ -131,6 +131,8 @@ void Renderer::RenderCollider(const RenderableCollider &renderableCollider, cons
 
 		if (collidedComponents.find(i) != collidedComponents.end()) {
 			color = Color(1, 0, 0);
+		} else if (!flag) {
+			continue;
 		}
 		colliderShader->SetUniform("u_Color", (glm::vec3) color);
 		OpenGL::DrawArrays(renderableCollider.vao, OpenGL::POINTS, range.first, range.second - 1);

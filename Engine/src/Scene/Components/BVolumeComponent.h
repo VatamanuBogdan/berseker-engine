@@ -18,6 +18,14 @@ public:
 		: bVolume(std::make_shared<AABB>(aabb)) {
 	}
 
+	explicit BVolumeComponent(const Sphere &sphere)
+		  : bVolume(std::make_shared<Sphere>(sphere)) {
+	}
+
+	explicit BVolumeComponent(const OBB &obb)
+		: bVolume(std::make_shared<OBB>(obb)) {
+	}
+
 	void InitBVolume(const Transform &transform, BVolume::Type type) {
 		if (type == BVolume::AABB) {
 			bVolume = std::make_shared<AABB>(transform.Position, transform.Scale);

@@ -55,10 +55,18 @@ private:
 };
 
 
+using AABBHelper = class AABB;
+
 class Sphere : public BVolume {
 public:
 	Sphere(const glm::vec3 &position, float radius)
 		  : BVolume(Type::Sphere), position(position), radius(glm::abs(radius)) {
+	}
+
+	explicit Sphere(const AABBHelper &aabb)
+		  : BVolume(Type::Sphere), position(aabb.GetPosition()) {
+		auto widths = aabb.GetWidths();
+		radius = glm::sqrt(widths.x * widths.x + widths.y * widths.y + widths.z * widths.z);
 	}
 
 	[[nodiscard]] const glm::vec3& GetPosition() const { return position; }
@@ -86,6 +94,10 @@ public:
 	OBB(const glm::vec3 &position, const glm::vec3 &widths, const glm::vec3 rotation = glm::vec3(0))
 		: BVolume(Type::OBB), position(position), halfWidths(glm::abs(widths) / 2.0f), rotation(rotation) {
 		SetRotation(rotation);
+	}
+
+	explicit OBB(const AABBHelper &aabb)
+		: BVolume(Type::OBB), position(aabb.GetPosition()), halfWidths(glm::abs(aabb.GetWidths()) / 2.0f), rotation(glm::vec3(0)) {
 	}
 
 	[[nodiscard]] glm::vec3 ComputeClosesPointFor(const glm::vec3 &point) const;

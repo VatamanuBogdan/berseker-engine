@@ -42,16 +42,16 @@ PhongModel ComputePhongModelFor(LightSource lightSource, Material material) {
 
     vec3 ambientLightComponent = lightSource.Ambient * material.Ambient;
     vec3 diffuseLightComponent = max(dot(normal, lightDirection), 0.0) * lightSource.Diffuse * material.Diffuse;
-    vec3 specularLightComponent = pow(max(dot(viewDirection, reflectionDirection), 0.0), material.Shininess) * lightSource.Specular * material.Specular;
+    vec3 specularLightComponent = pow(max(dot(viewDirection, reflectionDirection), 0.0), 32) * lightSource.Specular * material.Specular;
 
     return PhongModel(ambientLightComponent, diffuseLightComponent, specularLightComponent);
 }
 
 void main() {
     vec3 temp_color = vec3(0, 0, 0);
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < u_LightsNum; i++) {
         PhongModel phongModel = ComputePhongModelFor(u_LightSources[i], u_Material);
-        temp_color = temp_color + vec3(phongModel.Ambient + phongModel.Diffuse + phongModel.Specular);
+        temp_color = temp_color + phongModel.Ambient + phongModel.Diffuse + phongModel.Specular;
     }
 
     color = vec4(temp_color, 1.0f);

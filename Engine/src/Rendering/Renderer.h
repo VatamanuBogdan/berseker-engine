@@ -28,7 +28,7 @@ public:
 	static void RenderBVolume(const BVolume &bVolume, const Color &color);
 	static void RenderClearColor(const Color &color);
 
-	static void RenderCollider(const RenderableCollider &renderableCollider, const Transform &transform, const std::set<size_t> &collidedComponents);
+	static void RenderCollider(const RenderableCollider &renderableCollider, const Transform &transform, const std::set<size_t> &collidedComponents, bool flag = true);
 
 	static void SubmitModelForRendering(const Model *model, const glm::mat4 &modelMatrix);
 	static void Render();

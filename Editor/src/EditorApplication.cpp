@@ -178,8 +178,8 @@ void EditorApplication::RenderEntityPropertiesPanel() {
 				ImGui::Separator();
 			}
 
-			if (auto *model = scene->GetRegistry().GetComponentFrom<Model>(*selectedEntity)) {
-				std::vector<Material> &materials = model->GetMaterials();
+			if (auto *model = scene->GetRegistry().GetComponentFrom<ModelComponent>(*selectedEntity)) {
+				std::vector<Material> &materials = (*model)->GetMaterials();
 
 				const char *previewMaterial;
 				if (materialId < materials.size() && materialId != -1) {
