@@ -7,7 +7,7 @@
 #include <Scenes/GJKScene.h>
 #include <Rendering/GraphicsAPI/Texture2D.hpp>
 
-#include "Scenes/Timer.h"
+#include <Utils/Timer.h>
 
 #include "UI/LoggerView.hpp"
 
