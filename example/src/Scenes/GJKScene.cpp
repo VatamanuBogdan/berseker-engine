@@ -121,7 +121,7 @@ void GJKScene::InitEntities() {
 	std::shared_ptr<Model> dragon = std::make_shared<Model>(
 		  std::move(
 			    ModelLoader().LoadModel(
-					"res/models/Monkey.obj",
+					"resources/models/Monkey.obj",
 					ShaderRegistry::Get().GetShader(ShaderResource::LightedModel)
 			    )
 		  )
@@ -130,14 +130,14 @@ void GJKScene::InitEntities() {
 	std::shared_ptr<Model> armadillo = std::make_shared<Model>(
 		  std::move(
 			    ModelLoader().LoadModel(
-					"res/models/Monkey.obj",
+					"resources/models/Monkey.obj",
 					ShaderRegistry::Get().GetShader(ShaderResource::LightedModel)
 			    )
 		  )
 	);
 
 	{
-		auto[collider, renderableCollider] = ColliderLoader().LoadCollider("res/colliders/Monkey.collider");
+		auto[collider, renderableCollider] = ColliderLoader().LoadCollider("resources/colliders/Monkey.collider");
 		auto entity = registry.CreateEntity();
 
 		registry.AddComponentTo<Identifier>(entity, "Model1");
@@ -149,7 +149,7 @@ void GJKScene::InitEntities() {
 	}
 
 	{
-		auto[collider, renderableCollider] = ColliderLoader().LoadCollider("res/colliders/Monkey.collider");
+		auto[collider, renderableCollider] = ColliderLoader().LoadCollider("resources/colliders/Monkey.collider");
 		auto entity = registry.CreateEntity();
 
 		registry.AddComponentTo<Identifier>(entity, "Model2");

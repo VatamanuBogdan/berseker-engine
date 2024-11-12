@@ -3,13 +3,13 @@
 #include <type_traits>
 
 ShaderSourceFiles ShaderResources::shaderSourceFiles[] = {
-	ShaderSourceFiles("res/shaders/Model3D.vert.glsl", "res/shaders/Model3D.frag.glsl"),
-	ShaderSourceFiles("res/shaders/Primitive.vert.glsl", "res/shaders/Primitive.frag.glsl"),
-	ShaderSourceFiles("res/shaders/LightedModel.vert.glsl", "res/shaders/LightedModel.frag.glsl"),
-	ShaderSourceFiles("res/shaders/LightSource.vert.glsl", "res/shaders/LightSource.frag.glsl"),
-	ShaderSourceFiles("res/shaders/GridLine.vert.glsl", "res/shaders/GridLine.frag.glsl"),
-	ShaderSourceFiles("res/shaders/Skybox.vert.glsl", "res/shaders/Skybox.frag.glsl"),
-	ShaderSourceFiles("res/shaders/Collider.vert.glsl", "res/shaders/Collider.frag.glsl"),
+	ShaderSourceFiles("resources/shaders/Model3D.vert.glsl", "resources/shaders/Model3D.frag.glsl"),
+	ShaderSourceFiles("resources/shaders/Primitive.vert.glsl", "resources/shaders/Primitive.frag.glsl"),
+	ShaderSourceFiles("resources/shaders/LightedModel.vert.glsl", "resources/shaders/LightedModel.frag.glsl"),
+	ShaderSourceFiles("resources/shaders/LightSource.vert.glsl", "resources/shaders/LightSource.frag.glsl"),
+	ShaderSourceFiles("resources/shaders/GridLine.vert.glsl", "resources/shaders/GridLine.frag.glsl"),
+	ShaderSourceFiles("resources/shaders/Skybox.vert.glsl", "resources/shaders/Skybox.frag.glsl"),
+	ShaderSourceFiles("resources/shaders/Collider.vert.glsl", "resources/shaders/Collider.frag.glsl"),
 
 };
 

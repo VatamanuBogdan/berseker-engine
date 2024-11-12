@@ -15,8 +15,8 @@ ShaderProgram		*cubeShader;
 void PrimitivesRenderer::Init() {
 	cubeShader = new ShaderProgram(
 		  ShaderProgram::LoadFrom(
-		    "res/shaders/Primitive.vert.glsl",
-		    "res/shaders/Primitive.frag.glsl"
+		    "resources/shaders/Primitive.vert.glsl",
+		    "resources/shaders/Primitive.frag.glsl"
 		    ));
 	InitCubeGeometry();
 	InitSphereGeometry();
