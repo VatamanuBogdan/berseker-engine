@@ -1,15 +1,15 @@
 #include "EditorApplication.h"
-#include "EditorCameraController.h"
+#include "Views/LoggerView.hpp"
+#include "Views/LinearLayout.h"
+#include "Controllers/EditorCameraController.h"
+
 
 #include <Rendering/Renderer.h>
+#include <Rendering/GraphicsAPI/Texture2D.hpp>
 #include <Scenes/TestingScene.h>
 #include <Scenes/BVHScene.h>
 #include <Scenes/GJKScene.h>
-#include <Rendering/GraphicsAPI/Texture2D.hpp>
-
 #include <Utils/Timer.h>
-
-#include "UI/LoggerView.hpp"
 
 #include <imgui.h>
 

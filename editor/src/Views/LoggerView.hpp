@@ -1,4 +1,6 @@
-#include "Views.h"
+#pragma once
+
+#include "Core/View.h"
 
 #include <imgui.h>
 

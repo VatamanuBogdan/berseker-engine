@@ -1,11 +1,11 @@
 #pragma once
-#include "UI/Implementation/UIRendererImpl_GL_GLFW.h"
 
 #include <Rendering/GraphicsAPI/FrameBuffer.h>
 #include <Application.h>
 #include <Core/Memory.h>
 
-#include "UI/Views.h"
+#include "Core/UIRendererImpl_GL_GLFW.h"
+#include "Core/Layout.h"
 
 #include <imgui.h>
 #include <memory>

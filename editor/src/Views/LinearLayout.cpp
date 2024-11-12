@@ -1,11 +1,10 @@
-#include "Views.h"
+#include "LinearLayout.h"
 
 #include <imgui.h>
 
 LinearLayout::LinearLayout(const char *id)
 	: id(id) {
 }
-
 
 void LinearLayout::Draw() {
 	ImGui::Begin(id.c_str());
