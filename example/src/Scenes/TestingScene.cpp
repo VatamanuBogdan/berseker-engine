@@ -131,7 +131,7 @@ void TestingScene::InitEntities() {
 		registry.AddComponentTo<Identifier>(entity, "F1 Car");
 		registry.AddComponentTo<Model>(
 			  entity,
-			  ModelLoader().LoadModel("res/models/F1.obj", ShaderRegistry::Get().GetShader(ShaderResource::LightedModel))
+			  ModelLoader().LoadModel("resources/models/F1.obj", ShaderRegistry::Get().GetShader(ShaderResource::LightedModel))
 			  );
 		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(0, 0, 0), glm::vec3(0), glm::vec3(0.5f)));
 
@@ -143,7 +143,7 @@ void TestingScene::InitEntities() {
 		registry.AddComponentTo<Identifier>(entity, "Monkey");
 		registry.AddComponentTo<Model>(
 			  entity,
-			  ModelLoader().LoadModel("res/models/Monkey.obj", ShaderRegistry::Get().GetShader(ShaderResource::LightedModel))
+			  ModelLoader().LoadModel("resources/models/Monkey.obj", ShaderRegistry::Get().GetShader(ShaderResource::LightedModel))
 		);
 		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(3, 3, 0)));
 
@@ -155,7 +155,7 @@ void TestingScene::InitEntities() {
 		registry.AddComponentTo<Identifier>(entity, "Dragon");
 		registry.AddComponentTo<Model>(
 			  entity,
-			  ModelLoader().LoadModel("res/models/StanfordDragon.obj", ShaderRegistry::Get().GetShader(ShaderResource::LightedModel))
+			  ModelLoader().LoadModel("resources/models/StanfordDragon.obj", ShaderRegistry::Get().GetShader(ShaderResource::LightedModel))
 		);
 		registry.AddComponentTo<Transform>(entity, Transform(glm::vec3(-3, 3, 0)));
 

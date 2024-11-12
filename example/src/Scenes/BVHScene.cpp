@@ -256,7 +256,7 @@ void BVHScene::InitEntities() {
 	std::shared_ptr<Model> model = std::make_shared<Model>(
 		  std::move(
 			    ModelLoader().LoadModel(
-					"res/models/Monkey.obj",
+					"resources/models/Monkey.obj",
 					ShaderRegistry::Get().GetShader(ShaderResource::Model3D)
 					)
 			)

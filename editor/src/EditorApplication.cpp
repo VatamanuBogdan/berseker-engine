@@ -69,7 +69,7 @@ void EditorApplication::Deinit() {
 
 void EditorApplication::LoadAssets() {
 	auto io = ImGui::GetIO();
-	defaultEditorFont = io.Fonts->AddFontFromFileTTF("res/fonts/SourceCodePro.ttf", 14.4);
+	defaultEditorFont = io.Fonts->AddFontFromFileTTF("resources/fonts/SourceCodePro.ttf", 14.4);
 }
 
 void EditorApplication::RenderSceneHierarchyPanel() {

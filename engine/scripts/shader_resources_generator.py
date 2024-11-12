@@ -47,7 +47,7 @@ const ShaderSourceFiles& ShaderResources::Get(ShaderResource identifier) {
 }
 """
 
-SHADERS_RESOURCE_PATH = 'res/shaders/'
+SHADERS_RESOURCE_PATH = 'resources/shaders/'
 SHADER_RESOURCES_SOURCE_PATH = 'Engine/src/ResourceLoaders/'
 
 

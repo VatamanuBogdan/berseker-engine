@@ -45,5 +45,5 @@ void LightSourceBillboard::Init() {
 
 	quadIbo.emplace(std::array<unsigned int, 6>{0, 3, 2, 2, 1, 0});
 
-	texture.emplace("./res/textures/light-source.png");
+	texture.emplace("./resources/textures/light-source.png");
 }
