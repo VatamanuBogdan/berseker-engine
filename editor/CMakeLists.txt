@@ -1,38 +1,54 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.4)
 
-set(BERSEKER_EDITOR_BINARY Editor)
-set(BERSEKER_EDITOR_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-set(BERSEKER_EDITOR_SOURCE_DIR ${BERSEKER_EDITOR_ROOT_DIR}/src)
-set(BERSEKER_EDITOR_DEPENDENCIES_DIR ${BERSEKER_EDITOR_ROOT_DIR}/dependencies)
+# Parameters Setup
+
+set(EDITOR_SOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(DEPENDENCIES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/dependencies)
+set(EDITOR_BINARY_NAME Editor)
+
+# Sources Setup
 
 set(
-    BERSEKER_EDITOR_SOURCES
-    ${BERSEKER_EDITOR_SOURCE_DIR}/main.cpp
-    ${BERSEKER_EDITOR_SOURCE_DIR}/EditorApplication.cpp
-    ${BERSEKER_EDITOR_SOURCE_DIR}/EditorApplication.h
-    ${BERSEKER_EDITOR_SOURCE_DIR}/UI/Implementation/UIRendererImpl_GL_GLFW.cpp
-    ${BERSEKER_EDITOR_SOURCE_DIR}/UI/Implementation/UIRendererImpl_GL_GLFW.h
-    ${BERSEKER_EDITOR_SOURCE_DIR}/UI/UIRendererBackend.h
-    ${BERSEKER_EDITOR_SOURCE_DIR}/EditorCameraController.h
-    ${BERSEKER_EDITOR_SOURCE_DIR}/EditorCameraController.cpp
-    src/UI/Views.h src/UI/Views.cpp src/UI/LoggerView.hpp)
+    EDITOR_RELATIVE_SOURCES
+    main.cpp
+    EditorApplication.cpp
+    EditorApplication.h
+    Core/UIRendererImpl_GL_GLFW.cpp
+    Core/UIRendererImpl_GL_GLFW.h
+    Core/UIRendererBackend.h
+    Core/View.h
+    Core/Layout.h
+    Controllers/EditorCameraController.h
+    Controllers/EditorCameraController.cpp
+    Views/LinearLayout.h
+    Views/LinearLayout.cpp 
+    Views/LoggerView.hpp)
 
-# Set imgui library
-add_subdirectory(${BERSEKER_EDITOR_DEPENDENCIES_DIR}/imgui)
+set(EDITOR_SOURCES "")
+
+foreach(SOURCE ${EDITOR_RELATIVE_SOURCES})
+    list(APPEND EDITOR_SOURCES "${EDITOR_SOURCES_DIR}/${SOURCE}")
+endforeach()
+
+# ImGUI Library Setup (https://github.com/ocornut/imgui)
+
+add_subdirectory(${DEPENDENCIES_DIR}/imgui)
+
+# Library Setup
 
 add_executable(
-    ${BERSEKER_EDITOR_BINARY}
-    ${BERSEKER_EDITOR_SOURCES}
+    ${EDITOR_BINARY_NAME}
+    ${EDITOR_SOURCES}
 )
 
 target_link_libraries(
-    ${BERSEKER_EDITOR_BINARY}
+    ${EDITOR_BINARY_NAME}
     Example
     Engine
     imgui
 )
 
 target_include_directories(
-    ${BERSEKER_EDITOR_BINARY}
-    PUBLIC ${BERSEKER_EDITOR_SOURCE_DIR}/
+    ${EDITOR_BINARY_NAME}
+    PUBLIC ${EDITOR_SOURCES_DIR}
 )

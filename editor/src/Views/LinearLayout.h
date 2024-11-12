@@ -1,18 +1,10 @@
 #pragma once
 
+#include "Core/Layout.h"
+
 #include <vector>
 #include <string>
 #include <memory>
-
-class View {
-public:
-	virtual void Draw() = 0;
-};
-
-class Layout : public View {
-public:
-	void Draw() override = 0;
-};
 
 class LinearLayout : public View {
 public:
@@ -23,5 +15,5 @@ public:
 
 private:
 	std::vector<std::unique_ptr<View>>	views;
-	std::string					id;
+	std::string	id;
 };
