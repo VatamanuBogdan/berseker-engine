@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from enum import Enum
 
 import logging
@@ -48,7 +50,7 @@ const ShaderSourceFiles& ShaderResources::Get(ShaderResource identifier) {
 """
 
 SHADERS_RESOURCE_PATH = 'resources/shaders/'
-SHADER_RESOURCES_SOURCE_PATH = 'Engine/src/ResourceLoaders/'
+SHADER_RESOURCES_SOURCE_PATH = 'engine/src/ResourceLoaders/'
 
 
 logger = None
