@@ -1,109 +1,140 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5)
 
-# Set Berseker parameters
-set(BERSEKER_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-set(BERSEKER_SOURCE_DIR ${BERSEKER_ROOT_DIR}/src/)
-set(BERSEKER_DEPENDENCIES_DIR ${BERSEKER_ROOT_DIR}/deps/)
-set(BERSEKER_BINARY_NAME Engine)
+# Parameters Setup
+
+set(ENGINE_SOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/)
+set(DEPENDENCIES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps/)
+set(ENGINE_LIBRARY_NAME Engine)
+
+# Sources Setup
 
 set(
-    BERSEKER_SOURCES
-    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/VertexBuffer.hpp
-    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/VertexArray.hpp
-    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/IndexBuffer.hpp
-    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/ShaderProgram.cpp
-    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/ShaderProgram.h
-    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/Texture2D.hpp
-    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/OpenGL.h
-    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/OpenGL.cpp
-    ${BERSEKER_SOURCE_DIR}/Rendering/Model.cpp
-    ${BERSEKER_SOURCE_DIR}/Rendering/Renderer.cpp
-    ${BERSEKER_SOURCE_DIR}/Rendering/Renderer.h
-    ${BERSEKER_SOURCE_DIR}/Rendering/Mesh.h
-    ${BERSEKER_SOURCE_DIR}/Core/Window/Window.h
-    ${BERSEKER_SOURCE_DIR}/Core/Window/GLFW/GLFWWindow.cpp
-    ${BERSEKER_SOURCE_DIR}/Core/Window/GLFW/GLFWWindow.h
-    ${BERSEKER_SOURCE_DIR}/Core/Input/InputKeys.h
-    ${BERSEKER_SOURCE_DIR}/Core/Input/InputManager.h
-    ${BERSEKER_SOURCE_DIR}/Application.cpp
-    ${BERSEKER_SOURCE_DIR}/Application.h
-    ${BERSEKER_SOURCE_DIR}/Scene/Scene.h
-    ${BERSEKER_SOURCE_DIR}/Rendering/Primitives/Renderer.cpp
-    ${BERSEKER_SOURCE_DIR}/Rendering/Primitives/Renderer.h
-    ${BERSEKER_SOURCE_DIR}/Rendering/Primitives/Primitives.h
-    ${BERSEKER_SOURCE_DIR}/Rendering/Utils.h
-    ${BERSEKER_SOURCE_DIR}/Rendering/Utils.cpp
-    ${BERSEKER_SOURCE_DIR}/Physics/Partitioning/BVH.cpp
-    ${BERSEKER_SOURCE_DIR}/Physics/Partitioning/BVH.h
-    ${BERSEKER_SOURCE_DIR}/Physics/Boundings/BVolumes.cpp
-    ${BERSEKER_SOURCE_DIR}/Physics/Boundings/BVolumes.h
-    ${BERSEKER_SOURCE_DIR}/Scene/Components/Transform.h
-    ${BERSEKER_SOURCE_DIR}/Scene/Components/ColliderComponent.h
-    ${BERSEKER_SOURCE_DIR}/Scene/Components/Identifier.h
-    ${BERSEKER_SOURCE_DIR}/Scene/Components/Components.h
-    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/FrameBuffer.cpp
-    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/FrameBuffer.h
-    ${BERSEKER_SOURCE_DIR}/Rendering/Material.hpp
-    ${BERSEKER_SOURCE_DIR}/Scene/Components/LightSource.h
-    ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderRegistry.cpp
-    ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderRegistry.h
-    ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderResources.cpp
-    ${BERSEKER_SOURCE_DIR}/ResourceLoaders/ShaderResources.h
-    ${BERSEKER_SOURCE_DIR}/Rendering/LightSourceBillboard.cpp
-    ${BERSEKER_SOURCE_DIR}/Rendering/LightSourceBillboard.h
-    ${BERSEKER_SOURCE_DIR}/Rendering/GraphicsAPI/CubeMapTexture.hpp
-    ${BERSEKER_SOURCE_DIR}/Rendering/Skybox.cpp
-    ${BERSEKER_SOURCE_DIR}/Rendering/Skybox.h
-    ${BERSEKER_SOURCE_DIR}/Core/Logger.cpp
-    ${BERSEKER_SOURCE_DIR}/Core/Logger.h
-    ${BERSEKER_SOURCE_DIR}/Core/Memory.cpp
-    ${BERSEKER_SOURCE_DIR}/Core/Memory.h
-    ${BERSEKER_SOURCE_DIR}/Core/Debug.h
-    ${BERSEKER_SOURCE_DIR}/Ecs/Component.h
-    ${BERSEKER_SOURCE_DIR}/Ecs/Component.cpp
-    ${BERSEKER_SOURCE_DIR}/Ecs/ComponentSet.h
-    ${BERSEKER_SOURCE_DIR}/Ecs/Entity.cpp
-    ${BERSEKER_SOURCE_DIR}/Ecs/Entity.h
-    ${BERSEKER_SOURCE_DIR}/Ecs/Registry.cpp
-    ${BERSEKER_SOURCE_DIR}/Ecs/Registry.h
-    ${BERSEKER_SOURCE_DIR}/Core/DataStructures/SparseSet.cpp
-    ${BERSEKER_SOURCE_DIR}/Core/DataStructures/SparseSet.h
-    ${BERSEKER_SOURCE_DIR}/Scene/Components/ModelComponent.h
-    ${BERSEKER_SOURCE_DIR}/Physics/ColliderLoader.cpp
-    ${BERSEKER_SOURCE_DIR}/Physics/ColliderLoader.h
-    ${BERSEKER_SOURCE_DIR}/Physics/Collider.cpp
-    ${BERSEKER_SOURCE_DIR}/Physics/Collider.h
-    src/Scene/Components/ColliderComponent.h)
+    ENGINE_RELATIVE_SOURCES
+    Rendering/GraphicsAPI/VertexBuffer.hpp
+    Rendering/GraphicsAPI/VertexArray.hpp
+    Rendering/GraphicsAPI/IndexBuffer.hpp
+    Rendering/GraphicsAPI/ShaderProgram.cpp
+    Rendering/GraphicsAPI/ShaderProgram.h
+    Rendering/GraphicsAPI/Texture2D.hpp
+    Rendering/GraphicsAPI/OpenGL.h
+    Rendering/GraphicsAPI/OpenGL.cpp
+    Rendering/Model.cpp
+    Rendering/Renderer.cpp
+    Rendering/Renderer.h
+    Rendering/Mesh.h
+    Core/Window/Window.h
+    Core/Window/GLFW/GLFWWindow.cpp
+    Core/Window/GLFW/GLFWWindow.h
+    Core/Input/InputKeys.h
+    Core/Input/InputManager.h
+    Application.cpp
+    Application.h
+    Scene/Scene.h
+    Rendering/Primitives/Renderer.cpp
+    Rendering/Primitives/Renderer.h
+    Rendering/Primitives/Primitives.h
+    Rendering/Utils.h
+    Rendering/Utils.cpp
+    Physics/Partitioning/BVH.cpp
+    Physics/Partitioning/BVH.h
+    Physics/Boundings/BVolumes.cpp
+    Physics/Boundings/BVolumes.h
+    Scene/Components/Transform.h
+    Scene/Components/ColliderComponent.h
+    Scene/Components/Identifier.h
+    Scene/Components/Components.h
+    Scene/Components/ColliderComponent.h
+    Rendering/GraphicsAPI/FrameBuffer.cpp
+    Rendering/GraphicsAPI/FrameBuffer.h
+    Rendering/Material.hpp
+    Scene/Components/LightSource.h
+    ResourceLoaders/ShaderRegistry.cpp
+    ResourceLoaders/ShaderRegistry.h
+    ResourceLoaders/ShaderResources.cpp
+    ResourceLoaders/ShaderResources.h
+    Rendering/LightSourceBillboard.cpp
+    Rendering/LightSourceBillboard.h
+    Rendering/GraphicsAPI/CubeMapTexture.hpp
+    Rendering/Skybox.cpp
+    Rendering/Skybox.h
+    Core/Logger.cpp
+    Core/Logger.h
+    Core/Memory.cpp
+    Core/Memory.h
+    Core/Debug.h
+    Ecs/Component.h
+    Ecs/Component.cpp
+    Ecs/ComponentSet.h
+    Ecs/Entity.cpp
+    Ecs/Entity.h
+    Ecs/Registry.cpp
+    Ecs/Registry.h
+    Core/DataStructures/SparseSet.cpp
+    Core/DataStructures/SparseSet.h
+    Scene/Components/ModelComponent.h
+    Physics/ColliderLoader.cpp
+    Physics/ColliderLoader.h
+    Physics/Collider.cpp
+    Physics/Collider.h
+)
 
-# Set glfw library
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(ENGINE_SOURCES "")
+
+foreach(SOURCE ${ENGINE_RELATIVE_SOURCES})
+    list(APPEND ENGINE_SOURCES "${ENGINE_SOURCES_DIR}/${SOURCE}")
+endforeach()
+
+# Common Setup
+
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+
+# Spdlog Library Setup (https://github.com/gabime/spdlog)
+
+set(SPDLOG_INSTALL OFF CACHE BOOL "" FORCE)
+set(SPDLOG_BUILD_SHARED OFF CACHE BOOL "" FORCE)
+
+add_subdirectory(${DEPENDENCIES_DIR}/spdlog)
+
+# Glad Loader Setup
+
+add_subdirectory(${DEPENDENCIES_DIR}/glad)
+
+# Glfw Library Setup (https://github.com/glfw/glfw)
+
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 
-add_subdirectory(${BERSEKER_DEPENDENCIES_DIR}/glfw)
+add_subdirectory(${DEPENDENCIES_DIR}/glfw)
 
-# Set glad library
-add_subdirectory(${BERSEKER_DEPENDENCIES_DIR}/glad)
+# Glm Library Setup (https://github.com/g-truc/glm)
 
-# Set glm library
-add_subdirectory(${BERSEKER_DEPENDENCIES_DIR}/glm)
+set(GLM_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLM_BUILD_INSTALL OFF CACHE BOOL "" FORCE)
 
-# Set spdlog library
-add_subdirectory(${BERSEKER_DEPENDENCIES_DIR}/spdlog)
+add_subdirectory(${DEPENDENCIES_DIR}/glm)
 
-# Set assimp library
-# add_subdirectory(${BERSEKER_DEPENDENCIES_DIR}/assimp)
+# Stb Library Setup (https://github.com/nothings/stb)
 
-# Set stb library
-add_subdirectory(${BERSEKER_DEPENDENCIES_DIR}/stb)
+add_subdirectory(${DEPENDENCIES_DIR}/stb)
+
+# Assimp Library Setup (https://github.com/assimp/assimp/tree/master)
+
+set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_INSTALL OFF CACHE BOOL "" FORCE)
+
+add_subdirectory(${DEPENDENCIES_DIR}/assimp)
+
+# Library Setup
 
 add_library(
-    ${BERSEKER_BINARY_NAME}
-    ${BERSEKER_SOURCES}
+    ${ENGINE_LIBRARY_NAME}
+    ${ENGINE_SOURCES}
 )
 
 target_link_libraries(
-    ${BERSEKER_BINARY_NAME}
+    ${ENGINE_LIBRARY_NAME}
     glfw
     glad
     glm
@@ -113,6 +144,6 @@ target_link_libraries(
 )
 
 target_include_directories(
-    ${BERSEKER_BINARY_NAME}
-    PUBLIC ${BERSEKER_SOURCE_DIR}/
+    ${ENGINE_LIBRARY_NAME}
+    PUBLIC ${ENGINE_SOURCES_DIR}/
 )
