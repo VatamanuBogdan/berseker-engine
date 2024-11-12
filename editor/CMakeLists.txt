@@ -27,7 +27,7 @@ add_executable(
 
 target_link_libraries(
     ${BERSEKER_EDITOR_BINARY}
-    Testing
+    Example
     Engine
     imgui
 )

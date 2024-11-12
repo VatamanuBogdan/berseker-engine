@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 # Parameters Setup
 
 set(ENGINE_SOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/)
-set(DEPENDENCIES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps/)
+set(DEPENDENCIES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/)
 set(ENGINE_LIBRARY_NAME Engine)
 
 # Sources Setup
@@ -145,5 +145,5 @@ target_link_libraries(
 
 target_include_directories(
     ${ENGINE_LIBRARY_NAME}
-    PUBLIC ${ENGINE_SOURCES_DIR}/
+    PUBLIC ${ENGINE_SOURCES_DIR}
 )

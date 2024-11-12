@@ -5,8 +5,8 @@
 #include "Rendering/Primitives/Renderer.h"
 #include "ResourceLoaders/ShaderRegistry.h"
 #include "Scene/Components/Components.h"
-#include "Random.h"
-#include "Timer.h"
+#include "../Utils/Random.h"
+#include "../Utils/Timer.h"
 
 #include <glm/glm.hpp>
 
