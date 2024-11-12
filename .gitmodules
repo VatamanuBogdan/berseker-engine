@@ -11,5 +11,5 @@
 	path = engine/dependencies/assimp
 	url = https://github.com/assimp/assimp.git
 [submodule "Engine/deps/imgui/imgui"]
-	path = editor/deps/imgui/imgui-module
-	url = git@github.com:VatamanuBogdan/imgui.git
+	path = editor/dependencies/imgui/imgui-module
+	url = https://github.com/ocornut/imgui.git
